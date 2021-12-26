@@ -1,5 +1,6 @@
 package com.personal.school.model;
 
+import com.personal.school.form.SubjectForm;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,4 +23,13 @@ public class Subject {
     @ManyToMany(mappedBy = "subjects", fetch = FetchType.EAGER)
     private List<Teacher> teachers;
 
+    public Subject() { }
+
+    public Subject(String name) {
+        this.name = name;
+    }
+
+    public static Subject toSubject(SubjectForm subjectForm) {
+        return new Subject(subjectForm.getName());
+    }
 }
