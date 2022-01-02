@@ -48,4 +48,10 @@ public class SubjectController {
         return ResponseEntity.created(uri).body(new SubjectDto(subject));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> removeSubject(@PathVariable Long id){
+        subjectRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
 }
