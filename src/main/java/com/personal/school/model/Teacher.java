@@ -9,12 +9,12 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Teacher extends People{
+public class Teacher extends People {
 
     @Enumerated(EnumType.STRING)
     private Schooling schooling;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "teacher")
     private List<Course> courses;
 
     @ManyToMany(fetch = FetchType.EAGER)

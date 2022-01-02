@@ -1,9 +1,14 @@
 package com.personal.school.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 public class Course {
 
     @Id
@@ -15,10 +20,11 @@ public class Course {
     @JoinColumn(name ="subject_id", nullable = false)
     private Subject subject;
 
-    @ManyToMany(mappedBy = "courses", fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "teacher_id", nullable = false)
+    private Teacher teacher;
+
+    @ManyToMany(mappedBy = "courses")
     private List<Student> students;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "course_id", nullable = false)
-    private Course course;
 }
