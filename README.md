@@ -1,2 +1,2 @@
-# school
+# School
 School control project
