@@ -1,8 +1,6 @@
 package com.personal.school.dto;
 
-import com.personal.school.model.Course;
 import com.personal.school.model.Subject;
-import com.personal.school.model.Teacher;
 import lombok.Getter;
 
 import java.util.List;

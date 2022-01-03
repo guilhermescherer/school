@@ -9,17 +9,17 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Course {
+public class Class {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private Integer qualificationNumber;
+    @Enumerated(EnumType.STRING)
+    private TeachingType teachingType;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name ="subject_id", nullable = false)
-    private Subject subject;
-
+    // TODO: Alterar para ManyToMany
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
