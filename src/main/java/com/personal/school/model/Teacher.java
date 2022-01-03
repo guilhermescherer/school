@@ -15,7 +15,7 @@ public class Teacher extends People {
     private Schooling schooling;
 
     @OneToMany(mappedBy = "teacher")
-    private List<Course> courses;
+    private List<Class> SchoolClass;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "subjects_teacher",

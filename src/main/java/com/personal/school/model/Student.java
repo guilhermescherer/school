@@ -18,6 +18,6 @@ public class Student extends People{
             joinColumns = { @JoinColumn(name = "fk_course") },
             inverseJoinColumns = { @JoinColumn(name = "fk_student")}
     )
-    private List<Course> courses;
+    private List<Class> SchoolClass;
 
 }

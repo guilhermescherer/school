@@ -17,9 +17,6 @@ public class Subject {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "subject")
-    private List<Course> courses;
-
     @ManyToMany(mappedBy = "subjects", fetch = FetchType.EAGER)
     private List<Teacher> teachers;
 
