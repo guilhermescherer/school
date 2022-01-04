@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -13,11 +12,8 @@ public class Student extends People{
 
     private Boolean isScholarshipHolder;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "courses_student",
-            joinColumns = { @JoinColumn(name = "fk_course") },
-            inverseJoinColumns = { @JoinColumn(name = "fk_student")}
-    )
-    private List<Class> SchoolClass;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "class_id", nullable = false)
+    private Class schoolClass;
 
 }

@@ -7,19 +7,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class SubjectDto {
+public class SubjectDTO {
 
     private Long id;
     private String name;
 
-    public SubjectDto(Subject subject) {
+    public SubjectDTO(Subject subject) {
         this.id = subject.getId();
         this.name = subject.getName();
     }
 
-    public static List<SubjectDto> toDto(List<Subject> subjects) {
+    public static List<SubjectDTO> toDto(List<Subject> subjects) {
         return subjects.stream()
-                .map(SubjectDto::new)
+                .map(SubjectDTO::new)
                 .collect(Collectors.toList());
     }
 }
