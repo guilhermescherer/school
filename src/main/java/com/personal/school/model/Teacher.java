@@ -14,8 +14,8 @@ public class Teacher extends People {
     @Enumerated(EnumType.STRING)
     private Schooling schooling;
 
-    @OneToMany(mappedBy = "teacher")
-    private List<Class> SchoolClass;
+    @ManyToMany(mappedBy = "teachers")
+    private List<Class> classes;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "subjects_teacher",

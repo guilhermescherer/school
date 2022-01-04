@@ -1,6 +1,6 @@
 package com.personal.school.config.validation;
 
-import com.personal.school.dto.ErrorFormDto;
+import com.personal.school.dto.error.ArgumentNotValidDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
-public class ErrorValidationHandler {
+public class ArgumentNotValidHandler {
 
     @Autowired
     private MessageSource messageSource;
@@ -24,18 +24,19 @@ public class ErrorValidationHandler {
     @ResponseBody
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public List<ErrorFormDto> handleError(MethodArgumentNotValidException ex){
-        List<ErrorFormDto> errors = new ArrayList<>();
+    public List<ArgumentNotValidDTO> handleError(MethodArgumentNotValidException ex){
+        List<ArgumentNotValidDTO> errors = new ArrayList<>();
 
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
 
         fieldErrors.forEach(e -> {
             String message = messageSource.getMessage(e, LocaleContextHolder.getLocale());
-            ErrorFormDto error = new ErrorFormDto(e.getField(), message);
+            ArgumentNotValidDTO error = new ArgumentNotValidDTO(e.getField(), message);
             errors.add(error);
         });
 
         return errors;
     }
+
 
 }

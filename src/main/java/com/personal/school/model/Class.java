@@ -19,12 +19,14 @@ public class Class {
     @Enumerated(EnumType.STRING)
     private TeachingType teachingType;
 
-    // TODO: Alterar para ManyToMany
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "teacher_id", nullable = false)
-    private Teacher teacher;
+    @ManyToMany()
+    @JoinTable(name = "teachers_class",
+            joinColumns = { @JoinColumn(name = "fk_teacher") },
+            inverseJoinColumns = { @JoinColumn(name = "fk_class") }
+    )
+    private List<Teacher> teachers;
 
-    @ManyToMany(mappedBy = "courses")
+    @OneToMany(mappedBy = "schoolClass")
     private List<Student> students;
 
 }
