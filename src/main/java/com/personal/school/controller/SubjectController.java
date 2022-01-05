@@ -25,14 +25,14 @@ public class SubjectController {
     SubjectRepository subjectRepository;
 
     @GetMapping
-    public List<SubjectDTO> getAllSubject(){
+    public List<SubjectDTO> getAll(){
         List<Subject> subjects = subjectRepository.findAll();
         return toDto(subjects);
     }
 
     @GetMapping
     @RequestMapping("/{id}")
-    public ResponseEntity<SubjectDTO> getSubjectById(@PathVariable Long id){
+    public ResponseEntity<SubjectDTO> getById(@PathVariable Long id){
         Optional<Subject> subject = subjectRepository.findById(id);
         return subject.map(value -> ResponseEntity.ok(new SubjectDTO(value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -40,7 +40,7 @@ public class SubjectController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<SubjectDTO> addSubject(@RequestBody @Valid SubjectForm subjectForm, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<SubjectDTO> add(@RequestBody @Valid SubjectForm subjectForm, UriComponentsBuilder uriBuilder){
         Subject subject = Subject.toSubject(subjectForm);
         subjectRepository.save(subject);
 
@@ -49,7 +49,7 @@ public class SubjectController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> removeSubject(@PathVariable Long id){
+    public ResponseEntity<?> remove(@PathVariable Long id){
         subjectRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
