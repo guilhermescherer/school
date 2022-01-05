@@ -1,7 +1,5 @@
 package com.personal.school.dto;
 
-import com.personal.school.model.Class;
-import com.personal.school.model.Subject;
 import com.personal.school.model.Teacher;
 import lombok.Getter;
 
@@ -9,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class TeacherDTO {
+public class TeacherDTO extends PeopleDTO {
 
     private String schooling;
     private List<ClassDTO> classes;

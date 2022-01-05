@@ -1,4 +1,4 @@
-package com.personal.school.config.validation.http;
+package com.personal.school.config.handler.http;
 
 import com.personal.school.dto.error.ExceptionErrorDTO;
 import org.springframework.dao.EmptyResultDataAccessException;

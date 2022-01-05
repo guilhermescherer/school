@@ -1,4 +1,4 @@
-package com.personal.school.config.validation;
+package com.personal.school.config.handler;
 
 import com.personal.school.dto.error.ErrorDTO;
 import com.personal.school.dto.error.ExceptionErrorDTO;
