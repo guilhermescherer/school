@@ -5,13 +5,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class StatusExceptionDTO {
+public class ErrorDTO {
 
-    private int code;
+    private String field;
     private String message;
 
-    public StatusExceptionDTO(int code, String message) {
-        this.code = code;
+    public ErrorDTO(String field, String message) {
+        this.field = field;
         this.message = message;
     }
 }

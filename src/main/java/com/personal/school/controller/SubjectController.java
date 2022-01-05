@@ -1,7 +1,6 @@
 package com.personal.school.controller;
 
 import com.personal.school.dto.SubjectDTO;
-import com.personal.school.exception.NotFoundException;
 import com.personal.school.form.SubjectForm;
 import com.personal.school.model.Subject;
 import com.personal.school.repository.SubjectRepository;
@@ -51,11 +50,6 @@ public class SubjectController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeSubject(@PathVariable Long id){
-
-        if(!subjectRepository.findById(id).isPresent()) {
-            throw new NotFoundException(String.format("Subject with id [%s] does not exist", id));
-        }
-
         subjectRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
