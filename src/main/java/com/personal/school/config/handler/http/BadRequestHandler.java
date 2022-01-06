@@ -1,4 +1,4 @@
-package com.personal.school.config.validation.http;
+package com.personal.school.config.handler.http;
 
 import com.personal.school.dto.error.ExceptionErrorDTO;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ public class BadRequestHandler {
     public ExceptionErrorDTO handleError(Exception ex){
         ExceptionErrorDTO exceptionError = new ExceptionErrorDTO();
 
-        exceptionError.setCode(HttpStatus.NOT_FOUND);
+        exceptionError.setCode(HttpStatus.NOT_FOUND.value());
         exceptionError.setDate(LocalDateTime.now());
         exceptionError.setMessage(ex.getMessage());
 

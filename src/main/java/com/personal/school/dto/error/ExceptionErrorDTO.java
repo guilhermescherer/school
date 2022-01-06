@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 public class ExceptionErrorDTO {
 
-    private HttpStatus code;
+    private Integer code;
     private LocalDateTime date;
     private String message;
     private List<ErrorDTO> errors;

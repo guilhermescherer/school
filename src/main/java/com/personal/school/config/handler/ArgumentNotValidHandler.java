@@ -1,4 +1,4 @@
-package com.personal.school.config.validation;
+package com.personal.school.config.handler;
 
 import com.personal.school.dto.error.ErrorDTO;
 import com.personal.school.dto.error.ExceptionErrorDTO;
@@ -28,7 +28,7 @@ public class ArgumentNotValidHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ExceptionErrorDTO handleError(MethodArgumentNotValidException ex){
         ExceptionErrorDTO exceptionError = new ExceptionErrorDTO();
-        exceptionError.setCode(HttpStatus.PRECONDITION_FAILED);
+        exceptionError.setCode(HttpStatus.PRECONDITION_FAILED.value());
         exceptionError.setDate(LocalDateTime.now());
         exceptionError.setMessage(ex.getMessage());
 
