@@ -19,7 +19,7 @@ public class NotFoundHandler {
     public ExceptionErrorDTO handleError(Exception ex){
         ExceptionErrorDTO exceptionError = new ExceptionErrorDTO();
 
-        exceptionError.setCode(HttpStatus.NOT_FOUND);
+        exceptionError.setCode(HttpStatus.NOT_FOUND.value());
         exceptionError.setDate(LocalDateTime.now());
         exceptionError.setMessage(ex.getMessage());
 

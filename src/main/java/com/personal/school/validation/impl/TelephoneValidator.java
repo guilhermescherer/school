@@ -13,11 +13,10 @@ public class TelephoneValidator implements ConstraintValidator<Telephone, String
     @Override
     public boolean isValid(String telephone, ConstraintValidatorContext constraintValidatorContext) {
 
-        if(StringUtils.isNotBlank(telephone)){
-            return getPatternTelephoneBrazil().matcher(telephone).matches();
-        }
+        if(StringUtils.isBlank(telephone)) return true;
 
-        return true;
+        return getPatternTelephoneBrazil().matcher(telephone).matches();
+
     }
 
 }
