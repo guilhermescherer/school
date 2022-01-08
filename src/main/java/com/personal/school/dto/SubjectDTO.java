@@ -3,14 +3,17 @@ package com.personal.school.dto;
 import com.personal.school.model.Subject;
 import lombok.Getter;
 
+import static java.util.Collections.EMPTY_LIST;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 @Getter
 public class SubjectDTO {
 
-    private Long id;
-    private String name;
+    private final Long id;
+    private final String name;
 
     public SubjectDTO(Subject subject) {
         this.id = subject.getId();
@@ -18,8 +21,6 @@ public class SubjectDTO {
     }
 
     public static List<SubjectDTO> toDto(List<Subject> subjects) {
-        return subjects.stream()
-                .map(SubjectDTO::new)
-                .collect(Collectors.toList());
+        return isNull(subjects) ? EMPTY_LIST : subjects.stream().map(SubjectDTO::new).collect(Collectors.toList());
     }
 }
