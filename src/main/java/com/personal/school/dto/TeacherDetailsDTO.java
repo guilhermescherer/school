@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import static com.personal.school.utils.FormatterUtils.getDateDefaultFormatter;
 
 @Getter
-public class TeacherDTO {
+public class TeacherDetailsDTO {
 
     private final Long id;
     private final String name;
@@ -18,8 +18,10 @@ public class TeacherDTO {
     private final String documentNumber;
     private final String birthDate;
     private final String schooling;
+    private final List<ClassDTO> classes;
+    private final List<SubjectDTO> subjects;
 
-    public TeacherDTO(Teacher teacher) {
+    public TeacherDetailsDTO(Teacher teacher) {
         this.id = teacher.getId();
         this.name = teacher.getName();
         this.email = teacher.getEmail();
@@ -27,12 +29,15 @@ public class TeacherDTO {
         this.documentNumber = teacher.getDocumentNumber();
         this.birthDate = getDateDefaultFormatter(teacher.getBirthDate());
         this.schooling = teacher.getSchooling().name();
+        this.subjects = SubjectDTO.toDto(teacher.getSubjects());
+        this.classes = ClassDTO.toDto(teacher.getClasses());
     }
 
-    public static List<TeacherDTO> toDto(List<Teacher> teachers){
+    public static List<TeacherDetailsDTO> toDto(List<Teacher> teachers){
         return teachers.stream()
-                .map(TeacherDTO::new)
+                .map(TeacherDetailsDTO::new)
                 .collect(Collectors.toList());
     }
+
 
 }
