@@ -26,12 +26,11 @@ public abstract class People {
 
     public People() { }
 
-    public People(TeacherForm teacherForm){
-        this.name = teacherForm.getName();
-        this.email = teacherForm.getEmail();
-        this.telephone = teacherForm.getTelephone();
-        this.documentNumber = teacherForm.getDocumentNumber();
-        LocalDate date = LocalDate.parse(teacherForm.getBirthDate(), getDefaultDateFormatter());
-        this.birthDate = date;
+    public People(String name, String email, String telephone, String documentNumber, LocalDate birthDate) {
+        this.name = name;
+        this.email = email;
+        this.telephone = telephone;
+        this.documentNumber = documentNumber;
+        this.birthDate = birthDate;
     }
 }
