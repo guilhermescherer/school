@@ -4,6 +4,7 @@ import com.personal.school.dto.TeacherDTO;
 import com.personal.school.dto.TeacherDetailsDTO;
 import com.personal.school.form.TeacherForm;
 import com.personal.school.model.Teacher;
+import com.personal.school.repository.ClassRepository;
 import com.personal.school.repository.SubjectRepository;
 import com.personal.school.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class TeacherController {
     TeacherRepository teacherRepository;
     @Autowired
     SubjectRepository subjectRepository;
+    @Autowired
+    ClassRepository classRepository;
 
     @GetMapping
     public List<TeacherDTO> getAll(){
@@ -45,7 +48,7 @@ public class TeacherController {
     @PostMapping
     @Transactional
     public ResponseEntity<?> add(@RequestBody @Valid TeacherForm teacherForm, UriComponentsBuilder uriBuilder){
-        Teacher teacher = Teacher.toTeacher(teacherForm, subjectRepository);
+        Teacher teacher = Teacher.toTeacher(teacherForm, subjectRepository, classRepository);
         teacherRepository.save(teacher);
 
         URI uri = uriBuilder.path("/teacher/{id}").buildAndExpand(teacher.getId()).toUri();
