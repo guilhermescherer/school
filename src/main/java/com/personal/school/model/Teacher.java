@@ -3,12 +3,9 @@ package com.personal.school.model;
 import com.personal.school.form.TeacherForm;
 import com.personal.school.repository.ClassRepository;
 import com.personal.school.repository.SubjectRepository;
-import com.personal.school.repository.TeacherRepository;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.core.MethodParameter;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -59,11 +56,13 @@ public class Teacher extends People {
 
         List<Subject> subjects = new ArrayList<>();
         if(nonNull(teacherForm.getSubjects())){
-            subjects = subjectRepository.findAllById(teacherForm.getSubjects());
-        }
 
-        if(teacherForm.getSubjects().size() != subjects.size()) {
-            throw new EmptyResultDataAccessException("Subject not found", teacherForm.getSubjects().size());
+            subjects = subjectRepository.findAllById(teacherForm.getSubjects());
+
+            if(teacherForm.getSubjects().size() != subjects.size()) {
+                throw new EmptyResultDataAccessException("Subject not found", teacherForm.getSubjects().size());
+            }
+
         }
 
         return subjects;
@@ -72,11 +71,13 @@ public class Teacher extends People {
     private static List<Class> getClasses(TeacherForm teacherForm, ClassRepository classRepository){
         List<Class> classes = new ArrayList<>();
         if(nonNull(teacherForm.getClasses())){
-            classes = classRepository.findAllById(teacherForm.getClasses());
-        }
 
-        if(teacherForm.getClasses().size() != classes.size()) {
-            throw new EmptyResultDataAccessException("Class not found", teacherForm.getSubjects().size());
+            classes = classRepository.findAllById(teacherForm.getClasses());
+
+            if(teacherForm.getClasses().size() != classes.size()) {
+                throw new EmptyResultDataAccessException("Class not found", teacherForm.getSubjects().size());
+            }
+
         }
 
         return classes;

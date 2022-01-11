@@ -1,13 +1,10 @@
 package com.personal.school.model;
 
-import com.personal.school.form.TeacherForm;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-
-import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
 
 @Entity
 @Getter
