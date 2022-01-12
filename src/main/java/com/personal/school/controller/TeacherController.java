@@ -7,6 +7,8 @@ import com.personal.school.model.Teacher;
 import com.personal.school.repository.ClassRepository;
 import com.personal.school.repository.SubjectRepository;
 import com.personal.school.repository.TeacherRepository;
+import com.personal.school.service.ClassService;
+import com.personal.school.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +29,9 @@ public class TeacherController {
     @Autowired
     TeacherRepository teacherRepository;
     @Autowired
-    SubjectRepository subjectRepository;
+    ClassService classService;
     @Autowired
-    ClassRepository classRepository;
+    SubjectService subjectService;
 
     @GetMapping
     public List<TeacherDTO> getAll(){
@@ -48,7 +50,7 @@ public class TeacherController {
     @PostMapping
     @Transactional
     public ResponseEntity<?> add(@RequestBody @Valid TeacherForm teacherForm, UriComponentsBuilder uriBuilder){
-        Teacher teacher = Teacher.toTeacher(teacherForm, subjectRepository, classRepository);
+        Teacher teacher = Teacher.toTeacher(teacherForm, subjectService, classService);
         teacherRepository.save(teacher);
 
         URI uri = uriBuilder.path("/teacher/{id}").buildAndExpand(teacher.getId()).toUri();

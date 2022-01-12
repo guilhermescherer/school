@@ -1,6 +1,5 @@
 package com.personal.school.model;
 
-import com.personal.school.dto.StudentDTO;
 import lombok.Getter;
 import lombok.Setter;
 

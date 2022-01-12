@@ -1,19 +1,16 @@
 package com.personal.school.model;
 
 import com.personal.school.form.TeacherForm;
-import com.personal.school.repository.ClassRepository;
-import com.personal.school.repository.SubjectRepository;
+import com.personal.school.service.ClassService;
+import com.personal.school.service.SubjectService;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
-import static java.util.Objects.nonNull;
 
 @Entity
 @Getter
@@ -42,9 +39,10 @@ public class Teacher extends People {
         this.subjects = subjects;
     }
 
-    public static Teacher toTeacher(TeacherForm teacherForm, SubjectRepository subjectRepository, ClassRepository classRepository) {
-        List<Subject> subjects = getSubjects(teacherForm, subjectRepository);
-        List<Class> classes = getClasses(teacherForm, classRepository);
+    public static Teacher toTeacher(TeacherForm teacherForm, SubjectService subjectService, ClassService classService) {
+        List<Subject> subjects = subjectService.getAllById(teacherForm.getSubjects());
+        List<Class> classes = classService.getClassesByListId(teacherForm.getClasses());
+
         Schooling schooling = Schooling.valueOf(teacherForm.getSchooling());
         LocalDate birthDate = LocalDate.parse(teacherForm.getBirthDate(), getDefaultDateFormatter());
 
@@ -52,34 +50,4 @@ public class Teacher extends People {
                 teacherForm.getDocumentNumber(), birthDate, schooling, classes, subjects);
     }
 
-    private static List<Subject> getSubjects(TeacherForm teacherForm, SubjectRepository subjectRepository) {
-
-        List<Subject> subjects = new ArrayList<>();
-        if(nonNull(teacherForm.getSubjects())){
-
-            subjects = subjectRepository.findAllById(teacherForm.getSubjects());
-
-            if(teacherForm.getSubjects().size() != subjects.size()) {
-                throw new EmptyResultDataAccessException("Subject not found", teacherForm.getSubjects().size());
-            }
-
-        }
-
-        return subjects;
-    }
-
-    private static List<Class> getClasses(TeacherForm teacherForm, ClassRepository classRepository){
-        List<Class> classes = new ArrayList<>();
-        if(nonNull(teacherForm.getClasses())){
-
-            classes = classRepository.findAllById(teacherForm.getClasses());
-
-            if(teacherForm.getClasses().size() != classes.size()) {
-                throw new EmptyResultDataAccessException("Class not found", teacherForm.getSubjects().size());
-            }
-
-        }
-
-        return classes;
-    }
 }
