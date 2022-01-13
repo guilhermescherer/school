@@ -8,6 +8,7 @@ import com.personal.school.model.Student;
 import com.personal.school.model.Teacher;
 import com.personal.school.repository.ClassRepository;
 import com.personal.school.repository.StudentRepository;
+import com.personal.school.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,20 +27,18 @@ import static com.personal.school.dto.StudentDTO.toDto;
 public class StudentController {
 
     @Autowired
-    StudentRepository studentRepository;
-    @Autowired
-    ClassRepository classRepository;
+    StudentService studentService;
 
     @GetMapping
     public List<StudentDTO> getAll(){
-        List<Student> students = studentRepository.findAll();
+        List<Student> students = studentService.getAll();
         return toDto(students);
     }
 
     @GetMapping
     @RequestMapping("/{id}")
     public ResponseEntity<StudentDTO> getById(@PathVariable Long id){
-        Optional<Student> student = studentRepository.findById(id);
+        Optional<Student> student = studentService.getById(id);
         return student.map(value -> ResponseEntity.ok(new StudentDTO(student.get())))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -57,7 +56,7 @@ public class StudentController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remove(@PathVariable Long id){
-        studentRepository.deleteById(id);
+        studentService.remove(id);
         return ResponseEntity.ok().build();
     }
 

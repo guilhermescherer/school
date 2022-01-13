@@ -8,9 +8,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
+import static java.util.Objects.nonNull;
 
 @Entity
 @Getter
@@ -40,8 +42,8 @@ public class Teacher extends People {
     }
 
     public static Teacher toTeacher(TeacherForm teacherForm, SubjectService subjectService, ClassService classService) {
-        List<Subject> subjects = subjectService.getAllById(teacherForm.getSubjects());
-        List<Class> classes = classService.getClassesByListId(teacherForm.getClasses());
+        List<Subject> subjects = nonNull(teacherForm.getSubjects()) ? subjectService.getAllById(teacherForm.getSubjects()) : new ArrayList<>();
+        List<Class> classes = nonNull(teacherForm.getClasses()) ? classService.getAllById(teacherForm.getClasses()) : new ArrayList<>();
 
         Schooling schooling = Schooling.valueOf(teacherForm.getSchooling());
         LocalDate birthDate = LocalDate.parse(teacherForm.getBirthDate(), getDefaultDateFormatter());
