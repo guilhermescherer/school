@@ -7,7 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static java.lang.Math.toIntExact;
+import static java.util.Objects.isNull;
 
 @Service
 public class ClassServiceImpl implements ClassService {
@@ -16,23 +21,29 @@ public class ClassServiceImpl implements ClassService {
     ClassRepository classRepository;
 
     @Override
-    public List<Class> getAllById(List<Long> idList){
-        List<Class> classes = classRepository.findAllById(idList);
+    public List<Class> getAllById(List<Long> ids){
 
-        if(idList.size() != classes.size()) {
-            throw new EmptyResultDataAccessException("Class not found", idList.size());
+        if(isNull(ids)) return new ArrayList<>();
+
+        List<Class> classes = classRepository.findAllById(ids);
+
+        if(ids.size() != classes.size()) {
+            throw new EmptyResultDataAccessException("Not found all classes", ids.size());
         }
 
         return classes;
     }
 
-//    @Override
-//    public Class getClassById(Long idClass){
-//        if(nonNull(idClass)){
-//            Optional<Class> schoolClass = classRepository.findById(idClass);
-//            return schoolClass.orElse(null);
-//        }
-//        return null;
-//    }
+    @Override
+    public Class getClassById(Long idClass) {
+        Optional<Class> schoolClass = classRepository.findById(idClass);
+
+        if(schoolClass.isPresent()){
+            return schoolClass.get();
+        } else {
+            throw new EmptyResultDataAccessException("Not found class", toIntExact(idClass));
+        }
+
+    }
 
 }

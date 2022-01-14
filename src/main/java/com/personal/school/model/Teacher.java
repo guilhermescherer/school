@@ -42,8 +42,8 @@ public class Teacher extends People {
     }
 
     public static Teacher toTeacher(TeacherForm teacherForm, SubjectService subjectService, ClassService classService) {
-        List<Subject> subjects = nonNull(teacherForm.getSubjects()) ? subjectService.getAllById(teacherForm.getSubjects()) : new ArrayList<>();
-        List<Class> classes = nonNull(teacherForm.getClasses()) ? classService.getAllById(teacherForm.getClasses()) : new ArrayList<>();
+        List<Subject> subjects = subjectService.getAllById(teacherForm.getSubjects());
+        List<Class> classes = classService.getAllById(teacherForm.getClasses());
 
         Schooling schooling = Schooling.valueOf(teacherForm.getSchooling());
         LocalDate birthDate = LocalDate.parse(teacherForm.getBirthDate(), getDefaultDateFormatter());
