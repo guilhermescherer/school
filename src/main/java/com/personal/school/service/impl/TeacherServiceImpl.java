@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static java.util.Objects.isNull;
 
 @Service
 public class TeacherServiceImpl implements TeacherService {
@@ -23,10 +26,15 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public List<Teacher> getAllById(List<Long> ids) {
+
+        if(isNull(ids)) return new ArrayList<>();
+
         List<Teacher> teachers = teacherRepository.findAllById(ids);
+
         if(ids.size() != teachers.size()) {
-            throw new EmptyResultDataAccessException("Not all subjects found", ids.size());
+            throw new EmptyResultDataAccessException("Not found all teachers", ids.size());
         }
+
         return teachers;
     }
 

@@ -8,6 +8,7 @@ import com.personal.school.model.Student;
 import com.personal.school.model.Teacher;
 import com.personal.school.repository.ClassRepository;
 import com.personal.school.repository.StudentRepository;
+import com.personal.school.service.ClassService;
 import com.personal.school.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,8 @@ public class StudentController {
 
     @Autowired
     StudentService studentService;
+    @Autowired
+    ClassService classService;
 
     @GetMapping
     public List<StudentDTO> getAll(){
@@ -43,15 +46,15 @@ public class StudentController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-//    @PostMapping
-//    @Transactional
-//    public ResponseEntity<?> add(@RequestBody @Valid StudentForm studentForm, UriComponentsBuilder uriBuilder){
-//        Student student = Student.toStudent(studentForm, classRepository);
-//        studentRepository.save(student);
-//
-//        URI uri = uriBuilder.path("/teacher/{id}").buildAndExpand(teacher.getId()).toUri();
-//        return ResponseEntity.created(uri).body(new TeacherDTO(teacher));
-//    }
+    @PostMapping
+    @Transactional
+    public ResponseEntity<?> add(@RequestBody @Valid StudentForm studentForm, UriComponentsBuilder uriBuilder){
+        Student student = Student.toStudent(studentForm, classService);
+        studentService.save(student);
+
+        URI uri = uriBuilder.path("/student/{id}").buildAndExpand(student.getId()).toUri();
+        return ResponseEntity.created(uri).body(new StudentDTO(student));
+    }
 
 
     @DeleteMapping("/{id}")
