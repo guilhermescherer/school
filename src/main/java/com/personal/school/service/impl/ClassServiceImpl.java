@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.lang.Math.toIntExact;
+import static java.util.Collections.EMPTY_LIST;
 import static java.util.Objects.isNull;
 
 @Service
@@ -23,7 +24,7 @@ public class ClassServiceImpl implements ClassService {
     @Override
     public List<Class> getAllById(List<Long> ids){
 
-        if(isNull(ids)) return new ArrayList<>();
+        if(isNull(ids)) return EMPTY_LIST;
 
         List<Class> classes = classRepository.findAllById(ids);
 

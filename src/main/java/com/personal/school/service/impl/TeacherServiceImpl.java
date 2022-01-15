@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Collections.EMPTY_LIST;
 import static java.util.Objects.isNull;
 
 @Service
@@ -27,7 +28,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public List<Teacher> getAllById(List<Long> ids) {
 
-        if(isNull(ids)) return new ArrayList<>();
+        if(isNull(ids)) return EMPTY_LIST;
 
         List<Teacher> teachers = teacherRepository.findAllById(ids);
 
