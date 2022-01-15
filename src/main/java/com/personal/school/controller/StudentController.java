@@ -11,6 +11,7 @@ import com.personal.school.repository.StudentRepository;
 import com.personal.school.service.ClassService;
 import com.personal.school.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -56,6 +57,13 @@ public class StudentController {
         return ResponseEntity.created(uri).body(new StudentDTO(student));
     }
 
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<StudentDTO> update(@PathVariable Long id, @RequestBody @Valid StudentForm studentForm){
+        Student student = studentForm.update(id, studentService);
+
+        return ResponseEntity.ok(new StudentDTO(student));
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remove(@PathVariable Long id){
