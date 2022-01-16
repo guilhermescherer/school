@@ -1,5 +1,6 @@
 package com.personal.school.service;
 
+import com.personal.school.form.StudentForm;
 import com.personal.school.model.Student;
 
 import java.util.List;
@@ -14,5 +15,9 @@ public interface StudentService {
     void remove(Long id);
 
     void save(Student student);
+
+    Student update(Long id, StudentForm studentForm);
+
+    Student toStudent(StudentForm studentForm);
 
 }

@@ -50,7 +50,7 @@ public class StudentController {
     @PostMapping
     @Transactional
     public ResponseEntity<?> add(@RequestBody @Valid StudentForm studentForm, UriComponentsBuilder uriBuilder){
-        Student student = Student.toStudent(studentForm, classService);
+        Student student = studentService.toStudent(studentForm);
         studentService.save(student);
 
         URI uri = uriBuilder.path("/student/{id}").buildAndExpand(student.getId()).toUri();
@@ -60,8 +60,7 @@ public class StudentController {
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<StudentDTO> update(@PathVariable Long id, @RequestBody @Valid StudentForm studentForm){
-        Student student = studentForm.update(id, studentService);
-
+        Student student = studentService.update(id, studentForm);
         return ResponseEntity.ok(new StudentDTO(student));
     }
 

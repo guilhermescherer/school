@@ -1,5 +1,6 @@
 package com.personal.school.service.impl;
 
+import com.personal.school.form.SubjectForm;
 import com.personal.school.model.Subject;
 import com.personal.school.repository.SubjectRepository;
 import com.personal.school.service.SubjectService;
@@ -52,6 +53,11 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public void remove(Long id) {
         subjectRepository.deleteById(id);
+    }
+
+    @Override
+    public Subject toSubject(SubjectForm subjectForm) {
+        return new Subject(subjectForm.getName());
     }
 
 }

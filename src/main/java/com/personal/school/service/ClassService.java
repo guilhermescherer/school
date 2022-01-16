@@ -9,6 +9,6 @@ public interface ClassService {
 
     List<Class> getAllById(List<Long> idList);
 
-    Class getClassById(Long idClass);
+    Class getByIdThrow(Long idClass);
 
 }
