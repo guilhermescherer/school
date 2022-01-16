@@ -35,8 +35,7 @@ public class ClassServiceImpl implements ClassService {
         return classes;
     }
 
-    @Override
-    public Class getClassById(Long idClass) {
+    public Class getByIdThrow(Long idClass) {
         Optional<Class> schoolClass = classRepository.findById(idClass);
 
         if(schoolClass.isPresent()){

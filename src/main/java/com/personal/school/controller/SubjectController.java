@@ -40,7 +40,7 @@ public class SubjectController {
     @PostMapping
     @Transactional
     public ResponseEntity<SubjectDTO> add(@RequestBody @Valid SubjectForm subjectForm, UriComponentsBuilder uriBuilder){
-        Subject subject = Subject.toSubject(subjectForm);
+        Subject subject = subjectService.toSubject(subjectForm);
         subjectService.save(subject);
 
         URI uri = uriBuilder.path("/subject/{id}").buildAndExpand(subject.getId()).toUri();

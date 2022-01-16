@@ -26,7 +26,4 @@ public class Subject {
         this.name = name;
     }
 
-    public static Subject toSubject(SubjectForm subjectForm) {
-        return new Subject(subjectForm.getName());
-    }
 }
