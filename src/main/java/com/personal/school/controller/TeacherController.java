@@ -1,8 +1,11 @@
 package com.personal.school.controller;
 
+import com.personal.school.dto.SubjectDTO;
 import com.personal.school.dto.TeacherDTO;
 import com.personal.school.dto.TeacherDetailsDTO;
+import com.personal.school.form.SubjectForm;
 import com.personal.school.form.TeacherForm;
+import com.personal.school.model.Subject;
 import com.personal.school.model.Teacher;
 import com.personal.school.repository.ClassRepository;
 import com.personal.school.repository.SubjectRepository;
@@ -30,9 +33,9 @@ public class TeacherController {
     @Autowired
     TeacherService teacherService;
     @Autowired
-    ClassService classService;
-    @Autowired
     SubjectService subjectService;
+    @Autowired
+    ClassService classService;
 
     @GetMapping
     public List<TeacherDTO> getAll(){
@@ -51,11 +54,18 @@ public class TeacherController {
     @PostMapping
     @Transactional
     public ResponseEntity<?> add(@RequestBody @Valid TeacherForm teacherForm, UriComponentsBuilder uriBuilder){
-        Teacher teacher = Teacher.toTeacher(teacherForm, subjectService, classService);
+        Teacher teacher = teacherService.toTeacher(teacherForm, subjectService, classService);
         teacherService.save(teacher);
 
         URI uri = uriBuilder.path("/teacher/{id}").buildAndExpand(teacher.getId()).toUri();
         return ResponseEntity.created(uri).body(new TeacherDTO(teacher));
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<TeacherDTO> update(@PathVariable Long id, @RequestBody @Valid TeacherForm teacherForm){
+        Teacher teacher = teacherService.update(id, teacherForm, subjectService);
+        return ResponseEntity.ok(new TeacherDTO(teacher));
     }
 
     @DeleteMapping("/{id}")

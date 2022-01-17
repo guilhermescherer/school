@@ -2,16 +2,18 @@ package com.personal.school.service.impl;
 
 import com.personal.school.form.SubjectForm;
 import com.personal.school.model.Subject;
+import com.personal.school.model.Teacher;
 import com.personal.school.repository.SubjectRepository;
 import com.personal.school.service.SubjectService;
+import com.personal.school.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.Math.toIntExact;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Objects.isNull;
 
@@ -27,7 +29,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public List<Subject> getAllById(List<Long> ids) {
+    public List<Subject> getAllByIdThrow(List<Long> ids) {
 
         if(isNull(ids)) return EMPTY_LIST;
 
@@ -56,8 +58,23 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Subject toSubject(SubjectForm subjectForm) {
-        return new Subject(subjectForm.getName());
+    public Subject toSubject(SubjectForm subjectForm, TeacherService teacherService) {
+        List<Teacher> teachers = teacherService.getAllByIdThrow(subjectForm.getTeachers());
+        return new Subject(subjectForm.getName(), teachers);
+    }
+
+    @Override
+    public Subject update(Long id, SubjectForm subjectForm) {
+        Optional<Subject> subject = getById(id);
+
+        if(subject.isPresent()){
+            subject.get().setName(subjectForm.getName());
+            // TODO Update Teachers
+        } else {
+            throw new EmptyResultDataAccessException("Not found subject", toIntExact(id));
+        }
+
+        return subject.get();
     }
 
 }

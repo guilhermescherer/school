@@ -7,8 +7,10 @@ import java.util.List;
 
 public interface ClassService {
 
-    List<Class> getAllById(List<Long> idList);
+    List<Class> getAllByIdThrow(List<Long> idList);
 
     Class getByIdThrow(Long idClass);
+
+    List<Class> getAll();
 
 }

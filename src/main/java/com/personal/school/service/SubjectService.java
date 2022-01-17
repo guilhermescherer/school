@@ -10,7 +10,7 @@ public interface SubjectService {
 
     List<Subject> getAll();
 
-    List<Subject> getAllById(List<Long> subjects);
+    List<Subject> getAllByIdThrow(List<Long> subjects);
 
     Optional<Subject> getById(Long id);
 
@@ -18,6 +18,7 @@ public interface SubjectService {
 
     void remove(Long id);
 
-    Subject toSubject(SubjectForm subjectForm);
+    Subject toSubject(SubjectForm subjectForm, TeacherService teacherService);
 
+    Subject update(Long id, SubjectForm subjectForm);
 }

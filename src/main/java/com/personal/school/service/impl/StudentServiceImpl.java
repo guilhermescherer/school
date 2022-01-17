@@ -22,8 +22,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     StudentRepository studentRepository;
-    @Autowired
-    ClassService classService;
 
     @Override
     public List<Student> getAll() {
@@ -46,7 +44,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student toStudent(StudentForm studentForm) {
+    public Student toStudent(StudentForm studentForm, ClassService classService) {
         Class schoolClass = classService.getByIdThrow(studentForm.getSchoolClass());
         LocalDate birthDate = LocalDate.parse(studentForm.getBirthDate(), getDefaultDateFormatter());
 
@@ -55,12 +53,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student update(Long id, StudentForm studentForm){
+    public Student update(Long id, StudentForm studentForm, ClassService classService){
         Optional<Student> optionalStudent = getById(id);
-        Student student;
 
         if(optionalStudent.isPresent()){
-            student = optionalStudent.get();
+            Student student = optionalStudent.get();
+
             student.setName(studentForm.getName());
             student.setEmail(studentForm.getEmail());
             student.setTelephone(studentForm.getTelephone());
@@ -68,11 +66,11 @@ public class StudentServiceImpl implements StudentService {
             student.setBirthDate(LocalDate.parse(studentForm.getBirthDate(), getDefaultDateFormatter()));
             student.setIsScholarshipHolder(studentForm.getIsScholarshipHolder());
             student.setSchoolClass(classService.getByIdThrow(studentForm.getSchoolClass()));
+
+            return student;
         } else {
             throw new EmptyResultDataAccessException("Not found student", toIntExact(id));
         }
-
-        return student;
     }
 
 }
