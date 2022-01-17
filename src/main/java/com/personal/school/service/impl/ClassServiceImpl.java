@@ -51,4 +51,9 @@ public class ClassServiceImpl implements ClassService {
         return classRepository.findAll();
     }
 
+    @Override
+    public Optional<Class> getById(Long id) {
+        return classRepository.findById(id);
+    }
+
 }
