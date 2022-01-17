@@ -10,7 +10,7 @@ public interface SubjectService {
 
     List<Subject> getAll();
 
-    List<Subject> getAllById(List<Long> subjects);
+    List<Subject> getAllByIdThrow(List<Long> subjects);
 
     Optional<Subject> getById(Long id);
 
@@ -20,4 +20,5 @@ public interface SubjectService {
 
     Subject toSubject(SubjectForm subjectForm);
 
+    Subject update(Long id, SubjectForm subjectForm);
 }

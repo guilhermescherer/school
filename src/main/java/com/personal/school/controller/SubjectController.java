@@ -1,7 +1,10 @@
 package com.personal.school.controller;
 
+import com.personal.school.dto.StudentDTO;
 import com.personal.school.dto.SubjectDTO;
+import com.personal.school.form.StudentForm;
 import com.personal.school.form.SubjectForm;
+import com.personal.school.model.Student;
 import com.personal.school.model.Subject;
 import com.personal.school.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +49,14 @@ public class SubjectController {
         URI uri = uriBuilder.path("/subject/{id}").buildAndExpand(subject.getId()).toUri();
         return ResponseEntity.created(uri).body(new SubjectDTO(subject));
     }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<SubjectDTO> update(@PathVariable Long id, @RequestBody @Valid SubjectForm subjectForm){
+        Subject subject = subjectService.update(id, subjectForm);
+        return ResponseEntity.ok(new SubjectDTO(subject));
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remove(@PathVariable Long id){

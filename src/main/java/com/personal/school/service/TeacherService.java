@@ -1,5 +1,6 @@
 package com.personal.school.service;
 
+import com.personal.school.form.TeacherForm;
 import com.personal.school.model.Teacher;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface TeacherService {
 
     List<Teacher> getAll();
 
-    List<Teacher> getAllById(List<Long> teachers);
+    List<Teacher> getAllByIdThrow(List<Long> teachers);
 
     Optional<Teacher> getById(Long id);
 
@@ -17,5 +18,7 @@ public interface TeacherService {
 
     void remove(Long id);
 
+    Teacher toTeacher(TeacherForm teacherForm);
 
+    Teacher update(Long id, TeacherForm teacherForm);
 }

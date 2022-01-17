@@ -1,16 +1,24 @@
 package com.personal.school.service.impl;
 
+import com.personal.school.form.TeacherForm;
+import com.personal.school.model.Class;
+import com.personal.school.model.Schooling;
+import com.personal.school.model.Subject;
 import com.personal.school.model.Teacher;
 import com.personal.school.repository.TeacherRepository;
+import com.personal.school.service.ClassService;
+import com.personal.school.service.SubjectService;
 import com.personal.school.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
+import static java.lang.Math.toIntExact;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Objects.isNull;
 
@@ -19,6 +27,10 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     TeacherRepository teacherRepository;
+    @Autowired
+    SubjectService subjectService;
+    @Autowired
+    ClassService classService;
 
     @Override
     public List<Teacher> getAll() {
@@ -26,7 +38,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public List<Teacher> getAllById(List<Long> ids) {
+    public List<Teacher> getAllByIdThrow(List<Long> ids) {
 
         if(isNull(ids)) return EMPTY_LIST;
 
@@ -53,4 +65,42 @@ public class TeacherServiceImpl implements TeacherService {
     public void remove(Long id) {
         teacherRepository.deleteById(id);
     }
+
+    @Override
+    public Teacher toTeacher(TeacherForm teacherForm) {
+
+        List<Subject> subjects = subjectService.getAllByIdThrow(teacherForm.getSubjects());
+        List<Class> classes = classService.getAllByIdThrow(teacherForm.getClasses());
+
+        Schooling schooling = Schooling.valueOf(teacherForm.getSchooling());
+        LocalDate birthDate = LocalDate.parse(teacherForm.getBirthDate(), getDefaultDateFormatter());
+
+        return new Teacher(teacherForm.getName(), teacherForm.getEmail(), teacherForm.getTelephone(),
+                teacherForm.getDocumentNumber(), birthDate, schooling, classes, subjects);
+    }
+
+    @Override
+    public Teacher update(Long id, TeacherForm teacherForm) {
+
+        Optional<Teacher> optionalTeacher = getById(id);
+
+        if(optionalTeacher.isPresent()){
+
+            Teacher teacher = optionalTeacher.get();
+
+            teacher.setName(teacherForm.getName());
+            teacher.setEmail(teacherForm.getEmail());
+            teacher.setTelephone(teacherForm.getTelephone());
+            teacher.setDocumentNumber(teacherForm.getDocumentNumber());
+            teacher.setBirthDate(LocalDate.parse(teacherForm.getBirthDate(), getDefaultDateFormatter()));
+            teacher.setSchooling(Schooling.valueOf(teacherForm.getSchooling()));
+            List<Subject> subjects = subjectService.getAllByIdThrow(teacherForm.getSubjects());
+            teacher.setSubjects(subjects);
+
+            return teacher;
+        } else {
+            throw new EmptyResultDataAccessException("Not found subject", toIntExact(id));
+        }
+    }
+
 }

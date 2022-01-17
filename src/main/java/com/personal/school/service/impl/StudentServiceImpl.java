@@ -57,10 +57,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student update(Long id, StudentForm studentForm){
         Optional<Student> optionalStudent = getById(id);
-        Student student;
 
         if(optionalStudent.isPresent()){
-            student = optionalStudent.get();
+            Student student = optionalStudent.get();
+
             student.setName(studentForm.getName());
             student.setEmail(studentForm.getEmail());
             student.setTelephone(studentForm.getTelephone());
@@ -68,11 +68,11 @@ public class StudentServiceImpl implements StudentService {
             student.setBirthDate(LocalDate.parse(studentForm.getBirthDate(), getDefaultDateFormatter()));
             student.setIsScholarshipHolder(studentForm.getIsScholarshipHolder());
             student.setSchoolClass(classService.getByIdThrow(studentForm.getSchoolClass()));
+
+            return student;
         } else {
             throw new EmptyResultDataAccessException("Not found student", toIntExact(id));
         }
-
-        return student;
     }
 
 }

@@ -22,8 +22,8 @@ public class Subject {
 
     public Subject() { }
 
-    public Subject(String name) {
+    public Subject(String name, List<Teacher> teachers) {
         this.name = name;
+        this.teachers = teachers;
     }
-
 }

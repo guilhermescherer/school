@@ -22,7 +22,7 @@ public class ClassServiceImpl implements ClassService {
     ClassRepository classRepository;
 
     @Override
-    public List<Class> getAllById(List<Long> ids){
+    public List<Class> getAllByIdThrow(List<Long> ids){
 
         if(isNull(ids)) return EMPTY_LIST;
 

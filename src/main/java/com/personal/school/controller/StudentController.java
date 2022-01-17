@@ -30,8 +30,6 @@ public class StudentController {
 
     @Autowired
     StudentService studentService;
-    @Autowired
-    ClassService classService;
 
     @GetMapping
     public List<StudentDTO> getAll(){
