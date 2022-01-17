@@ -8,6 +8,7 @@ public class FormatterUtils {
 
     public static final String DEFAULT_DATE_FORMATTER = "dd/MM/yyyy";
     public final static String DEFAULT_SCHOOLING_REGEX = "IN_PROGRESS|GRADUTATE|POST_GRADUTE|MASTER|DOCTORATE";
+    public final static String DEFAULT_TEACHING_TYPE_REGEX = "ELEMENTARY_SCHOOL|HIGH_SCHOOL|UNIVERSITY_EDUCATION";
     public static final String STRING_REGEX_TELEPHONE = "^\\(?[1-9]{2}\\)? ?(?:[2-8]|9[1-9])[0-9]{3}\\-?[0-9]{4}$";
 
     public static DateTimeFormatter getDefaultDateFormatter(){

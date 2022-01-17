@@ -57,7 +57,7 @@ public class SubjectController {
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<SubjectDTO> update(@PathVariable Long id, @RequestBody @Valid SubjectForm subjectForm){
-        Subject subject = subjectService.update(id, subjectForm);
+        Subject subject = subjectService.update(id, subjectForm, teacherService);
         return ResponseEntity.ok(new SubjectDTO(subject));
     }
 

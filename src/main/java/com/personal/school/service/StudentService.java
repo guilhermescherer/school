@@ -20,4 +20,5 @@ public interface StudentService {
 
     Student toStudent(StudentForm studentForm, ClassService classService);
 
+    List<Student> getAllByIdThrow(List<Long> students);
 }

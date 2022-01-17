@@ -12,6 +12,5 @@ public class SubjectForm {
 
     @NotNull @NotEmpty @Length(min=5, max=50)
     private String name;
-    @NotEmpty
     private List<Long> teachers;
 }

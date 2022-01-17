@@ -64,7 +64,7 @@ public class TeacherController {
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<TeacherDTO> update(@PathVariable Long id, @RequestBody @Valid TeacherForm teacherForm){
-        Teacher teacher = teacherService.update(id, teacherForm, subjectService);
+        Teacher teacher = teacherService.update(id, teacherForm, subjectService, classService);
         return ResponseEntity.ok(new TeacherDTO(teacher));
     }
 
