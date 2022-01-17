@@ -76,7 +76,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Teacher update(Long id, TeacherForm teacherForm, SubjectService subjectService) {
+    public Teacher update(Long id, TeacherForm teacherForm, SubjectService subjectService, ClassService classService) {
 
         Optional<Teacher> optionalTeacher = getById(id);
 
@@ -84,15 +84,20 @@ public class TeacherServiceImpl implements TeacherService {
 
             Teacher teacher = optionalTeacher.get();
 
+            List<Subject> subjects = subjectService.getAllByIdThrow(teacherForm.getSubjects());
+            List<Class> classes = classService.getAllByIdThrow(teacherForm.getClasses());
+            LocalDate birthDate = LocalDate.parse(teacherForm.getBirthDate(), getDefaultDateFormatter());
+            Schooling schooling = Schooling.valueOf(teacherForm.getSchooling());
+
             teacher.setName(teacherForm.getName());
             teacher.setEmail(teacherForm.getEmail());
             teacher.setTelephone(teacherForm.getTelephone());
             teacher.setDocumentNumber(teacherForm.getDocumentNumber());
-            teacher.setBirthDate(LocalDate.parse(teacherForm.getBirthDate(), getDefaultDateFormatter()));
-            teacher.setSchooling(Schooling.valueOf(teacherForm.getSchooling()));
-            List<Subject> subjects = subjectService.getAllByIdThrow(teacherForm.getSubjects());
+            teacher.setBirthDate(birthDate);
+            teacher.setSchooling(schooling);
             teacher.setSubjects(subjects);
-            // TODO: Update Classes
+            teacher.setClasses(classes);
+
             return teacher;
         } else {
             throw new EmptyResultDataAccessException("Not found subject", toIntExact(id));

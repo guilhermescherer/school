@@ -3,17 +3,13 @@ package com.personal.school.config.handler.http;
 import com.personal.school.dto.error.ExceptionErrorDTO;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class NotFoundHandler {
 
-    @ResponseBody
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     @ExceptionHandler(EmptyResultDataAccessException.class)
     public ExceptionErrorDTO handleError(Exception ex){

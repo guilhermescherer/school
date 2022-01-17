@@ -64,17 +64,19 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Subject update(Long id, SubjectForm subjectForm) {
+    public Subject update(Long id, SubjectForm subjectForm, TeacherService teacherService) {
         Optional<Subject> subject = getById(id);
 
         if(subject.isPresent()){
+
+            List<Teacher> teachers = teacherService.getAllByIdThrow(subjectForm.getTeachers());
             subject.get().setName(subjectForm.getName());
-            // TODO Update Teachers
+            subject.get().setTeachers(teachers);;
+
+            return subject.get();
         } else {
             throw new EmptyResultDataAccessException("Not found subject", toIntExact(id));
         }
 
-        return subject.get();
     }
-
 }

@@ -20,5 +20,5 @@ public interface SubjectService {
 
     Subject toSubject(SubjectForm subjectForm, TeacherService teacherService);
 
-    Subject update(Long id, SubjectForm subjectForm);
+    Subject update(Long id, SubjectForm subjectForm, TeacherService teacherService);
 }
