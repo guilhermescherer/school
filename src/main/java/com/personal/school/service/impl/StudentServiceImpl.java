@@ -22,8 +22,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     StudentRepository studentRepository;
-    @Autowired
-    ClassService classService;
 
     @Override
     public List<Student> getAll() {
@@ -46,7 +44,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student toStudent(StudentForm studentForm) {
+    public Student toStudent(StudentForm studentForm, ClassService classService) {
         Class schoolClass = classService.getByIdThrow(studentForm.getSchoolClass());
         LocalDate birthDate = LocalDate.parse(studentForm.getBirthDate(), getDefaultDateFormatter());
 
@@ -55,7 +53,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student update(Long id, StudentForm studentForm){
+    public Student update(Long id, StudentForm studentForm, ClassService classService){
         Optional<Student> optionalStudent = getById(id);
 
         if(optionalStudent.isPresent()){

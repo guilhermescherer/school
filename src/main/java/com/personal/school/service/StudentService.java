@@ -16,8 +16,8 @@ public interface StudentService {
 
     void save(Student student);
 
-    Student update(Long id, StudentForm studentForm);
+    Student update(Long id, StudentForm studentForm, ClassService classService);
 
-    Student toStudent(StudentForm studentForm);
+    Student toStudent(StudentForm studentForm, ClassService classService);
 
 }

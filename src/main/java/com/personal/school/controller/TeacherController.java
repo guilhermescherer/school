@@ -32,6 +32,10 @@ public class TeacherController {
 
     @Autowired
     TeacherService teacherService;
+    @Autowired
+    SubjectService subjectService;
+    @Autowired
+    ClassService classService;
 
     @GetMapping
     public List<TeacherDTO> getAll(){
@@ -50,7 +54,7 @@ public class TeacherController {
     @PostMapping
     @Transactional
     public ResponseEntity<?> add(@RequestBody @Valid TeacherForm teacherForm, UriComponentsBuilder uriBuilder){
-        Teacher teacher = teacherService.toTeacher(teacherForm);
+        Teacher teacher = teacherService.toTeacher(teacherForm, subjectService, classService);
         teacherService.save(teacher);
 
         URI uri = uriBuilder.path("/teacher/{id}").buildAndExpand(teacher.getId()).toUri();
@@ -60,7 +64,7 @@ public class TeacherController {
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<TeacherDTO> update(@PathVariable Long id, @RequestBody @Valid TeacherForm teacherForm){
-        Teacher teacher = teacherService.update(id, teacherForm);
+        Teacher teacher = teacherService.update(id, teacherForm, subjectService);
         return ResponseEntity.ok(new TeacherDTO(teacher));
     }
 

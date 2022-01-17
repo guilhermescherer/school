@@ -46,4 +46,9 @@ public class ClassServiceImpl implements ClassService {
 
     }
 
+    @Override
+    public List<Class> getAll() {
+        return classRepository.findAll();
+    }
+
 }

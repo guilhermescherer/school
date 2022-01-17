@@ -7,6 +7,7 @@ import com.personal.school.form.SubjectForm;
 import com.personal.school.model.Student;
 import com.personal.school.model.Subject;
 import com.personal.school.service.SubjectService;
+import com.personal.school.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,8 @@ public class SubjectController {
 
     @Autowired
     SubjectService subjectService;
+    @Autowired
+    TeacherService teacherService;
 
     @GetMapping
     public List<SubjectDTO> getAll(){
@@ -43,7 +46,7 @@ public class SubjectController {
     @PostMapping
     @Transactional
     public ResponseEntity<SubjectDTO> add(@RequestBody @Valid SubjectForm subjectForm, UriComponentsBuilder uriBuilder){
-        Subject subject = subjectService.toSubject(subjectForm);
+        Subject subject = subjectService.toSubject(subjectForm, teacherService);
         subjectService.save(subject);
 
         URI uri = uriBuilder.path("/subject/{id}").buildAndExpand(subject.getId()).toUri();

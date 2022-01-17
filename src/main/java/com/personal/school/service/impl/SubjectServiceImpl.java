@@ -22,8 +22,6 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Autowired
     SubjectRepository subjectRepository;
-    @Autowired
-    TeacherService teacherService;
 
     @Override
     public List<Subject> getAll(){
@@ -60,7 +58,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Subject toSubject(SubjectForm subjectForm) {
+    public Subject toSubject(SubjectForm subjectForm, TeacherService teacherService) {
         List<Teacher> teachers = teacherService.getAllByIdThrow(subjectForm.getTeachers());
         return new Subject(subjectForm.getName(), teachers);
     }
@@ -71,6 +69,7 @@ public class SubjectServiceImpl implements SubjectService {
 
         if(subject.isPresent()){
             subject.get().setName(subjectForm.getName());
+            // TODO Update Teachers
         } else {
             throw new EmptyResultDataAccessException("Not found subject", toIntExact(id));
         }

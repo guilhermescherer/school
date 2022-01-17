@@ -18,7 +18,7 @@ public interface TeacherService {
 
     void remove(Long id);
 
-    Teacher toTeacher(TeacherForm teacherForm);
+    Teacher toTeacher(TeacherForm teacherForm, SubjectService subjectService, ClassService classService);
 
-    Teacher update(Long id, TeacherForm teacherForm);
+    Teacher update(Long id, TeacherForm teacherForm, SubjectService subjectService);
 }

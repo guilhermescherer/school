@@ -19,7 +19,7 @@ public class StudentDTO {
     private final String documentNumber;
     private final String birthDate;
     private final Boolean isScholarshipHolder;
-    private final Long schoolClass;
+    private final ClassDTO schoolClass;
 
     public StudentDTO(Student student) {
         this.id = student.getId();
@@ -29,7 +29,7 @@ public class StudentDTO {
         this.documentNumber = student.getDocumentNumber();
         this.birthDate = getDateDefaultFormatter(student.getBirthDate());
         this.isScholarshipHolder = student.getIsScholarshipHolder();
-        this.schoolClass = student.getSchoolClass().getId();
+        this.schoolClass = new ClassDTO(student.getSchoolClass());
     }
 
     public static List<StudentDTO> toDto(List<Student> students) {

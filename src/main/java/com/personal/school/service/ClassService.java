@@ -11,4 +11,6 @@ public interface ClassService {
 
     Class getByIdThrow(Long idClass);
 
+    List<Class> getAll();
+
 }

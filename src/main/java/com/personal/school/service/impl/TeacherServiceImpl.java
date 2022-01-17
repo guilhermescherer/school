@@ -27,10 +27,6 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     TeacherRepository teacherRepository;
-    @Autowired
-    SubjectService subjectService;
-    @Autowired
-    ClassService classService;
 
     @Override
     public List<Teacher> getAll() {
@@ -67,7 +63,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Teacher toTeacher(TeacherForm teacherForm) {
+    public Teacher toTeacher(TeacherForm teacherForm, SubjectService subjectService, ClassService classService) {
 
         List<Subject> subjects = subjectService.getAllByIdThrow(teacherForm.getSubjects());
         List<Class> classes = classService.getAllByIdThrow(teacherForm.getClasses());
@@ -80,7 +76,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Teacher update(Long id, TeacherForm teacherForm) {
+    public Teacher update(Long id, TeacherForm teacherForm, SubjectService subjectService) {
 
         Optional<Teacher> optionalTeacher = getById(id);
 
@@ -96,7 +92,7 @@ public class TeacherServiceImpl implements TeacherService {
             teacher.setSchooling(Schooling.valueOf(teacherForm.getSchooling()));
             List<Subject> subjects = subjectService.getAllByIdThrow(teacherForm.getSubjects());
             teacher.setSubjects(subjects);
-
+            // TODO: Update Classes
             return teacher;
         } else {
             throw new EmptyResultDataAccessException("Not found subject", toIntExact(id));
