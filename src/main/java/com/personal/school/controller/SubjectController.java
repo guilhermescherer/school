@@ -2,6 +2,7 @@ package com.personal.school.controller;
 
 import com.personal.school.dto.StudentDTO;
 import com.personal.school.dto.SubjectDTO;
+import com.personal.school.dto.SubjectDetailsDTO;
 import com.personal.school.form.StudentForm;
 import com.personal.school.form.SubjectForm;
 import com.personal.school.model.Student;
@@ -37,9 +38,9 @@ public class SubjectController {
 
     @GetMapping
     @RequestMapping("/{id}")
-    public ResponseEntity<SubjectDTO> getById(@PathVariable Long id){
+    public ResponseEntity<SubjectDetailsDTO> getById(@PathVariable Long id){
         Optional<Subject> subject = subjectService.getById(id);
-        return subject.map(value -> ResponseEntity.ok(new SubjectDTO(value)))
+        return subject.map(value -> ResponseEntity.ok(new SubjectDetailsDTO(value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
