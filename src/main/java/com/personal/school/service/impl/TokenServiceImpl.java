@@ -2,6 +2,7 @@ package com.personal.school.service.impl;
 
 import com.personal.school.model.User;
 import com.personal.school.service.TokenService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,12 +37,13 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public boolean isValidToken(String token) {
-        return false;
-    }
-
-    @Override
-    public Long getUserId(String token) {
-        return null;
+    public Long isValidToken(String token) {
+        try {
+            Claims body = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
+            return Long.parseLong(body.getSubject());
+        }
+        catch (Exception e){
+            return null;
+        }
     }
 }

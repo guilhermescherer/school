@@ -35,7 +35,6 @@ public class AuthenticationController {
             String token = tokenService.generateToken(authentication);
 
             return ResponseEntity.ok(new TokenDTO(token, "Bearer"));
-
         } catch (AuthenticationException ex){
             ex.printStackTrace();
             return ResponseEntity.badRequest().build();

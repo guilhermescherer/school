@@ -1,5 +1,8 @@
 package com.personal.school.dto;
 
+import lombok.Getter;
+
+@Getter
 public class TokenDTO {
 
     private String token;
