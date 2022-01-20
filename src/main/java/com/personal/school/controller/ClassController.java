@@ -29,10 +29,6 @@ public class ClassController {
 
     @Autowired
     ClassService classService;
-    @Autowired
-    TeacherService teacherService;
-    @Autowired
-    StudentService studentService;
 
     @GetMapping
     public List<ClassDTO> getAll(){
@@ -51,7 +47,7 @@ public class ClassController {
     @PostMapping
     @Transactional
     public ResponseEntity<?> add(@RequestBody @Valid ClassForm classForm, UriComponentsBuilder uriBuilder){
-        Class schoolClass = classService.toClass(classForm, teacherService, studentService);
+        Class schoolClass = classService.toClass(classForm);
         classService.save(schoolClass);
 
         URI uri = uriBuilder.path("/class/{id}").buildAndExpand(schoolClass.getId()).toUri();
@@ -61,7 +57,7 @@ public class ClassController {
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<ClassDTO> update(@PathVariable Long id, @RequestBody @Valid ClassForm classForm){
-        Class schoolClass = classService.update(id, classForm, teacherService, studentService);
+        Class schoolClass = classService.update(id, classForm);
         return ResponseEntity.ok(new ClassDTO(schoolClass));
     }
 

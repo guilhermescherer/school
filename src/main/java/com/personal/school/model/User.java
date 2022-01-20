@@ -1,6 +1,7 @@
 package com.personal.school.model;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
 
 @Entity
 @Getter
+@Setter
 public class User implements UserDetails {
 
     @Id

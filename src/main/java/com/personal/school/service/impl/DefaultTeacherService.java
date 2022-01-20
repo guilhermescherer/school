@@ -10,6 +10,7 @@ import com.personal.school.service.ClassService;
 import com.personal.school.service.SubjectService;
 import com.personal.school.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +24,14 @@ import static java.util.Collections.EMPTY_LIST;
 import static java.util.Objects.isNull;
 
 @Service
-public class TeacherServiceImpl implements TeacherService {
+public class DefaultTeacherService implements TeacherService {
 
     @Autowired
     TeacherRepository teacherRepository;
+    @Autowired
+    ClassService classService;
+    @Autowired @Lazy
+    SubjectService subjectService;
 
     @Override
     public List<Teacher> getAll() {
@@ -63,7 +68,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Teacher toTeacher(TeacherForm teacherForm, SubjectService subjectService, ClassService classService) {
+    public Teacher toTeacher(TeacherForm teacherForm) {
 
         List<Subject> subjects = subjectService.getAllByIdThrow(teacherForm.getSubjects());
         List<Class> classes = classService.getAllByIdThrow(teacherForm.getClasses());
@@ -76,7 +81,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Teacher update(Long id, TeacherForm teacherForm, SubjectService subjectService, ClassService classService) {
+    public Teacher update(Long id, TeacherForm teacherForm) {
 
         Optional<Teacher> optionalTeacher = getById(id);
 

@@ -16,11 +16,11 @@ public interface ClassService {
 
     Optional<Class> getById(Long id);
 
-    Class toClass(ClassForm classForm, TeacherService teacherService, StudentService studentService);
+    Class toClass(ClassForm classForm);
 
     void save(Class schoolClass);
 
     void remove(Long id);
 
-    Class update(Long id, ClassForm classForm, TeacherService teacherService, StudentService studentService);
+    Class update(Long id, ClassForm classForm);
 }

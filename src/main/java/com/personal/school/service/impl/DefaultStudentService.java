@@ -20,10 +20,12 @@ import static java.util.Collections.EMPTY_LIST;
 import static java.util.Objects.isNull;
 
 @Service
-public class StudentServiceImpl implements StudentService {
+public class DefaultStudentService implements StudentService {
 
     @Autowired
     StudentRepository studentRepository;
+    @Autowired
+    ClassService classService;
 
     @Override
     public List<Student> getAll() {
@@ -46,7 +48,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student toStudent(StudentForm studentForm, ClassService classService) {
+    public Student toStudent(StudentForm studentForm) {
         Class schoolClass = classService.getByIdThrow(studentForm.getSchoolClass());
         LocalDate birthDate = LocalDate.parse(studentForm.getBirthDate(), getDefaultDateFormatter());
 
@@ -68,7 +70,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student update(Long id, StudentForm studentForm, ClassService classService){
+    public Student update(Long id, StudentForm studentForm){
         Optional<Student> optionalStudent = getById(id);
 
         if(optionalStudent.isPresent()){
