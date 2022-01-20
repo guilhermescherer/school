@@ -3,6 +3,7 @@ package com.personal.school.controller;
 import com.personal.school.dto.TokenDTO;
 import com.personal.school.form.LoginForm;
 import com.personal.school.service.TokenService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+@Api(tags = "Authentication")
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
