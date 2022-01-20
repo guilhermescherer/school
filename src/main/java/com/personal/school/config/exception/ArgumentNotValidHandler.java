@@ -1,4 +1,4 @@
-package com.personal.school.config.handler;
+package com.personal.school.config.exception;
 
 import com.personal.school.dto.error.ErrorDTO;
 import com.personal.school.dto.error.ExceptionErrorDTO;

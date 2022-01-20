@@ -21,7 +21,16 @@ public class User implements UserDetails {
     private String email;
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Profile> profiles = new ArrayList<>();
+    private List<Role> roles = new ArrayList<>();
+
+    public User() { }
+
+    public User(String name, String email, String password, List<Role> roles) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -38,7 +47,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.profiles;
+        return this.roles;
     }
 
     @Override
