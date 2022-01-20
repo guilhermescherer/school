@@ -1,4 +1,4 @@
-package com.personal.school.config.handler;
+package com.personal.school.config.exception;
 
 import com.personal.school.dto.error.ErrorDTO;
 import com.personal.school.dto.error.ExceptionErrorDTO;
@@ -8,22 +8,18 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ArgumentNotValidHandler {
 
     @Autowired
     private MessageSource messageSource;
 
-    @ResponseBody
     @ResponseStatus(code = HttpStatus.PRECONDITION_FAILED)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ExceptionErrorDTO handleError(MethodArgumentNotValidException ex){

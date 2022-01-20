@@ -20,5 +20,5 @@ public interface TeacherService {
 
     Teacher toTeacher(TeacherForm teacherForm, SubjectService subjectService, ClassService classService);
 
-    Teacher update(Long id, TeacherForm teacherForm, SubjectService subjectService);
+    Teacher update(Long id, TeacherForm teacherForm, SubjectService subjectService, ClassService classService);
 }

@@ -1,7 +1,7 @@
 package com.personal.school.service;
 
+import com.personal.school.form.ClassForm;
 import com.personal.school.model.Class;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,4 +16,11 @@ public interface ClassService {
 
     Optional<Class> getById(Long id);
 
+    Class toClass(ClassForm classForm, TeacherService teacherService, StudentService studentService);
+
+    void save(Class schoolClass);
+
+    void remove(Long id);
+
+    Class update(Long id, ClassForm classForm, TeacherService teacherService, StudentService studentService);
 }

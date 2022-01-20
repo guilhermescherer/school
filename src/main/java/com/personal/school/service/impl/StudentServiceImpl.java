@@ -16,6 +16,8 @@ import java.util.Optional;
 
 import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
 import static java.lang.Math.toIntExact;
+import static java.util.Collections.EMPTY_LIST;
+import static java.util.Objects.isNull;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -50,6 +52,19 @@ public class StudentServiceImpl implements StudentService {
 
         return new Student(studentForm.getName(), studentForm.getEmail(), studentForm.getTelephone(),
                 studentForm.getDocumentNumber(), birthDate, studentForm.getIsScholarshipHolder(), schoolClass);
+    }
+
+    @Override
+    public List<Student> getAllByIdThrow(List<Long> ids) {
+        if(isNull(ids)) return EMPTY_LIST;
+
+        List<Student> students = studentRepository.findAllById(ids);
+
+        if(ids.size() != students.size()) {
+            throw new EmptyResultDataAccessException("Not found all students", ids.size());
+        }
+
+        return students;
     }
 
     @Override

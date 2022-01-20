@@ -29,4 +29,13 @@ public class Class {
     @OneToMany(mappedBy = "schoolClass")
     private List<Student> students;
 
+    public Class() { }
+
+    public Class(String name, Integer qualificationNumber, TeachingType teachingType, List<Teacher> teachers, List<Student> students) {
+        this.name = name;
+        this.qualificationNumber = qualificationNumber;
+        this.teachingType = teachingType;
+        this.teachers = teachers;
+        this.students = students;
+    }
 }
