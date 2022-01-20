@@ -18,10 +18,12 @@ import static java.util.Collections.EMPTY_LIST;
 import static java.util.Objects.isNull;
 
 @Service
-public class SubjectServiceImpl implements SubjectService {
+public class DefaultSubjectService implements SubjectService {
 
     @Autowired
     SubjectRepository subjectRepository;
+    @Autowired
+    TeacherService teacherService;
 
     @Override
     public List<Subject> getAll(){
@@ -58,13 +60,13 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Subject toSubject(SubjectForm subjectForm, TeacherService teacherService) {
+    public Subject toSubject(SubjectForm subjectForm) {
         List<Teacher> teachers = teacherService.getAllByIdThrow(subjectForm.getTeachers());
         return new Subject(subjectForm.getName(), teachers);
     }
 
     @Override
-    public Subject update(Long id, SubjectForm subjectForm, TeacherService teacherService) {
+    public Subject update(Long id, SubjectForm subjectForm) {
         Optional<Subject> subject = getById(id);
 
         if(subject.isPresent()){

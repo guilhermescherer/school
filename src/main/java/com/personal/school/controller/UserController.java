@@ -1,10 +1,8 @@
 package com.personal.school.controller;
 
-import com.personal.school.dto.TeacherDetailsDTO;
 import com.personal.school.dto.UserDTO;
 import com.personal.school.dto.UserDetailsDTO;
 import com.personal.school.form.UserForm;
-import com.personal.school.model.Teacher;
 import com.personal.school.model.User;
 import com.personal.school.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +47,19 @@ public class UserController {
 
         URI uri = uriComponentsBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(new UserDTO(user));
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody @Valid UserForm userForm){
+        User user = userService.update(id, userForm);
+        return ResponseEntity.ok(new UserDTO(user));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> remove(@PathVariable Long id){
+        userService.remove(id);
+        return ResponseEntity.ok().build();
     }
 
 }

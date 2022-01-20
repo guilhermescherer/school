@@ -14,7 +14,7 @@ import static java.util.Collections.EMPTY_LIST;
 import static java.util.Objects.isNull;
 
 @Service
-public class RoleServiceImpl implements RoleService {
+public class DefaultRoleService implements RoleService {
 
     @Autowired
     RoleRepository roleRepository;
