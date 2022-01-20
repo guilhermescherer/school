@@ -1,4 +1,4 @@
-package com.personal.school.config.handler.http;
+package com.personal.school.config.exception.http;
 
 import com.personal.school.dto.error.ExceptionErrorDTO;
 import org.springframework.http.HttpStatus;
