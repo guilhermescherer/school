@@ -1,17 +1,10 @@
 package com.personal.school.controller;
 
 import com.personal.school.dto.StudentDTO;
-import com.personal.school.dto.TeacherDTO;
 import com.personal.school.form.StudentForm;
-import com.personal.school.form.TeacherForm;
 import com.personal.school.model.Student;
-import com.personal.school.model.Teacher;
-import com.personal.school.repository.ClassRepository;
-import com.personal.school.repository.StudentRepository;
-import com.personal.school.service.ClassService;
 import com.personal.school.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,8 +23,6 @@ public class StudentController {
 
     @Autowired
     StudentService studentService;
-    @Autowired
-    ClassService classService;
 
     @GetMapping
     public List<StudentDTO> getAll(){
@@ -50,7 +41,7 @@ public class StudentController {
     @PostMapping
     @Transactional
     public ResponseEntity<?> add(@RequestBody @Valid StudentForm studentForm, UriComponentsBuilder uriBuilder){
-        Student student = studentService.toStudent(studentForm, classService);
+        Student student = studentService.toStudent(studentForm);
         studentService.save(student);
 
         URI uri = uriBuilder.path("/student/{id}").buildAndExpand(student.getId()).toUri();
@@ -60,7 +51,7 @@ public class StudentController {
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<StudentDTO> update(@PathVariable Long id, @RequestBody @Valid StudentForm studentForm){
-        Student student = studentService.update(id, studentForm, classService);
+        Student student = studentService.update(id, studentForm);
         return ResponseEntity.ok(new StudentDTO(student));
     }
 

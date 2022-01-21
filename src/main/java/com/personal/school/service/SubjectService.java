@@ -18,7 +18,7 @@ public interface SubjectService {
 
     void remove(Long id);
 
-    Subject toSubject(SubjectForm subjectForm, TeacherService teacherService);
+    Subject toSubject(SubjectForm subjectForm);
 
-    Subject update(Long id, SubjectForm subjectForm, TeacherService teacherService);
+    Subject update(Long id, SubjectForm subjectForm);
 }

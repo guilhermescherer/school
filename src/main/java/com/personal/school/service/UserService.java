@@ -15,4 +15,8 @@ public interface UserService {
     void save(User user);
 
     List<User> getAll();
+
+    void remove(Long id);
+
+    User update(Long id, UserForm userForm);
 }

@@ -16,9 +16,9 @@ public interface StudentService {
 
     void save(Student student);
 
-    Student update(Long id, StudentForm studentForm, ClassService classService);
+    Student update(Long id, StudentForm studentForm);
 
-    Student toStudent(StudentForm studentForm, ClassService classService);
+    Student toStudent(StudentForm studentForm);
 
     List<Student> getAllByIdThrow(List<Long> students);
 }
