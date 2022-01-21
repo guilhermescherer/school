@@ -10,7 +10,6 @@ public class SchoolApplication {
 
 	// TODO: Token expirar e atualizar token
 	// TODO: Adicionar LOG
-	// TODO: Documentação
 
 	public static void main(String[] args) {
 		SpringApplication.run(SchoolApplication.class, args);
