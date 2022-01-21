@@ -5,6 +5,7 @@ import com.personal.school.dto.UserDetailsDTO;
 import com.personal.school.form.UserForm;
 import com.personal.school.model.User;
 import com.personal.school.service.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 import static com.personal.school.dto.UserDTO.toDto;
 
+@Api(tags = "User")
 @RestController
 @RequestMapping("/user")
 public class UserController {

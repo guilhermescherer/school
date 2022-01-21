@@ -5,6 +5,7 @@ import com.personal.school.dto.TeacherDetailsDTO;
 import com.personal.school.form.TeacherForm;
 import com.personal.school.model.Teacher;
 import com.personal.school.service.TeacherService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 import static com.personal.school.dto.TeacherDTO.toDto;
 
+@Api(tags = "Teacher")
 @RestController
 @RequestMapping("/teacher")
 public class TeacherController {

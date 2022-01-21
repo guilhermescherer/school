@@ -42,11 +42,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
-                .antMatchers(HttpMethod.GET, "/actuator").hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.GET, "/actuator/*").hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.GET, "/user").hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.GET, "/user/*").hasAuthority("ADMIN")
-                .anyRequest().hasAnyAuthority("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/actuator").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/actuator/*").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/user").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/user/*").hasRole("ADMIN")
+                .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -55,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-
+        web.ignoring().antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**", "/swagger-resources/**");
     }
 
 }
