@@ -2,14 +2,10 @@ package com.personal.school.controller;
 
 import com.personal.school.dto.ClassDTO;
 import com.personal.school.dto.ClassDetailsDTO;
-import com.personal.school.dto.StudentDTO;
 import com.personal.school.form.ClassForm;
-import com.personal.school.form.StudentForm;
 import com.personal.school.model.Class;
-import com.personal.school.model.Student;
 import com.personal.school.service.ClassService;
-import com.personal.school.service.StudentService;
-import com.personal.school.service.TeacherService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +19,7 @@ import java.util.Optional;
 
 import static com.personal.school.dto.ClassDTO.toDto;
 
+@Api(tags = "Class")
 @RestController
 @RequestMapping("/class")
 public class ClassController {
