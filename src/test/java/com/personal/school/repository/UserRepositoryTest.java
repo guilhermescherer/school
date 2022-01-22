@@ -18,7 +18,7 @@ public class UserRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    public void findByEmail_Exists_ValidFields(){
+    public void findByEmail_Exists(){
         String email = "guilherme_scherer@outlook.com";
 
         Optional<User> user = userRepository.findByEmail(email);
@@ -28,7 +28,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void findByEmail_NotExists_ValidFields(){
+    public void findByEmail_NotExists(){
         String email = "guilherme@outlook.com";
 
         Optional<User> user = userRepository.findByEmail(email);
@@ -37,7 +37,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void findByEmail_InvalidFields(){
+    public void findByEmail_Null(){
         String email = null;
 
         Optional<User> user = userRepository.findByEmail(email);
