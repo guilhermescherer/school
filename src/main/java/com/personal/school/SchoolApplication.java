@@ -8,7 +8,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 public class SchoolApplication {
 
-	// TODO: Token expirar e atualizar token
+	// TODO: Token expirar e atualizar token(oauth2)
 	// TODO: Adicionar LOG
 
 	public static void main(String[] args) {
