@@ -2,16 +2,16 @@ package com.personal.school.service.impl;
 
 import com.personal.school.model.User;
 import com.personal.school.repository.UserRepository;
-import com.personal.school.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class DefaultAuthenticationService implements AuthenticationService {
+public class DefaultUserDetailsService implements UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
