@@ -8,11 +8,13 @@ import com.personal.school.service.RoleService;
 import com.personal.school.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+import static com.personal.school.utils.SecurityUtils.encodePassword;
 import static java.lang.Math.toIntExact;
 
 @Service
@@ -23,6 +25,8 @@ public class DefaultUserService implements UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public Optional<User> getById(Long id) {
@@ -37,6 +41,7 @@ public class DefaultUserService implements UserService {
 
     @Override
     public void save(User user) {
+        user.setPassword(encodePassword(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -57,11 +62,12 @@ public class DefaultUserService implements UserService {
         if(optinalUser.isPresent()) {
 
             List<Role> roles = roleService.getAllByIdThrow(userForm.getRoles());
+            String password = encodePassword(userForm.getPassword());
 
             User user = optinalUser.get();
             user.setEmail(userForm.getEmail());
-            user.setName(user.getName());
-            user.setPassword(userForm.getPassword());
+            user.setName(userForm.getName());
+            user.setPassword(password);
             user.setRoles(roles);
 
             return user;
