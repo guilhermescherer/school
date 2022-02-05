@@ -8,6 +8,7 @@ import com.personal.school.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -18,10 +19,12 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.personal.school.dto.UserDTO.toDto;
+import static com.personal.school.utils.ConstUtils.ROLE_ADMIN;
 
 @Api(tags = "User")
 @RestController
 @RequestMapping("/user")
+@Secured(ROLE_ADMIN)
 public class UserController {
 
     @Autowired
@@ -63,5 +66,4 @@ public class UserController {
         userService.remove(id);
         return ResponseEntity.ok().build();
     }
-
 }
