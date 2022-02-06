@@ -20,6 +20,9 @@ public abstract class People {
     private String telephone;
     private String cpf;
     private LocalDate birthDate;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
 
     public People() { }
 

@@ -1,5 +1,6 @@
 package com.personal.school.form;
 
+import com.personal.school.validation.CEP;
 import com.personal.school.validation.Date;
 import com.personal.school.validation.Telephone;
 import lombok.Getter;
@@ -23,5 +24,12 @@ public class PeopleForm {
     private String cpf;
     @NotNull @NotEmpty @Date
     private String birthDate;
-
+    @NotNull @NotEmpty
+    private String address;
+    @NotNull @NotEmpty @CEP
+    private String zipCode;
+    @NotNull @NotEmpty
+    private String city;
+    @NotNull @NotEmpty
+    private String country;
 }
