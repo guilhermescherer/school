@@ -4,6 +4,7 @@ import com.personal.school.validation.Date;
 import com.personal.school.validation.Telephone;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -18,8 +19,8 @@ public class PeopleForm {
     private String email;
     @Telephone
     private String telephone;
-    @NotNull @NotEmpty
-    private String documentNumber;
+    @NotNull @NotEmpty @CPF
+    private String cpf;
     @NotNull @NotEmpty @Date
     private String birthDate;
 

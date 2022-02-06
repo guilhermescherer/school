@@ -1,6 +1,5 @@
 package com.personal.school.validation;
 
-import com.personal.school.validation.impl.DateValidator;
 import com.personal.school.validation.impl.TelephoneValidator;
 
 import javax.validation.Constraint;

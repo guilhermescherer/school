@@ -14,9 +14,10 @@ import static com.personal.school.utils.FormatterUtils.DEFAULT_SCHOOLING_REGEX;
 @Setter
 public class TeacherForm extends PeopleForm {
 
+    @NotNull
+    private Double salary;
     @NotNull @NotEmpty @Pattern(regexp = DEFAULT_SCHOOLING_REGEX)
     private String schooling;
     private List<Long> subjects;
     private List<Long> classes;
-
 }

@@ -14,10 +14,12 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static com.personal.school.utils.FormatterUtils.getCpfUnformat;
 import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
 import static java.lang.Math.toIntExact;
 import static java.util.Collections.EMPTY_LIST;
@@ -40,7 +42,6 @@ public class DefaultTeacherService implements TeacherService {
 
     @Override
     public List<Teacher> getAllByIdThrow(List<Long> ids) {
-
         if(isNull(ids)) return EMPTY_LIST;
 
         List<Teacher> teachers = teacherRepository.findAllById(ids);
@@ -59,6 +60,7 @@ public class DefaultTeacherService implements TeacherService {
 
     @Override
     public void save(Teacher teacher) {
+        teacher.setCpf(getCpfUnformat(teacher.getCpf()));
         teacherRepository.save(teacher);
     }
 
@@ -69,20 +71,19 @@ public class DefaultTeacherService implements TeacherService {
 
     @Override
     public Teacher toTeacher(TeacherForm teacherForm) {
-
         List<Subject> subjects = subjectService.getAllByIdThrow(teacherForm.getSubjects());
         List<Class> classes = classService.getAllByIdThrow(teacherForm.getClasses());
 
         Schooling schooling = Schooling.valueOf(teacherForm.getSchooling());
         LocalDate birthDate = LocalDate.parse(teacherForm.getBirthDate(), getDefaultDateFormatter());
+        BigDecimal salary = BigDecimal.valueOf(teacherForm.getSalary());
 
         return new Teacher(teacherForm.getName(), teacherForm.getEmail(), teacherForm.getTelephone(),
-                teacherForm.getDocumentNumber(), birthDate, schooling, classes, subjects);
+                teacherForm.getCpf(), birthDate, salary, schooling, classes, subjects);
     }
 
     @Override
     public Teacher update(Long id, TeacherForm teacherForm) {
-
         Optional<Teacher> optionalTeacher = getById(id);
 
         if(optionalTeacher.isPresent()){
@@ -93,12 +94,15 @@ public class DefaultTeacherService implements TeacherService {
             List<Class> classes = classService.getAllByIdThrow(teacherForm.getClasses());
             LocalDate birthDate = LocalDate.parse(teacherForm.getBirthDate(), getDefaultDateFormatter());
             Schooling schooling = Schooling.valueOf(teacherForm.getSchooling());
+            String cpf = getCpfUnformat(teacherForm.getCpf());
+            BigDecimal salary = BigDecimal.valueOf(teacherForm.getSalary());
 
             teacher.setName(teacherForm.getName());
             teacher.setEmail(teacherForm.getEmail());
             teacher.setTelephone(teacherForm.getTelephone());
-            teacher.setDocumentNumber(teacherForm.getDocumentNumber());
+            teacher.setCpf(cpf);
             teacher.setBirthDate(birthDate);
+            teacher.setSalary(salary);
             teacher.setSchooling(schooling);
             teacher.setSubjects(subjects);
             teacher.setClasses(classes);
@@ -108,5 +112,4 @@ public class DefaultTeacherService implements TeacherService {
             throw new EmptyResultDataAccessException("Not found subject", toIntExact(id));
         }
     }
-
 }

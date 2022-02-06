@@ -18,16 +18,16 @@ public abstract class People {
     private String name;
     private String email;
     private String telephone;
-    private String documentNumber;
+    private String cpf;
     private LocalDate birthDate;
 
     public People() { }
 
-    public People(String name, String email, String telephone, String documentNumber, LocalDate birthDate) {
+    public People(String name, String email, String telephone, String cpf, LocalDate birthDate) {
         this.name = name;
         this.email = email;
         this.telephone = telephone;
-        this.documentNumber = documentNumber;
+        this.cpf = cpf;
         this.birthDate = birthDate;
     }
 }

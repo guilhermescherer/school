@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static com.personal.school.utils.FormatterUtils.getCpfUnformat;
 import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
 import static java.lang.Math.toIntExact;
 import static java.util.Collections.EMPTY_LIST;
@@ -44,6 +45,7 @@ public class DefaultStudentService implements StudentService {
 
     @Override
     public void save(Student student) {
+        student.setCpf(getCpfUnformat(student.getCpf()));
         studentRepository.save(student);
     }
 
@@ -53,7 +55,7 @@ public class DefaultStudentService implements StudentService {
         LocalDate birthDate = LocalDate.parse(studentForm.getBirthDate(), getDefaultDateFormatter());
 
         return new Student(studentForm.getName(), studentForm.getEmail(), studentForm.getTelephone(),
-                studentForm.getDocumentNumber(), birthDate, studentForm.getIsScholarshipHolder(), schoolClass);
+                studentForm.getCpf(), birthDate, studentForm.getIsScholarshipHolder(), schoolClass);
     }
 
     @Override
@@ -76,18 +78,20 @@ public class DefaultStudentService implements StudentService {
         if(optionalStudent.isPresent()){
             Student student = optionalStudent.get();
 
+            Class schoolClass = classService.getByIdThrow(studentForm.getSchoolClass());
+            String cpf = getCpfUnformat(studentForm.getCpf());
+
             student.setName(studentForm.getName());
             student.setEmail(studentForm.getEmail());
             student.setTelephone(studentForm.getTelephone());
-            student.setDocumentNumber(studentForm.getDocumentNumber());
+            student.setCpf(cpf);
             student.setBirthDate(LocalDate.parse(studentForm.getBirthDate(), getDefaultDateFormatter()));
             student.setIsScholarshipHolder(studentForm.getIsScholarshipHolder());
-            student.setSchoolClass(classService.getByIdThrow(studentForm.getSchoolClass()));
+            student.setSchoolClass(schoolClass);
 
             return student;
         } else {
             throw new EmptyResultDataAccessException("Not found student", toIntExact(id));
         }
     }
-
 }

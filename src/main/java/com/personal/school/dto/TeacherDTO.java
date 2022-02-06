@@ -15,7 +15,7 @@ public class TeacherDTO {
     private final String name;
     private final String email;
     private final String telephone;
-    private final String documentNumber;
+    private final String cpf;
     private final String birthDate;
     private final String schooling;
 
@@ -24,7 +24,7 @@ public class TeacherDTO {
         this.name = teacher.getName();
         this.email = teacher.getEmail();
         this.telephone = teacher.getTelephone();
-        this.documentNumber = teacher.getDocumentNumber();
+        this.cpf = teacher.getCpf();
         this.birthDate = getDateDefaultFormatter(teacher.getBirthDate());
         this.schooling = teacher.getSchooling().name();
     }
