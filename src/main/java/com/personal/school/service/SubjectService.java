@@ -12,13 +12,13 @@ public interface SubjectService {
 
     List<Subject> getAllByIdThrow(List<Long> subjects);
 
+    Subject getByIdThrow(Long id);
+
     Optional<Subject> getById(Long id);
 
-    void save(Subject subject);
+    Subject save(SubjectForm subjectForm);
 
     void remove(Long id);
-
-    Subject toSubject(SubjectForm subjectForm);
 
     Subject update(Long id, SubjectForm subjectForm);
 }

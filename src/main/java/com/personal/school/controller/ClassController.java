@@ -8,6 +8,7 @@ import com.personal.school.service.ClassService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -18,10 +19,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.personal.school.dto.ClassDTO.toDto;
+import static com.personal.school.utils.SecurityUtils.ROLE_ADMIN;
+import static com.personal.school.utils.SecurityUtils.ROLE_USER;
 
 @Api(tags = "Class")
 @RestController
 @RequestMapping("/class")
+@Secured({ROLE_ADMIN, ROLE_USER})
 public class ClassController {
 
     @Autowired
