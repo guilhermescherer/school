@@ -46,6 +46,7 @@ public class DefaultStudentService implements StudentService {
     @Override
     public void save(Student student) {
         student.setCpf(getCpfUnformat(student.getCpf()));
+
         studentRepository.save(student);
     }
 

@@ -12,13 +12,13 @@ public interface TeacherService {
 
     List<Teacher> getAllByIdThrow(List<Long> teachers);
 
+    Teacher getByIdThrow(Long id);
+
     Optional<Teacher> getById(Long id);
 
-    void save(Teacher teacher);
+    Teacher save(TeacherForm teacherForm);
 
     void remove(Long id);
-
-    Teacher toTeacher(TeacherForm teacherForm);
 
     Teacher update(Long id, TeacherForm teacherForm);
 }

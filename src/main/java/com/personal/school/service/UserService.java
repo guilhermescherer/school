@@ -8,13 +8,13 @@ import java.util.Optional;
 
 public interface UserService {
 
+    List<User> getAll();
+
+    User getByIdThrow(Long id);
+
     Optional<User> getById(Long id);
 
-    User toUser(UserForm userForm);
-
-    void save(User user);
-
-    List<User> getAll();
+    User save(UserForm userForm);
 
     void remove(Long id);
 

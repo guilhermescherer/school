@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.personal.school.dto.UserDTO.toDto;
-import static com.personal.school.utils.ConstUtils.ROLE_ADMIN;
+import static com.personal.school.utils.SecurityUtils.ROLE_ADMIN;
 
 @Api(tags = "User")
 @RestController
@@ -47,8 +47,7 @@ public class UserController {
     @PostMapping
     @Transactional
     public ResponseEntity<?> add(@RequestBody @Valid UserForm userForm, UriComponentsBuilder uriComponentsBuilder) {
-        User user = userService.toUser(userForm);
-        userService.save(user);
+        User user = userService.save(userForm);
 
         URI uri = uriComponentsBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(new UserDTO(user));

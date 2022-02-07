@@ -33,7 +33,6 @@ public class DefaultClassService implements ClassService {
 
     @Override
     public List<Class> getAllByIdThrow(List<Long> ids){
-
         if(isNull(ids)) return EMPTY_LIST;
 
         List<Class> classes = classRepository.findAllById(ids);

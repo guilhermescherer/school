@@ -1,8 +1,5 @@
 package com.personal.school.form;
 
-import com.personal.school.validation.CEP;
-import com.personal.school.validation.Date;
-import com.personal.school.validation.Telephone;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
@@ -10,6 +7,9 @@ import org.hibernate.validator.constraints.br.CPF;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import static com.personal.school.utils.FormatterUtils.*;
 
 @Getter
 public class PeopleForm {
@@ -18,18 +18,14 @@ public class PeopleForm {
     private String name;
     @Email
     private String email;
-    @Telephone
+    @Pattern(regexp = STRING_REGEX_TELEPHONE)
     private String telephone;
     @NotNull @NotEmpty @CPF
     private String cpf;
-    @NotNull @NotEmpty @Date
+    @NotNull @NotEmpty @Pattern(regexp = DEFAULT_DATE_FORMATTER)
     private String birthDate;
     @NotNull @NotEmpty
     private String address;
-    @NotNull @NotEmpty @CEP
+    @NotNull @NotEmpty @Pattern(regexp = STRING_REGEX_ZIP_CODE)
     private String zipCode;
-    @NotNull @NotEmpty
-    private String city;
-    @NotNull @NotEmpty
-    private String country;
 }
