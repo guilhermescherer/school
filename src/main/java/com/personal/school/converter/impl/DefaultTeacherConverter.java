@@ -24,20 +24,17 @@ public class DefaultTeacherConverter implements TeacherConverter {
 
     @Autowired
     ClassService classService;
-    @Autowired @Lazy
+    @Autowired
+    @Lazy
     SubjectService subjectService;
 
     @Override
     public Teacher toTeacher(TeacherForm teacherForm) {
-        return toTeacher(false, null, teacherForm);
+        return toTeacher(new Teacher(), teacherForm);
     }
 
     @Override
     public Teacher toTeacher(Teacher teacher, TeacherForm teacherForm) {
-        return toTeacher(true, teacher, teacherForm);
-    }
-
-    private Teacher toTeacher(Boolean isUpdate, Teacher teacher, TeacherForm teacherForm) {
         List<Subject> subjects = subjectService.getAllByIdThrow(teacherForm.getSubjects());
         List<Class> classes = classService.getAllByIdThrow(teacherForm.getClasses());
 
@@ -46,20 +43,16 @@ public class DefaultTeacherConverter implements TeacherConverter {
         String cpf = getCpfUnformat(teacherForm.getCpf());
         BigDecimal salary = BigDecimal.valueOf(teacherForm.getSalary());
 
-        if(isUpdate) {
-            teacher.setName(teacherForm.getName());
-            teacher.setEmail(teacherForm.getEmail());
-            teacher.setTelephone(teacherForm.getTelephone());
-            teacher.setCpf(cpf);
-            teacher.setBirthDate(birthDate);
-            teacher.setSalary(salary);
-            teacher.setSchooling(schooling);
-            teacher.setSubjects(subjects);
-            teacher.setClasses(classes);
-        } else {
-            teacher = new Teacher(teacherForm.getName(), teacherForm.getEmail(), teacherForm.getTelephone(),
-                    cpf, birthDate, salary, schooling, classes, subjects);
-        }
+        teacher.setName(teacherForm.getName());
+        teacher.setEmail(teacherForm.getEmail());
+        teacher.setTelephone(teacherForm.getTelephone());
+        teacher.setCpf(cpf);
+        teacher.setBirthDate(birthDate);
+        teacher.setSalary(salary);
+        teacher.setSchooling(schooling);
+        teacher.setSubjects(subjects);
+        teacher.setClasses(classes);
+
         return teacher;
     }
 }

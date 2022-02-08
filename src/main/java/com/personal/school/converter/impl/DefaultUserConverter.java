@@ -20,28 +20,19 @@ public class DefaultUserConverter implements UserConverter {
 
     @Override
     public User toUser(UserForm userForm) {
-        return toUser(false, null, userForm);
+        return toUser(new User(), userForm);
     }
 
     @Override
     public User toUser(User user, UserForm userForm) {
-        return toUser(true, user, userForm);
-    }
-
-    private User toUser(Boolean isUpdate, User user, UserForm userForm) {
         List<Role> roles = roleService.getAllByIdThrow(userForm.getRoles());
         String password = encodePassword(userForm.getPassword());
 
-        if(isUpdate) {
-            user.setEmail(userForm.getEmail());
-            user.setName(userForm.getName());
-            user.setPassword(password);
-            user.setRoles(roles);
-        } else {
-            user = new User(userForm.getName(), userForm.getEmail(), password, roles);
-        }
+        user.setEmail(userForm.getEmail());
+        user.setName(userForm.getName());
+        user.setPassword(password);
+        user.setRoles(roles);
 
         return user;
     }
-
 }

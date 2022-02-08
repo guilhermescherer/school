@@ -2,6 +2,7 @@ package com.personal.school.service;
 
 import com.personal.school.form.StudentForm;
 import com.personal.school.model.Student;
+import com.personal.school.model.Subject;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,15 +11,15 @@ public interface StudentService {
 
     List<Student> getAll();
 
+    List<Student> getAllByIdThrow(List<Long> students);
+
+    Student getByIdThrow(Long id);
+
     Optional<Student> getById(Long id);
+
+    Student save(StudentForm studentForm);
 
     void remove(Long id);
 
-    void save(Student student);
-
     Student update(Long id, StudentForm studentForm);
-
-    Student toStudent(StudentForm studentForm);
-
-    List<Student> getAllByIdThrow(List<Long> students);
 }
