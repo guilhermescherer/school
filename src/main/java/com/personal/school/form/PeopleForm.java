@@ -22,7 +22,7 @@ public class PeopleForm {
     private String telephone;
     @NotNull @NotEmpty @CPF
     private String cpf;
-    @NotNull @NotEmpty @Pattern(regexp = DEFAULT_DATE_FORMATTER)
+    @NotNull @NotEmpty @Pattern(regexp = STRING_REGEX_DATE)
     private String birthDate;
     @NotNull @NotEmpty
     private String address;

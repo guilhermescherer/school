@@ -21,11 +21,9 @@ public class DefaultRoleService implements RoleService {
 
     @Override
     public List<Role> getAllByIdThrow(List<Long> ids) {
-
         if(isNull(ids)) return EMPTY_LIST;
 
         List<Role> roles = roleRepository.findAllById(ids);
-
         if(ids.size() != roles.size()) {
             throw new EmptyResultDataAccessException("Not found all roles", ids.size());
         }

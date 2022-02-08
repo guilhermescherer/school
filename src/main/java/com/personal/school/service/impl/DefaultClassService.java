@@ -1,5 +1,6 @@
 package com.personal.school.service.impl;
 
+import com.personal.school.converter.ClassConverter;
 import com.personal.school.form.ClassForm;
 import com.personal.school.model.Class;
 import com.personal.school.model.Student;
@@ -26,10 +27,13 @@ public class DefaultClassService implements ClassService {
 
     @Autowired
     ClassRepository classRepository;
-    @Autowired @Lazy
-    TeacherService teacherService;
-    @Autowired @Lazy
-    StudentService studentService;
+    @Autowired
+    ClassConverter classConverter;
+
+    @Override
+    public List<Class> getAll() {
+        return classRepository.findAll();
+    }
 
     @Override
     public List<Class> getAllByIdThrow(List<Long> ids){
@@ -52,12 +56,6 @@ public class DefaultClassService implements ClassService {
         } else {
             throw new EmptyResultDataAccessException("Not found class", toIntExact(idClass));
         }
-
-    }
-
-    @Override
-    public List<Class> getAll() {
-        return classRepository.findAll();
     }
 
     @Override
@@ -66,17 +64,10 @@ public class DefaultClassService implements ClassService {
     }
 
     @Override
-    public Class toClass(ClassForm classForm) {
-        TeachingType teachingType = TeachingType.valueOf(classForm.getTeachingType());
-        List<Teacher> teachers = teacherService.getAllByIdThrow(classForm.getTeachers());
-        List<Student> students = studentService.getAllByIdThrow(classForm.getStudents());
-
-        return new Class(classForm.getName(), classForm.getQualificationNumber(), teachingType, teachers, students);
-    }
-
-    @Override
-    public void save(Class schoolClass) {
+    public Class save(ClassForm classForm) {
+        Class schoolClass = classConverter.toClass(classForm);
         classRepository.save(schoolClass);
+        return schoolClass;
     }
 
     @Override
@@ -86,26 +77,8 @@ public class DefaultClassService implements ClassService {
 
     @Override
     public Class update(Long id, ClassForm classForm) {
-        Optional<Class> optionalClass = getById(id);
-
-        if(optionalClass.isPresent()){
-            Class schoolClass = optionalClass.get();
-
-            List<Teacher> teachers = teacherService.getAllByIdThrow(classForm.getTeachers());
-            List<Student> students = studentService.getAllByIdThrow(classForm.getStudents());
-            TeachingType teachingType = TeachingType.valueOf(classForm.getTeachingType());
-
-            schoolClass.setName(classForm.getName());
-            schoolClass.setQualificationNumber(classForm.getQualificationNumber());
-            schoolClass.setTeachingType(teachingType);
-            schoolClass.setTeachers(teachers);
-            schoolClass.setStudents(students);
-
-            return schoolClass;
-
-        } else {
-            throw new EmptyResultDataAccessException("Not found class", toIntExact(id));
-        }
-
+        Class schoolClass = getByIdThrow(id);
+        classConverter.toClass(schoolClass, classForm);
+        return schoolClass;
     }
 }

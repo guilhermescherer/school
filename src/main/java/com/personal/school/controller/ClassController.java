@@ -48,8 +48,7 @@ public class ClassController {
     @PostMapping
     @Transactional
     public ResponseEntity<?> add(@RequestBody @Valid ClassForm classForm, UriComponentsBuilder uriBuilder){
-        Class schoolClass = classService.toClass(classForm);
-        classService.save(schoolClass);
+        Class schoolClass = classService.save(classForm);
 
         URI uri = uriBuilder.path("/class/{id}").buildAndExpand(schoolClass.getId()).toUri();
         return ResponseEntity.created(uri).body(new ClassDTO(schoolClass));
