@@ -1,5 +1,6 @@
 package com.personal.school.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,11 +9,18 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.personal.school.utils.CalcUtils.getValueWithPercentage;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+
 @Entity
 @Getter
 @Setter
 public class Teacher extends People {
 
+    private static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
+
+    @Setter(AccessLevel.NONE)
     private BigDecimal salary;
 
     @Enumerated(EnumType.STRING)
@@ -30,12 +38,23 @@ public class Teacher extends People {
     public Teacher() {
     }
 
-    public Teacher(String name, String email, String telephone, String cpf, LocalDate birthDate, BigDecimal salary,
-                   Schooling schooling, List<Class> classes, List<Subject> subjects) {
+    public Teacher(String name, String email, String telephone, String cpf, LocalDate birthDate, BigDecimal salary, Schooling schooling) {
         super(name, email, telephone, cpf, birthDate);
         this.salary = salary;
         this.schooling = schooling;
-        this.classes = classes;
-        this.subjects = subjects;
+    }
+
+    public void setSalary(BigDecimal salary) {
+        if(isNull(this.salary)) {
+            this.salary = salary;
+        } else {
+            throw new RuntimeException("The salary already exists, it can only be readjusted");
+        }
+    }
+
+    public void reajustSalary(String percentage) {
+        if(nonNull(this.salary)) {
+            this.salary = getValueWithPercentage(this.salary, new BigDecimal(percentage));
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.personal.school.service.impl;
 
 import com.personal.school.converter.TeacherConverter;
 import com.personal.school.form.TeacherForm;
+import com.personal.school.form.TeacherUpdateForm;
 import com.personal.school.model.Teacher;
 import com.personal.school.repository.TeacherRepository;
 import com.personal.school.service.TeacherService;
@@ -67,8 +68,14 @@ public class DefaultTeacherService implements TeacherService {
     }
 
     @Override
-    public Teacher update(Long id, TeacherForm teacherForm) {
+    public Teacher update(Long id, TeacherUpdateForm teacherUpdateForm) {
         Teacher teacher = getByIdThrow(id);
-        return teacherConverter.toTeacher(teacher, teacherForm);
+        return teacherConverter.toTeacher(teacher, teacherUpdateForm);
+    }
+
+    @Override
+    public void reajustSalary(Long id, String percentage) {
+        Teacher teacher = getByIdThrow(id);
+        teacher.reajustSalary(percentage);
     }
 }

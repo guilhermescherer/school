@@ -3,6 +3,7 @@ package com.personal.school.controller;
 import com.personal.school.dto.TeacherDTO;
 import com.personal.school.dto.TeacherDetailsDTO;
 import com.personal.school.form.TeacherForm;
+import com.personal.school.form.TeacherUpdateForm;
 import com.personal.school.model.Teacher;
 import com.personal.school.service.TeacherService;
 import io.swagger.annotations.Api;
@@ -56,9 +57,16 @@ public class TeacherController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<TeacherDTO> update(@PathVariable Long id, @RequestBody @Valid TeacherForm teacherForm){
-        Teacher teacher = teacherService.update(id, teacherForm);
+    public ResponseEntity<TeacherDTO> update(@PathVariable Long id, @RequestBody @Valid TeacherUpdateForm teacherUpdateForm){
+        Teacher teacher = teacherService.update(id, teacherUpdateForm);
         return ResponseEntity.ok(new TeacherDTO(teacher));
+    }
+
+    @PutMapping("/salary/reajust/{id}")
+    @Transactional
+    public ResponseEntity<?> reajustSalary(@PathVariable Long id, @RequestBody String percentage) {
+        teacherService.reajustSalary(id, percentage);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
@@ -66,5 +74,4 @@ public class TeacherController {
         teacherService.remove(id);
         return ResponseEntity.ok().build();
     }
-
 }

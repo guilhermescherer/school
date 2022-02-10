@@ -67,4 +67,27 @@ public class ClassController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("{id}/students")
+    @Transactional
+    public ResponseEntity<?> addStudents(@PathVariable Long id, @RequestBody List<Long> ids){
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("{id}/teachers")
+    @Transactional
+    public ResponseEntity<?> addTeachers(@PathVariable Long id, @RequestBody List<Long> ids){
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("{id/students")
+    @Transactional
+    public ResponseEntity<?> deleteStudents(@PathVariable Long id, @RequestBody List<Long> ids){
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("{id/teachers")
+    @Transactional
+    public ResponseEntity<?> deleteTeachers(@PathVariable Long id, @RequestBody List<Long> ids){
+        return ResponseEntity.ok().build();
+    }
 }

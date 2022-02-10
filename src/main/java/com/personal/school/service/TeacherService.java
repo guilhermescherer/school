@@ -1,6 +1,7 @@
 package com.personal.school.service;
 
 import com.personal.school.form.TeacherForm;
+import com.personal.school.form.TeacherUpdateForm;
 import com.personal.school.model.Teacher;
 
 import java.util.List;
@@ -20,5 +21,7 @@ public interface TeacherService {
 
     void remove(Long id);
 
-    Teacher update(Long id, TeacherForm teacherForm);
+    Teacher update(Long id, TeacherUpdateForm teacherUpdateForm);
+
+    void reajustSalary(Long id, String percentage);
 }
