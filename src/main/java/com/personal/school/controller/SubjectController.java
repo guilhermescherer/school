@@ -60,6 +60,9 @@ public class SubjectController {
         return ResponseEntity.ok(new SubjectDTO(subject));
     }
 
+    // TODO -> Endpoint para adicionar teacher
+    // TODO -> Endpoint para remover teacher
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remove(@PathVariable Long id){
         subjectService.remove(id);

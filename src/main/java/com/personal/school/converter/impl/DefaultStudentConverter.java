@@ -8,10 +8,9 @@ import com.personal.school.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-
-import static com.personal.school.utils.FormatterUtils.getCpfUnformat;
-import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
+import static com.personal.school.converter.ConvertMethod.ADD;
+import static com.personal.school.converter.ConvertMethod.UPDATE;
+import static com.personal.school.utils.ConverterUtils.isValidSet;
 
 @Component
 public class DefaultStudentConverter implements StudentConverter {
@@ -21,25 +20,24 @@ public class DefaultStudentConverter implements StudentConverter {
 
     @Override
     public Student toStudent(StudentForm studentForm) {
-        LocalDate birthDate = LocalDate.parse(studentForm.getBirthDate(), getDefaultDateFormatter());
-        String cpf = getCpfUnformat(studentForm.getCpf());
+        Student studentPopulated = (Student) peopleConverter.toPeople(new Student(), studentForm, ADD);
 
-        return new Student(studentForm.getName(), studentForm.getEmail(), studentForm.getTelephone(), cpf,
-                birthDate, studentForm.getIsScholarshipHolder());
-    }
-
-    @Override
-    public Student toStudent(Student student, StudentForm studentUpdateForm) {
-        Student studentPopulated = (Student) peopleConverter.toPeople(student, studentUpdateForm, ConvertMethod.UPDATE);
-
-        populateScholarshipHolder(studentPopulated, studentUpdateForm);
+        populateScholarshipHolder(studentPopulated, studentForm.getIsScholarshipHolder(), ADD);
 
         return studentPopulated;
     }
 
-    private void populateScholarshipHolder(Student student, StudentForm studentUpdateForm) {
-        Boolean isScholarshipHolder = studentUpdateForm.getIsScholarshipHolder();
-        if(isScholarshipHolder != null) {
+    @Override
+    public Student toStudent(Student student, StudentForm studentForm) {
+        Student studentPopulated = (Student) peopleConverter.toPeople(student, studentForm, UPDATE);
+
+        populateScholarshipHolder(studentPopulated, studentForm.getIsScholarshipHolder(), UPDATE);
+
+        return studentPopulated;
+    }
+
+    private void populateScholarshipHolder(Student student, Boolean isScholarshipHolder, ConvertMethod convertMethod) {
+        if(isValidSet(isScholarshipHolder, convertMethod)) {
             student.setIsScholarshipHolder(isScholarshipHolder);
         }
     }
