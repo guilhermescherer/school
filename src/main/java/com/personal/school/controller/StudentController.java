@@ -2,6 +2,7 @@ package com.personal.school.controller;
 
 import com.personal.school.dto.StudentDTO;
 import com.personal.school.form.StudentForm;
+import com.personal.school.form.StudentUpdateForm;
 import com.personal.school.model.Student;
 import com.personal.school.service.StudentService;
 import io.swagger.annotations.Api;
@@ -55,8 +56,8 @@ public class StudentController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<StudentDTO> update(@PathVariable Long id, @RequestBody @Valid StudentForm studentForm){
-        Student student = studentService.update(id, studentForm);
+    public ResponseEntity<StudentDTO> update(@PathVariable Long id, @RequestBody @Valid StudentUpdateForm studentUpdateForm){
+        Student student = studentService.update(id, studentUpdateForm);
         return ResponseEntity.ok(new StudentDTO(student));
     }
 

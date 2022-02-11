@@ -1,5 +1,6 @@
 package com.personal.school.form;
 
+import com.personal.school.form.groups.Add;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
@@ -10,7 +11,6 @@ import java.util.List;
 @Getter
 public class SubjectForm {
 
-    @NotNull @NotEmpty @Length(min=5, max=50)
+    @NotNull(groups = Add.class) @NotEmpty @Length(min=5, max=50)
     private String name;
-    private List<Long> teachers;
 }

@@ -1,10 +1,10 @@
 package com.personal.school.converter.impl;
 
+import com.personal.school.converter.ConvertMethod;
+import com.personal.school.converter.PeopleConverter;
 import com.personal.school.converter.StudentConverter;
 import com.personal.school.form.StudentForm;
-import com.personal.school.model.Class;
 import com.personal.school.model.Student;
-import com.personal.school.service.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,27 +17,30 @@ import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
 public class DefaultStudentConverter implements StudentConverter {
 
     @Autowired
-    ClassService classService;
+    PeopleConverter peopleConverter;
 
     @Override
     public Student toStudent(StudentForm studentForm) {
-        return toStudent(new Student(), studentForm);
-    }
-
-    @Override
-    public Student toStudent(Student student, StudentForm studentForm) {
-        Class schoolClass = classService.getByIdThrow(studentForm.getSchoolClass());
         LocalDate birthDate = LocalDate.parse(studentForm.getBirthDate(), getDefaultDateFormatter());
         String cpf = getCpfUnformat(studentForm.getCpf());
 
-        student.setName(studentForm.getName());
-        student.setEmail(studentForm.getEmail());
-        student.setTelephone(studentForm.getTelephone());
-        student.setCpf(cpf);
-        student.setBirthDate(birthDate);
-        student.setIsScholarshipHolder(studentForm.getIsScholarshipHolder());
-        student.setSchoolClass(schoolClass);
+        return new Student(studentForm.getName(), studentForm.getEmail(), studentForm.getTelephone(), cpf,
+                birthDate, studentForm.getIsScholarshipHolder());
+    }
 
-        return student;
+    @Override
+    public Student toStudent(Student student, StudentForm studentUpdateForm) {
+        Student studentPopulated = (Student) peopleConverter.toPeople(student, studentUpdateForm, ConvertMethod.UPDATE);
+
+        populateScholarshipHolder(studentPopulated, studentUpdateForm);
+
+        return studentPopulated;
+    }
+
+    private void populateScholarshipHolder(Student student, StudentForm studentUpdateForm) {
+        Boolean isScholarshipHolder = studentUpdateForm.getIsScholarshipHolder();
+        if(isScholarshipHolder != null) {
+            student.setIsScholarshipHolder(isScholarshipHolder);
+        }
     }
 }

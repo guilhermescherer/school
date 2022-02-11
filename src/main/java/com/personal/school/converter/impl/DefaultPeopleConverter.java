@@ -1,12 +1,14 @@
 package com.personal.school.converter.impl;
 
+import com.personal.school.converter.ConvertMethod;
 import com.personal.school.converter.PeopleConverter;
-import com.personal.school.form.PeopleUpdateForm;
+import com.personal.school.form.PeopleForm;
 import com.personal.school.model.People;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+import static com.personal.school.utils.ConverterUtils.isValidSet;
 import static com.personal.school.utils.FormatterUtils.getCpfUnformat;
 import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
 
@@ -14,47 +16,41 @@ import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
 public class DefaultPeopleConverter implements PeopleConverter {
 
     @Override
-    public People toPeople(People people, PeopleUpdateForm peopleForm) {
-        populateName(people, peopleForm);
-        populateEmail(people, peopleForm);
-        populateTelephone(people, peopleForm);
-        populateCpf(people, peopleForm);
-        populateBirthDate(people, peopleForm);
-
-        return people;
+    public People toPeople(People target, PeopleForm source, ConvertMethod convertMethod) {
+        populateName(target, source.getName(), convertMethod);
+        populateEmail(target, source.getEmail(), convertMethod);
+        populateTelephone(target, source.getTelephone(), convertMethod);
+        populateCpf(target, source.getCpf(), convertMethod);
+        populateBirthDate(target, source.getBirthDate(), convertMethod);
+        return target;
     }
 
-    private void populateBirthDate(People people, PeopleUpdateForm peopleForm) {
-        String birthDate = peopleForm.getBirthDate();
-        if(birthDate != null) {
+    private void populateBirthDate(People people, String birthDate, ConvertMethod convertMethod) {
+        if(isValidSet(birthDate, convertMethod)) {
             people.setBirthDate(LocalDate.parse(birthDate, getDefaultDateFormatter()));
         }
     }
 
-    private void populateCpf(People people, PeopleUpdateForm peopleForm) {
-        String cpf = peopleForm.getCpf();
-        if(cpf != null) {
-            people.setCpf(getCpfUnformat(peopleForm.getCpf()));
+    private void populateCpf(People people, String cpf, ConvertMethod convertMethod) {
+        if(isValidSet(cpf, convertMethod)) {
+            people.setCpf(getCpfUnformat(cpf));
         }
     }
 
-    private void populateTelephone(People people, PeopleUpdateForm peopleForm) {
-        String telephone = peopleForm.getTelephone();
-        if(telephone != null) {
+    private void populateTelephone(People people, String telephone, ConvertMethod convertMethod) {
+        if(isValidSet(telephone, convertMethod)) {
             people.setTelephone(telephone);
         }
     }
 
-    private void populateEmail(People people, PeopleUpdateForm peopleForm) {
-        String email = peopleForm.getEmail();
-        if(email != null) {
+    private void populateEmail(People people, String email, ConvertMethod convertMethod) {
+        if(isValidSet(email, convertMethod)) {
             people.setEmail(email);
         }
     }
 
-    private void populateName(People people, PeopleUpdateForm peopleForm) {
-        String name = peopleForm.getName();
-        if(name != null) {
+    private void populateName(People people, String name, ConvertMethod convertMethod) {
+        if(isValidSet(name, convertMethod)) {
             people.setName(name);
         }
     }

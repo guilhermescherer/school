@@ -68,9 +68,8 @@ public class DefaultStudentService implements StudentService {
     }
 
     @Override
-    public Student update(Long id, StudentForm studentForm){
+    public Student update(Long id, StudentForm studentUpdateForm){
         Student student = getByIdThrow(id);
-        studentConverter.toStudent(student, studentForm);
-        return student;
+        return studentConverter.toStudent(student, studentUpdateForm);
     }
 }

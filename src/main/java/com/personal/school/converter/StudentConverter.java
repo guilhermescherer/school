@@ -7,5 +7,5 @@ public interface StudentConverter {
 
     Student toStudent(StudentForm studentForm);
 
-    Student toStudent(Student student, StudentForm studentForm);
+    Student toStudent(Student student, StudentForm studentUpdateForm);
 }

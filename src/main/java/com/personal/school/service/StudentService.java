@@ -2,7 +2,6 @@ package com.personal.school.service;
 
 import com.personal.school.form.StudentForm;
 import com.personal.school.model.Student;
-import com.personal.school.model.Subject;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,5 +20,5 @@ public interface StudentService {
 
     void remove(Long id);
 
-    Student update(Long id, StudentForm studentForm);
+    Student update(Long id, StudentForm studentUpdateForm);
 }

@@ -1,33 +1,37 @@
 package com.personal.school.converter.impl;
 
+import com.personal.school.converter.ConvertMethod;
 import com.personal.school.converter.SubjectConverter;
 import com.personal.school.form.SubjectForm;
 import com.personal.school.model.Subject;
-import com.personal.school.model.Teacher;
-import com.personal.school.service.TeacherService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import static com.personal.school.converter.ConvertMethod.ADD;
+import static com.personal.school.converter.ConvertMethod.UPDATE;
+import static com.personal.school.utils.ConverterUtils.isValidSet;
 
 @Component
 public class DefaultSubjectConverter implements SubjectConverter {
 
-    @Autowired
-    TeacherService teacherService;
-
     @Override
     public Subject toSubject(SubjectForm subjectForm) {
-        return toSubject(new Subject(), subjectForm);
+        Subject subject = new Subject();
+
+        populateName(subject, subjectForm.getName(), ADD);
+
+        return subject;
     }
 
     @Override
     public Subject toSubject(Subject subject, SubjectForm subjectForm) {
-        List<Teacher> teachers = teacherService.getAllByIdThrow(subjectForm.getTeachers());
-
-        subject.setName(subjectForm.getName());
-        subject.setTeachers(teachers);
+        populateName(subject, subjectForm.getName(), UPDATE);
 
         return subject;
+    }
+
+    private void populateName(Subject subject, String name, ConvertMethod convertMethod) {
+        if(isValidSet(name, convertMethod)) {
+            subject.setName(name);
+        }
     }
 }

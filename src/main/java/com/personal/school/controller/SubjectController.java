@@ -60,7 +60,6 @@ public class SubjectController {
         return ResponseEntity.ok(new SubjectDTO(subject));
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remove(@PathVariable Long id){
         subjectService.remove(id);

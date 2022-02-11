@@ -3,18 +3,20 @@ package com.personal.school.controller;
 import com.personal.school.dto.TeacherDTO;
 import com.personal.school.dto.TeacherDetailsDTO;
 import com.personal.school.form.TeacherForm;
-import com.personal.school.form.TeacherUpdateForm;
+import com.personal.school.form.groups.Add;
+import com.personal.school.form.groups.Update;
 import com.personal.school.model.Teacher;
 import com.personal.school.service.TeacherService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
+import javax.validation.groups.Default;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +50,8 @@ public class TeacherController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<?> add(@RequestBody @Valid TeacherForm teacherForm, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<?> add(@RequestBody @Validated({Add.class, Default.class}) TeacherForm teacherForm,
+                                 UriComponentsBuilder uriBuilder){
         Teacher teacher = teacherService.save(teacherForm);
 
         URI uri = uriBuilder.path("/teacher/{id}").buildAndExpand(teacher.getId()).toUri();
@@ -57,12 +60,13 @@ public class TeacherController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<TeacherDTO> update(@PathVariable Long id, @RequestBody @Valid TeacherUpdateForm teacherUpdateForm){
-        Teacher teacher = teacherService.update(id, teacherUpdateForm);
+    public ResponseEntity<TeacherDTO> update(@PathVariable Long id,
+                                             @RequestBody @Validated({Update.class, Default.class}) TeacherForm teacherForm){
+        Teacher teacher = teacherService.update(id, teacherForm);
         return ResponseEntity.ok(new TeacherDTO(teacher));
     }
 
-    @PutMapping("/salary/reajust/{id}")
+    @PutMapping("{id}/salary/reajust")
     @Transactional
     public ResponseEntity<?> reajustSalary(@PathVariable Long id, @RequestBody String percentage) {
         teacherService.reajustSalary(id, percentage);

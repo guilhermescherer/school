@@ -9,7 +9,4 @@ public class StudentForm extends PeopleForm {
 
     @NotNull
     private Boolean isScholarshipHolder;
-    @NotNull
-    private Long schoolClass;
-
 }
