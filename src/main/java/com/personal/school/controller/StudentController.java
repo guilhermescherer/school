@@ -2,11 +2,13 @@ package com.personal.school.controller;
 
 import com.personal.school.dto.StudentDTO;
 import com.personal.school.form.StudentForm;
+import com.personal.school.form.StudentUpdateForm;
 import com.personal.school.model.Student;
 import com.personal.school.service.StudentService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -17,10 +19,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.personal.school.dto.StudentDTO.toDto;
+import static com.personal.school.utils.SecurityUtils.ROLE_ADMIN;
+import static com.personal.school.utils.SecurityUtils.ROLE_USER;
 
 @Api(tags = "Student")
 @RestController
 @RequestMapping("/student")
+@Secured({ROLE_ADMIN, ROLE_USER})
 public class StudentController {
 
     @Autowired
@@ -43,8 +48,7 @@ public class StudentController {
     @PostMapping
     @Transactional
     public ResponseEntity<?> add(@RequestBody @Valid StudentForm studentForm, UriComponentsBuilder uriBuilder){
-        Student student = studentService.toStudent(studentForm);
-        studentService.save(student);
+        Student student = studentService.save(studentForm);
 
         URI uri = uriBuilder.path("/student/{id}").buildAndExpand(student.getId()).toUri();
         return ResponseEntity.created(uri).body(new StudentDTO(student));
@@ -52,8 +56,8 @@ public class StudentController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<StudentDTO> update(@PathVariable Long id, @RequestBody @Valid StudentForm studentForm){
-        Student student = studentService.update(id, studentForm);
+    public ResponseEntity<StudentDTO> update(@PathVariable Long id, @RequestBody @Valid StudentUpdateForm studentUpdateForm){
+        Student student = studentService.update(id, studentUpdateForm);
         return ResponseEntity.ok(new StudentDTO(student));
     }
 

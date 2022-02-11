@@ -10,15 +10,15 @@ public interface StudentService {
 
     List<Student> getAll();
 
+    List<Student> getAllByIdThrow(List<Long> students);
+
+    Student getByIdThrow(Long id);
+
     Optional<Student> getById(Long id);
+
+    Student save(StudentForm studentForm);
 
     void remove(Long id);
 
-    void save(Student student);
-
-    Student update(Long id, StudentForm studentForm);
-
-    Student toStudent(StudentForm studentForm);
-
-    List<Student> getAllByIdThrow(List<Long> students);
+    Student update(Long id, StudentForm studentUpdateForm);
 }

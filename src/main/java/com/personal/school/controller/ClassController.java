@@ -8,6 +8,7 @@ import com.personal.school.service.ClassService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -18,10 +19,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.personal.school.dto.ClassDTO.toDto;
+import static com.personal.school.utils.SecurityUtils.ROLE_ADMIN;
+import static com.personal.school.utils.SecurityUtils.ROLE_USER;
 
 @Api(tags = "Class")
 @RestController
 @RequestMapping("/class")
+@Secured({ROLE_ADMIN, ROLE_USER})
 public class ClassController {
 
     @Autowired
@@ -44,8 +48,7 @@ public class ClassController {
     @PostMapping
     @Transactional
     public ResponseEntity<?> add(@RequestBody @Valid ClassForm classForm, UriComponentsBuilder uriBuilder){
-        Class schoolClass = classService.toClass(classForm);
-        classService.save(schoolClass);
+        Class schoolClass = classService.save(classForm);
 
         URI uri = uriBuilder.path("/class/{id}").buildAndExpand(schoolClass.getId()).toUri();
         return ResponseEntity.created(uri).body(new ClassDTO(schoolClass));
@@ -64,4 +67,27 @@ public class ClassController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("{id}/students")
+    @Transactional
+    public ResponseEntity<?> addStudents(@PathVariable Long id, @RequestBody List<Long> ids){
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("{id}/teachers")
+    @Transactional
+    public ResponseEntity<?> addTeachers(@PathVariable Long id, @RequestBody List<Long> ids){
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("{id/students")
+    @Transactional
+    public ResponseEntity<?> deleteStudents(@PathVariable Long id, @RequestBody List<Long> ids){
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("{id/teachers")
+    @Transactional
+    public ResponseEntity<?> deleteTeachers(@PathVariable Long id, @RequestBody List<Long> ids){
+        return ResponseEntity.ok().build();
+    }
 }

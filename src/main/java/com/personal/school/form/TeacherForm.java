@@ -1,22 +1,25 @@
 package com.personal.school.form;
 
+import com.personal.school.form.groups.Add;
+import com.personal.school.form.groups.Update;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
-import java.util.List;
 
-import static com.personal.school.utils.FormatterUtils.DEFAULT_SCHOOLING_REGEX;
+import static com.personal.school.utils.FormatterUtils.ENUM_REGEX_SCHOOLING;
 
 @Getter
 @Setter
 public class TeacherForm extends PeopleForm {
 
-    @NotNull @NotEmpty @Pattern(regexp = DEFAULT_SCHOOLING_REGEX)
+    @Null(groups = Update.class, message = "Salary must be null in Update")
+    @NotNull(groups = Add.class)
+    private Double salary;
+    @NotNull(groups = Add.class)
+    @NotEmpty @Pattern(regexp = ENUM_REGEX_SCHOOLING)
     private String schooling;
-    private List<Long> subjects;
-    private List<Long> classes;
-
 }

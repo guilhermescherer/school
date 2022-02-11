@@ -1,7 +1,9 @@
 package com.personal.school.service.impl;
 
+import com.personal.school.converter.UserConverter;
 import com.personal.school.form.UserForm;
 import com.personal.school.model.Role;
+import com.personal.school.model.Teacher;
 import com.personal.school.model.User;
 import com.personal.school.repository.UserRepository;
 import com.personal.school.service.RoleService;
@@ -21,12 +23,23 @@ import static java.lang.Math.toIntExact;
 public class DefaultUserService implements UserService {
 
     @Autowired
-    RoleService roleService;
-
-    @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserConverter userConverter;
 
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Override
+    public List<User> getAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User getByIdThrow(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if(!user.isPresent()){
+            throw new EmptyResultDataAccessException("Not found user", toIntExact(id));
+        }
+        return user.get();
+    }
 
     @Override
     public Optional<User> getById(Long id) {
@@ -34,20 +47,10 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public User toUser(UserForm userForm) {
-        List<Role> roles = roleService.getAllByIdThrow(userForm.getRoles());
-        return new User(userForm.getName(), userForm.getEmail(), userForm.getPassword(), roles);
-    }
-
-    @Override
-    public void save(User user) {
-        user.setPassword(encodePassword(user.getPassword()));
+    public User save(UserForm userForm) {
+        User user = userConverter.toUser(userForm);
         userRepository.save(user);
-    }
-
-    @Override
-    public List<User> getAll() {
-        return userRepository.findAll();
+        return user;
     }
 
     @Override
@@ -57,22 +60,7 @@ public class DefaultUserService implements UserService {
 
     @Override
     public User update(Long id, UserForm userForm) {
-        Optional<User> optinalUser = getById(id);
-
-        if(optinalUser.isPresent()) {
-
-            List<Role> roles = roleService.getAllByIdThrow(userForm.getRoles());
-            String password = encodePassword(userForm.getPassword());
-
-            User user = optinalUser.get();
-            user.setEmail(userForm.getEmail());
-            user.setName(userForm.getName());
-            user.setPassword(password);
-            user.setRoles(roles);
-
-            return user;
-        } else {
-            throw new EmptyResultDataAccessException("Not found user", toIntExact(id));
-        }
+        User user = getByIdThrow(id);
+        return userConverter.toUser(user, userForm);
     }
 }

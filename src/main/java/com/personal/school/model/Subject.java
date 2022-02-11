@@ -1,6 +1,5 @@
 package com.personal.school.model;
 
-import com.personal.school.form.SubjectForm;
 import lombok.Getter;
 import lombok.Setter;
 

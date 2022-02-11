@@ -1,11 +1,10 @@
 package com.personal.school.service.impl;
 
+import com.personal.school.converter.SubjectConverter;
 import com.personal.school.form.SubjectForm;
 import com.personal.school.model.Subject;
-import com.personal.school.model.Teacher;
 import com.personal.school.repository.SubjectRepository;
 import com.personal.school.service.SubjectService;
-import com.personal.school.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ public class DefaultSubjectService implements SubjectService {
     @Autowired
     SubjectRepository subjectRepository;
     @Autowired
-    TeacherService teacherService;
+    SubjectConverter subjectConverter;
 
     @Override
     public List<Subject> getAll(){
@@ -32,11 +31,9 @@ public class DefaultSubjectService implements SubjectService {
 
     @Override
     public List<Subject> getAllByIdThrow(List<Long> ids) {
-
         if(isNull(ids)) return EMPTY_LIST;
 
         List<Subject> subjects = subjectRepository.findAllById(ids);
-
         if(ids.size() != subjects.size()) {
             throw new EmptyResultDataAccessException("Not found all subjects", ids.size());
         }
@@ -45,13 +42,24 @@ public class DefaultSubjectService implements SubjectService {
     }
 
     @Override
+    public Subject getByIdThrow(Long id) {
+        Optional<Subject> subject = subjectRepository.findById(id);
+        if(!subject.isPresent()){
+            throw new EmptyResultDataAccessException("Not found subject", toIntExact(id));
+        }
+        return subject.get();
+    }
+
+    @Override
     public Optional<Subject> getById(Long id) {
         return subjectRepository.findById(id);
     }
 
     @Override
-    public void save(Subject subject){
+    public Subject save(SubjectForm subjectForm) {
+        Subject subject = subjectConverter.toSubject(subjectForm);
         subjectRepository.save(subject);
+        return subject;
     }
 
     @Override
@@ -60,25 +68,8 @@ public class DefaultSubjectService implements SubjectService {
     }
 
     @Override
-    public Subject toSubject(SubjectForm subjectForm) {
-        List<Teacher> teachers = teacherService.getAllByIdThrow(subjectForm.getTeachers());
-        return new Subject(subjectForm.getName(), teachers);
-    }
-
-    @Override
     public Subject update(Long id, SubjectForm subjectForm) {
-        Optional<Subject> subject = getById(id);
-
-        if(subject.isPresent()){
-
-            List<Teacher> teachers = teacherService.getAllByIdThrow(subjectForm.getTeachers());
-            subject.get().setName(subjectForm.getName());
-            subject.get().setTeachers(teachers);;
-
-            return subject.get();
-        } else {
-            throw new EmptyResultDataAccessException("Not found subject", toIntExact(id));
-        }
-
+        Subject subject = getByIdThrow(id);
+        return subjectConverter.toSubject(subject, subjectForm);
     }
 }

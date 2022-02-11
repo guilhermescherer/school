@@ -8,6 +8,7 @@ import com.personal.school.service.SubjectService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -18,10 +19,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.personal.school.dto.SubjectDTO.toDto;
+import static com.personal.school.utils.SecurityUtils.ROLE_ADMIN;
+import static com.personal.school.utils.SecurityUtils.ROLE_USER;
 
 @Api(tags = "Subject")
 @RestController
 @RequestMapping("/subject")
+@Secured({ROLE_ADMIN, ROLE_USER})
 public class SubjectController {
 
     @Autowired
@@ -43,8 +47,7 @@ public class SubjectController {
     @PostMapping
     @Transactional
     public ResponseEntity<SubjectDTO> add(@RequestBody @Valid SubjectForm subjectForm, UriComponentsBuilder uriBuilder){
-        Subject subject = subjectService.toSubject(subjectForm);
-        subjectService.save(subject);
+        Subject subject = subjectService.save(subjectForm);
 
         URI uri = uriBuilder.path("/subject/{id}").buildAndExpand(subject.getId()).toUri();
         return ResponseEntity.created(uri).body(new SubjectDTO(subject));
@@ -57,6 +60,8 @@ public class SubjectController {
         return ResponseEntity.ok(new SubjectDTO(subject));
     }
 
+    // TODO -> Endpoint para adicionar teacher
+    // TODO -> Endpoint para remover teacher
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remove(@PathVariable Long id){
