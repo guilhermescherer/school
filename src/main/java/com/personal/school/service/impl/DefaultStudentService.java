@@ -9,12 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
 import static java.lang.Math.toIntExact;
-import static java.util.Collections.EMPTY_LIST;
-import static java.util.Objects.isNull;
 
 @Service
 public class DefaultStudentService implements StudentService {
@@ -30,29 +29,21 @@ public class DefaultStudentService implements StudentService {
     }
 
     @Override
-    public List<Student> getAllByIdThrow(List<Long> ids) {
-        if(isNull(ids)) return EMPTY_LIST;
-
+    public List<Student> getAllById(@NotNull List<Long> ids) {
         List<Student> students = studentRepository.findAllById(ids);
         if(ids.size() != students.size()) {
             throw new EmptyResultDataAccessException("Not found all students", ids.size());
         }
-
         return students;
     }
 
     @Override
-    public Student getByIdThrow(Long id) {
-        Optional<Student> student = getById(id);
+    public Student getById(Long id) {
+        Optional<Student> student = studentRepository.findById(id);
         if(!student.isPresent()) {
             throw new EmptyResultDataAccessException("Not found student", toIntExact(id));
         }
         return student.get();
-    }
-
-    @Override
-    public Optional<Student> getById(Long id) {
-        return studentRepository.findById(id);
     }
 
     @Override
@@ -63,13 +54,12 @@ public class DefaultStudentService implements StudentService {
     }
 
     @Override
-    public void remove(Long id) {
-        studentRepository.deleteById(id);
+    public void remove(Student student) {
+        studentRepository.delete(student);
     }
 
     @Override
-    public Student update(Long id, StudentForm studentUpdateForm){
-        Student student = getByIdThrow(id);
+    public Student update(Student student, StudentForm studentUpdateForm){
         return studentConverter.toStudent(student, studentUpdateForm);
     }
 }

@@ -3,18 +3,11 @@ package com.personal.school.service.impl;
 import com.personal.school.converter.ClassConverter;
 import com.personal.school.form.ClassForm;
 import com.personal.school.model.Class;
-import com.personal.school.model.Student;
-import com.personal.school.model.Teacher;
-import com.personal.school.model.TeachingType;
 import com.personal.school.repository.ClassRepository;
 import com.personal.school.service.ClassService;
-import com.personal.school.service.StudentService;
-import com.personal.school.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +30,7 @@ public class DefaultClassService implements ClassService {
     }
 
     @Override
-    public List<Class> getAllByIdThrow(List<Long> ids){
+    public List<Class> getAllById(List<Long> ids){
         if(isNull(ids)) return EMPTY_LIST;
 
         List<Class> classes = classRepository.findAllById(ids);
@@ -49,19 +42,15 @@ public class DefaultClassService implements ClassService {
         return classes;
     }
 
-    public Class getByIdThrow(Long idClass) {
-        Optional<Class> schoolClass = classRepository.findById(idClass);
+    @Override
+    public Class getById(Long id) {
+        Optional<Class> schoolClass = classRepository.findById(id);
 
         if(schoolClass.isPresent()){
             return schoolClass.get();
         } else {
-            throw new EmptyResultDataAccessException("Not found class", toIntExact(idClass));
+            throw new EmptyResultDataAccessException("Not found class", toIntExact(id));
         }
-    }
-
-    @Override
-    public Optional<Class> getById(Long id) {
-        return classRepository.findById(id);
     }
 
     @Override
@@ -72,13 +61,13 @@ public class DefaultClassService implements ClassService {
     }
 
     @Override
-    public void remove(Long id) {
-        classRepository.deleteById(id);
+    public void remove(Class schoolClass) {
+        classRepository.delete(schoolClass);
     }
 
     @Override
     public Class update(Long id, ClassForm classForm) {
-        Class schoolClass = getByIdThrow(id);
+        Class schoolClass = this.getById(id);
         classConverter.toClass(schoolClass, classForm);
         return schoolClass;
     }

@@ -10,6 +10,7 @@ public class FormatterUtils {
     public static final String DEFAULT_DATE_FORMATTER = "dd/MM/yyyy";
 
     public final static String ENUM_REGEX_SCHOOLING = "IN_PROGRESS|GRADUTATE|POST_GRADUTE|MASTER|DOCTORATE";
+    public final static String ENUM_REGEX_UPDATE_SALARY_TYPE = "PERCENTAGE|SUM";
     public final static String ENUM_REGEX_TEACHING_TYPE = "ELEMENTARY_SCHOOL|HIGH_SCHOOL|UNIVERSITY_EDUCATION";
 
     public static final String STRING_REGEX_DATE = "[0-9]{2}/[0-9]{2}/[0-9]{4}";

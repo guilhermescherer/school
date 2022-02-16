@@ -9,7 +9,6 @@ import com.personal.school.model.TeachingType;
 import com.personal.school.service.StudentService;
 import com.personal.school.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +16,9 @@ import java.util.List;
 @Service
 public class DefaultClassConverter implements ClassConverter {
 
-    @Autowired @Lazy
+    @Autowired
     TeacherService teacherService;
-    @Autowired @Lazy
+    @Autowired
     StudentService studentService;
 
     @Override
@@ -30,8 +29,8 @@ public class DefaultClassConverter implements ClassConverter {
     @Override
     public Class toClass(Class schoolClass, ClassForm classForm) {
         TeachingType teachingType = TeachingType.valueOf(classForm.getTeachingType());
-        List<Teacher> teachers = teacherService.getAllByIdThrow(classForm.getTeachers());
-        List<Student> students = studentService.getAllByIdThrow(classForm.getStudents());
+        List<Teacher> teachers = teacherService.getAllById(classForm.getTeachers());
+        List<Student> students = studentService.getAllById(classForm.getStudents());
 
         schoolClass.setName(classForm.getName());
         schoolClass.setQualificationNumber(classForm.getQualificationNumber());

@@ -1,5 +1,6 @@
 package com.personal.school.model;
 
+import com.personal.school.enums.UpdateSalaryType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,9 +53,16 @@ public class Teacher extends People {
         }
     }
 
-    public void reajustSalary(String percentage) {
+    public void updateSalary(String value, UpdateSalaryType updateSalaryType) {
         if(nonNull(this.salary)) {
-            this.salary = getValueWithPercentage(this.salary, new BigDecimal(percentage));
+            switch (updateSalaryType) {
+                case PERCENTAGE:
+                    this.salary = getValueWithPercentage(this.salary, new BigDecimal(value));
+                    break;
+                case SUM:
+                    this.salary = this.salary.add(new BigDecimal(value));
+                    break;
+            }
         }
     }
 }

@@ -1,23 +1,18 @@
 package com.personal.school.service.impl;
 
 import com.personal.school.converter.UserConverter;
+import com.personal.school.exception.NotFoundException;
 import com.personal.school.form.UserForm;
-import com.personal.school.model.Role;
-import com.personal.school.model.Teacher;
 import com.personal.school.model.User;
 import com.personal.school.repository.UserRepository;
-import com.personal.school.service.RoleService;
 import com.personal.school.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-import static com.personal.school.utils.SecurityUtils.encodePassword;
-import static java.lang.Math.toIntExact;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 @Service
 public class DefaultUserService implements UserService {
@@ -29,21 +24,20 @@ public class DefaultUserService implements UserService {
 
     @Override
     public List<User> getAll() {
-        return userRepository.findAll();
+        final List<User> users = userRepository.findAll();
+        if(isEmpty(users)) {
+            throw new NotFoundException("Not found any user");
+        }
+        return users;
     }
 
     @Override
-    public User getByIdThrow(Long id) {
+    public User getById(Long id) {
         Optional<User> user = userRepository.findById(id);
         if(!user.isPresent()){
-            throw new EmptyResultDataAccessException("Not found user", toIntExact(id));
+            throw new NotFoundException("Not found user");
         }
         return user.get();
-    }
-
-    @Override
-    public Optional<User> getById(Long id) {
-        return userRepository.findById(id);
     }
 
     @Override
@@ -54,13 +48,12 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public void remove(Long id) {
-        userRepository.deleteById(id);
+    public void remove(User user) {
+        userRepository.delete(user);
     }
 
     @Override
-    public User update(Long id, UserForm userForm) {
-        User user = getByIdThrow(id);
+    public User update(User user, UserForm userForm) {
         return userConverter.toUser(user, userForm);
     }
 }
