@@ -1,16 +1,11 @@
 package com.personal.school.service.impl;
 
+import com.personal.school.converter.ClassConverter;
 import com.personal.school.form.ClassForm;
 import com.personal.school.model.Class;
-import com.personal.school.model.Student;
-import com.personal.school.model.Teacher;
-import com.personal.school.model.TeachingType;
 import com.personal.school.repository.ClassRepository;
 import com.personal.school.service.ClassService;
-import com.personal.school.service.StudentService;
-import com.personal.school.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +21,16 @@ public class DefaultClassService implements ClassService {
 
     @Autowired
     ClassRepository classRepository;
-    @Autowired @Lazy
-    TeacherService teacherService;
-    @Autowired @Lazy
-    StudentService studentService;
+    @Autowired
+    ClassConverter classConverter;
 
     @Override
-    public List<Class> getAllByIdThrow(List<Long> ids){
+    public List<Class> getAll() {
+        return classRepository.findAll();
+    }
 
+    @Override
+    public List<Class> getAllById(List<Long> ids){
         if(isNull(ids)) return EMPTY_LIST;
 
         List<Class> classes = classRepository.findAllById(ids);
@@ -45,68 +42,33 @@ public class DefaultClassService implements ClassService {
         return classes;
     }
 
-    public Class getByIdThrow(Long idClass) {
-        Optional<Class> schoolClass = classRepository.findById(idClass);
+    @Override
+    public Class getById(Long id) {
+        Optional<Class> schoolClass = classRepository.findById(id);
 
         if(schoolClass.isPresent()){
             return schoolClass.get();
         } else {
-            throw new EmptyResultDataAccessException("Not found class", toIntExact(idClass));
+            throw new EmptyResultDataAccessException("Not found class", toIntExact(id));
         }
-
     }
 
     @Override
-    public List<Class> getAll() {
-        return classRepository.findAll();
-    }
-
-    @Override
-    public Optional<Class> getById(Long id) {
-        return classRepository.findById(id);
-    }
-
-    @Override
-    public Class toClass(ClassForm classForm) {
-        TeachingType teachingType = TeachingType.valueOf(classForm.getTeachingType());
-        List<Teacher> teachers = teacherService.getAllByIdThrow(classForm.getTeachers());
-        List<Student> students = studentService.getAllByIdThrow(classForm.getStudents());
-
-        return new Class(classForm.getName(), classForm.getQualificationNumber(), teachingType, teachers, students);
-    }
-
-    @Override
-    public void save(Class schoolClass) {
+    public Class save(ClassForm classForm) {
+        Class schoolClass = classConverter.toClass(classForm);
         classRepository.save(schoolClass);
+        return schoolClass;
     }
 
     @Override
-    public void remove(Long id) {
-        classRepository.deleteById(id);
+    public void remove(Class schoolClass) {
+        classRepository.delete(schoolClass);
     }
 
     @Override
     public Class update(Long id, ClassForm classForm) {
-        Optional<Class> optionalClass = getById(id);
-
-        if(optionalClass.isPresent()){
-            Class schoolClass = optionalClass.get();
-
-            List<Teacher> teachers = teacherService.getAllByIdThrow(classForm.getTeachers());
-            List<Student> students = studentService.getAllByIdThrow(classForm.getStudents());
-            TeachingType teachingType = TeachingType.valueOf(classForm.getTeachingType());
-
-            schoolClass.setName(classForm.getName());
-            schoolClass.setQualificationNumber(classForm.getQualificationNumber());
-            schoolClass.setTeachingType(teachingType);
-            schoolClass.setTeachers(teachers);
-            schoolClass.setStudents(students);
-
-            return schoolClass;
-
-        } else {
-            throw new EmptyResultDataAccessException("Not found class", toIntExact(id));
-        }
-
+        Class schoolClass = this.getById(id);
+        classConverter.toClass(schoolClass, classForm);
+        return schoolClass;
     }
 }

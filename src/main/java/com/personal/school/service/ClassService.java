@@ -8,19 +8,15 @@ import java.util.Optional;
 
 public interface ClassService {
 
-    List<Class> getAllByIdThrow(List<Long> idList);
-
-    Class getByIdThrow(Long idClass);
-
     List<Class> getAll();
 
-    Optional<Class> getById(Long id);
+    List<Class> getAllById(List<Long> idList);
 
-    Class toClass(ClassForm classForm);
+    Class getById(Long id);
 
-    void save(Class schoolClass);
+    Class save(ClassForm classForm);
 
-    void remove(Long id);
+    void remove(Class schoolClass);
 
     Class update(Long id, ClassForm classForm);
 }

@@ -1,6 +1,5 @@
 package com.personal.school.dto;
 
-import com.personal.school.model.Class;
 import com.personal.school.model.Student;
 import lombok.Getter;
 
@@ -16,7 +15,7 @@ public class StudentDTO {
     private final String name;
     private final String email;
     private final String telephone;
-    private final String documentNumber;
+    private final String cpf;
     private final String birthDate;
     private final Boolean isScholarshipHolder;
     private final ClassDTO schoolClass;
@@ -26,7 +25,7 @@ public class StudentDTO {
         this.name = student.getName();
         this.email = student.getEmail();
         this.telephone = student.getTelephone();
-        this.documentNumber = student.getDocumentNumber();
+        this.cpf = student.getCpf();
         this.birthDate = getDateDefaultFormatter(student.getBirthDate());
         this.isScholarshipHolder = student.getIsScholarshipHolder();
         this.schoolClass = new ClassDTO(student.getSchoolClass());

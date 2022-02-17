@@ -4,21 +4,18 @@ import com.personal.school.form.StudentForm;
 import com.personal.school.model.Student;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface StudentService {
 
     List<Student> getAll();
 
-    Optional<Student> getById(Long id);
+    List<Student> getAllById(List<Long> students);
 
-    void remove(Long id);
+    Student getById(Long id);
 
-    void save(Student student);
+    Student save(StudentForm studentForm);
 
-    Student update(Long id, StudentForm studentForm);
+    void remove(Student student);
 
-    Student toStudent(StudentForm studentForm);
-
-    List<Student> getAllByIdThrow(List<Long> students);
+    Student update(Student student, StudentForm studentUpdateForm);
 }

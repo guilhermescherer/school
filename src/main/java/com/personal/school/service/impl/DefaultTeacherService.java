@@ -1,27 +1,20 @@
 package com.personal.school.service.impl;
 
+import com.personal.school.converter.TeacherConverter;
+import com.personal.school.enums.UpdateSalaryType;
+import com.personal.school.exception.NotFoundException;
+import com.personal.school.form.ReajustSalaryForm;
 import com.personal.school.form.TeacherForm;
-import com.personal.school.model.Class;
-import com.personal.school.model.Schooling;
 import com.personal.school.model.Subject;
 import com.personal.school.model.Teacher;
 import com.personal.school.repository.TeacherRepository;
-import com.personal.school.service.ClassService;
-import com.personal.school.service.SubjectService;
 import com.personal.school.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
-
-import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
-import static java.lang.Math.toIntExact;
-import static java.util.Collections.EMPTY_LIST;
-import static java.util.Objects.isNull;
 
 @Service
 public class DefaultTeacherService implements TeacherService {
@@ -29,9 +22,7 @@ public class DefaultTeacherService implements TeacherService {
     @Autowired
     TeacherRepository teacherRepository;
     @Autowired
-    ClassService classService;
-    @Autowired @Lazy
-    SubjectService subjectService;
+    TeacherConverter teacherConverter;
 
     @Override
     public List<Teacher> getAll() {
@@ -39,74 +30,55 @@ public class DefaultTeacherService implements TeacherService {
     }
 
     @Override
-    public List<Teacher> getAllByIdThrow(List<Long> ids) {
-
-        if(isNull(ids)) return EMPTY_LIST;
-
-        List<Teacher> teachers = teacherRepository.findAllById(ids);
-
-        if(ids.size() != teachers.size()) {
-            throw new EmptyResultDataAccessException("Not found all teachers", ids.size());
+    public Teacher getById(Long id) {
+        Optional<Teacher> teacher = teacherRepository.findById(id);
+        if(!teacher.isPresent()){
+            throw new NotFoundException("Not found teacher");
         }
+        return teacher.get();
+    }
 
+    @Override
+    public List<Teacher> getAllById(@NotNull List<Long> ids) {
+        List<Teacher> teachers = teacherRepository.findAllById(ids);
+        if(ids.size() != teachers.size()) {
+            throw new NotFoundException("Not found all teachers");
+        }
         return teachers;
     }
 
     @Override
-    public Optional<Teacher> getById(Long id) {
-        return teacherRepository.findById(id);
-    }
-
-    @Override
-    public void save(Teacher teacher) {
+    public Teacher save(TeacherForm teacherForm) {
+        Teacher teacher = teacherConverter.toTeacher(teacherForm);
         teacherRepository.save(teacher);
+        return teacher;
     }
 
     @Override
-    public void remove(Long id) {
-        teacherRepository.deleteById(id);
+    public void saveSubjects(Teacher teacher, List<Subject> subjects) {
+        List<Subject> currentSubjects = teacher.getSubjects();
+        currentSubjects.addAll(subjects);
     }
 
     @Override
-    public Teacher toTeacher(TeacherForm teacherForm) {
-
-        List<Subject> subjects = subjectService.getAllByIdThrow(teacherForm.getSubjects());
-        List<Class> classes = classService.getAllByIdThrow(teacherForm.getClasses());
-
-        Schooling schooling = Schooling.valueOf(teacherForm.getSchooling());
-        LocalDate birthDate = LocalDate.parse(teacherForm.getBirthDate(), getDefaultDateFormatter());
-
-        return new Teacher(teacherForm.getName(), teacherForm.getEmail(), teacherForm.getTelephone(),
-                teacherForm.getDocumentNumber(), birthDate, schooling, classes, subjects);
+    public void remove(Teacher teacher) {
+        teacherRepository.delete(teacher);
     }
 
     @Override
-    public Teacher update(Long id, TeacherForm teacherForm) {
-
-        Optional<Teacher> optionalTeacher = getById(id);
-
-        if(optionalTeacher.isPresent()){
-
-            Teacher teacher = optionalTeacher.get();
-
-            List<Subject> subjects = subjectService.getAllByIdThrow(teacherForm.getSubjects());
-            List<Class> classes = classService.getAllByIdThrow(teacherForm.getClasses());
-            LocalDate birthDate = LocalDate.parse(teacherForm.getBirthDate(), getDefaultDateFormatter());
-            Schooling schooling = Schooling.valueOf(teacherForm.getSchooling());
-
-            teacher.setName(teacherForm.getName());
-            teacher.setEmail(teacherForm.getEmail());
-            teacher.setTelephone(teacherForm.getTelephone());
-            teacher.setDocumentNumber(teacherForm.getDocumentNumber());
-            teacher.setBirthDate(birthDate);
-            teacher.setSchooling(schooling);
-            teacher.setSubjects(subjects);
-            teacher.setClasses(classes);
-
-            return teacher;
-        } else {
-            throw new EmptyResultDataAccessException("Not found subject", toIntExact(id));
-        }
+    public Teacher update(Teacher teacher, TeacherForm teacherForm) {
+        return teacherConverter.toTeacher(teacher, teacherForm);
     }
 
+    @Override
+    public void updateSalary(Teacher teacher, ReajustSalaryForm reajustSalaryForm) {
+        UpdateSalaryType updateSalaryType = UpdateSalaryType.valueOf(reajustSalaryForm.getUpdateSalaryType());
+        teacher.updateSalary(reajustSalaryForm.getValue(), updateSalaryType);
+    }
+
+    @Override
+    public void removeSubjects(Teacher teacher, List<Subject> subjects) {
+        List<Subject> currentSubjects = teacher.getSubjects();
+        currentSubjects.removeAll(subjects);
+    }
 }

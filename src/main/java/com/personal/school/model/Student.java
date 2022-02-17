@@ -23,11 +23,4 @@ public class Student extends People {
         super(name, email, telephone, documentNumber, birthDate);
         this.isScholarshipHolder = isScholarshipHolder;
     }
-
-    public Student(String name, String email, String telephone, String documentNumber, LocalDate birthDate, Boolean isScholarshipHolder, Class schoolClass) {
-        super(name, email, telephone, documentNumber, birthDate);
-        this.isScholarshipHolder = isScholarshipHolder;
-        this.schoolClass = schoolClass;
-    }
-
 }

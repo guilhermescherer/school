@@ -8,8 +8,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 
 import java.util.Optional;
 
-import static com.personal.school.utils.ConstUtils.ROLE_ADMIN;
-import static com.personal.school.utils.ConstUtils.ROLE_USER;
+import static com.personal.school.utils.SecurityUtils.ROLE_ADMIN;
+import static com.personal.school.utils.SecurityUtils.ROLE_USER;
 
 public class RoleInitializr implements ApplicationListener<ContextRefreshedEvent> {
 

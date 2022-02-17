@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,12 +21,8 @@ public class DefaultRoleService implements RoleService {
     RoleRepository roleRepository;
 
     @Override
-    public List<Role> getAllByIdThrow(List<Long> ids) {
-
-        if(isNull(ids)) return EMPTY_LIST;
-
+    public List<Role> getAllById(List<Long> ids) {
         List<Role> roles = roleRepository.findAllById(ids);
-
         if(ids.size() != roles.size()) {
             throw new EmptyResultDataAccessException("Not found all roles", ids.size());
         }
@@ -34,8 +31,8 @@ public class DefaultRoleService implements RoleService {
     }
 
     @Override
-    public Optional<Role> getByName(String nameRole) {
-        return roleRepository.findByName(nameRole);
+    public Optional<Role> getByName(String name) {
+        return roleRepository.findByName(name);
     }
 
     @Override

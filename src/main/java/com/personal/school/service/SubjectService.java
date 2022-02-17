@@ -4,21 +4,18 @@ import com.personal.school.form.SubjectForm;
 import com.personal.school.model.Subject;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface SubjectService {
 
     List<Subject> getAll();
 
-    List<Subject> getAllByIdThrow(List<Long> subjects);
+    List<Subject> getAllById(List<Long> subjects);
 
-    Optional<Subject> getById(Long id);
+    Subject getById(Long id);
 
-    void save(Subject subject);
+    Subject save(SubjectForm subjectForm);
 
-    void remove(Long id);
+    void remove(Subject subject);
 
-    Subject toSubject(SubjectForm subjectForm);
-
-    Subject update(Long id, SubjectForm subjectForm);
+    Subject update(Subject id, SubjectForm subjectForm);
 }

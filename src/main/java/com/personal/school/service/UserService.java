@@ -4,19 +4,16 @@ import com.personal.school.form.UserForm;
 import com.personal.school.model.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
 
-    Optional<User> getById(Long id);
-
-    User toUser(UserForm userForm);
-
-    void save(User user);
-
     List<User> getAll();
 
-    void remove(Long id);
+    User getById(Long id);
 
-    User update(Long id, UserForm userForm);
+    User save(UserForm userForm);
+
+    void remove(User user);
+
+    User update(User id, UserForm userForm);
 }

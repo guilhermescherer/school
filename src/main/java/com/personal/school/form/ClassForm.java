@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
-import static com.personal.school.utils.FormatterUtils.DEFAULT_TEACHING_TYPE_REGEX;
+import static com.personal.school.utils.FormatterUtils.ENUM_REGEX_TEACHING_TYPE;
 
 @Getter
 public class ClassForm {
@@ -16,7 +16,7 @@ public class ClassForm {
     private String name;
     @NotNull
     private Integer qualificationNumber;
-    @NotNull @NotEmpty @Pattern(regexp = DEFAULT_TEACHING_TYPE_REGEX)
+    @NotNull @NotEmpty @Pattern(regexp = ENUM_REGEX_TEACHING_TYPE)
     private String teachingType;
     private List<Long> teachers;
     private List<Long> students;
