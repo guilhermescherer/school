@@ -24,24 +24,24 @@ public class DefaultUserConverter implements UserConverter {
     RoleService roleService;
 
     @Override
-    public User toUser(UserForm form) {
-        User user = new User();
-        BeanUtils.copyProperties(form, user);
+    public User toUser(UserForm source) {
+        User target = new User();
+        BeanUtils.copyProperties(source, target);
 
-        populatePassword(user, form.getPassword(), ADD);
-        populateRoles(user, form.getRoles(), ADD);
+        populatePassword(target, source.getPassword(), ADD);
+        populateRoles(target, source.getRoles(), ADD);
 
-        return user;
+        return target;
     }
 
     @Override
-    public User toUser(User user, UserForm form) {
-        BeanUtils.copyProperties(form, user, getNullProperties(form));
+    public User toUser(User target, UserForm source) {
+        BeanUtils.copyProperties(source, target, getNullProperties(source));
 
-        populatePassword(user, form.getPassword(), UPDATE);
-        populateRoles(user, form.getRoles(), UPDATE);
+        populatePassword(target, source.getPassword(), UPDATE);
+        populateRoles(target, source.getRoles(), UPDATE);
 
-        return user;
+        return target;
     }
 
     private void populateRoles(User user, List<Long> roles, ConvertMethod convertMethod) {

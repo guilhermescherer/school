@@ -5,6 +5,7 @@ import com.personal.school.converter.PeopleConverter;
 import com.personal.school.converter.StudentConverter;
 import com.personal.school.form.StudentForm;
 import com.personal.school.model.Student;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,21 +20,21 @@ public class DefaultStudentConverter implements StudentConverter {
     PeopleConverter peopleConverter;
 
     @Override
-    public Student toStudent(StudentForm studentForm) {
-        Student studentPopulated = (Student) peopleConverter.toPeople(new Student(), studentForm, ADD);
+    public Student toStudent(StudentForm source) {
+        Student target = (Student) peopleConverter.toPeople(new Student(), source, ADD);
 
-        populateScholarshipHolder(studentPopulated, studentForm.getIsScholarshipHolder(), ADD);
+        populateScholarshipHolder(target, source.getIsScholarshipHolder(), ADD);
 
-        return studentPopulated;
+        return target;
     }
 
     @Override
-    public Student toStudent(Student student, StudentForm studentForm) {
-        Student studentPopulated = (Student) peopleConverter.toPeople(student, studentForm, UPDATE);
+    public Student toStudent(Student student, StudentForm source) {
+        Student target = (Student) peopleConverter.toPeople(student, source, UPDATE);
 
-        populateScholarshipHolder(studentPopulated, studentForm.getIsScholarshipHolder(), UPDATE);
+        populateScholarshipHolder(target, source.getIsScholarshipHolder(), UPDATE);
 
-        return studentPopulated;
+        return target;
     }
 
     private void populateScholarshipHolder(Student student, Boolean isScholarshipHolder, ConvertMethod convertMethod) {

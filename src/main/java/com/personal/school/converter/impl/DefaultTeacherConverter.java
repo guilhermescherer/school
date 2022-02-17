@@ -21,27 +21,31 @@ public class DefaultTeacherConverter implements TeacherConverter {
     PeopleConverter peopleConverter;
 
     @Override
-    public Teacher toTeacher(TeacherForm teacherForm) {
-        Teacher teacher = (Teacher) peopleConverter.toPeople(new Teacher(), teacherForm, ADD);
+    public Teacher toTeacher(TeacherForm source) {
+        Teacher target = (Teacher) peopleConverter.toPeople(new Teacher(), source, ADD);
 
-        teacher.setSalary(BigDecimal.valueOf(teacherForm.getSalary()));
-        populateSchooling(teacher, teacherForm.getSchooling(), ADD);
+        populateSalary(target, source.getSalary());
+        populateSchooling(target, source.getSchooling(), ADD);
 
-        return teacher;
+        return target;
     }
 
     @Override
-    public Teacher toTeacher(Teacher teacher, TeacherForm teacherForm) {
-        Teacher teacherPopulated = (Teacher) peopleConverter.toPeople(teacher, teacherForm, UPDATE);
+    public Teacher toTeacher(Teacher teacher, TeacherForm source) {
+        Teacher target = (Teacher) peopleConverter.toPeople(teacher, source, UPDATE);
 
-        populateSchooling(teacherPopulated, teacherForm.getSchooling(), UPDATE);
+        populateSchooling(target, source.getSchooling(), UPDATE);
 
-        return teacherPopulated;
+        return target;
     }
 
     private void populateSchooling(Teacher teacher, String schooling, ConvertMethod convertMethod) {
         if(isValidSet(schooling, convertMethod)) {
             teacher.setSchooling(Schooling.valueOf(schooling));
         }
+    }
+
+    private void populateSalary(Teacher teacher, Double salary) {
+        teacher.setSalary(BigDecimal.valueOf(salary));
     }
 }

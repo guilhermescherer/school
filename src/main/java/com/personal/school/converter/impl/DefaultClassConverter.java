@@ -7,6 +7,7 @@ import com.personal.school.model.Class;
 import com.personal.school.model.TeachingType;
 import com.personal.school.service.StudentService;
 import com.personal.school.service.TeacherService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,24 +26,26 @@ public class DefaultClassConverter implements ClassConverter {
     StudentService studentService;
 
     @Override
-    public Class toClass(ClassForm classForm) {
-        Class schoolClass = new Class();
-        return getClass(classForm, schoolClass, ADD);
+    public Class toClass(ClassForm source) {
+        Class target = new Class();
+        BeanUtils.copyProperties(source, target);
+
+        populateTeaching(target, source.getTeachingType(), ADD);
+        populateTeachers(target, source.getTeachers(), ADD);
+        populateStudents(target, source.getStudents(), ADD);
+
+        return target;
     }
 
     @Override
-    public Class toClass(Class schoolClass, ClassForm classForm) {
-        return getClass(classForm, schoolClass, UPDATE);
-    }
+    public Class toClass(Class target, ClassForm source) {
+        BeanUtils.copyProperties(source, target);
 
-    private Class getClass(ClassForm classForm, Class schoolClass, ConvertMethod convertMethod) {
-        populateName(schoolClass, classForm.getName(), convertMethod);
-        populateQualification(schoolClass, classForm.getQualificationNumber(), convertMethod);
-        populateTeaching(schoolClass, classForm.getTeachingType(), convertMethod);
-        populateTeachers(schoolClass, classForm.getTeachers(), convertMethod);
-        populateStudents(schoolClass, classForm.getStudents(), convertMethod);
+        populateTeaching(target, source.getTeachingType(), UPDATE);
+        populateTeachers(target, source.getTeachers(), UPDATE);
+        populateStudents(target, source.getStudents(), UPDATE);
 
-        return schoolClass;
+        return target;
     }
 
     private void populateStudents(Class schoolClass, List<Long> students, ConvertMethod convertMethod) {
@@ -62,17 +65,4 @@ public class DefaultClassConverter implements ClassConverter {
             schoolClass.setTeachingType(TeachingType.valueOf(teachingType));
         }
     }
-
-    private void populateQualification(Class schoolClass, Integer qualificationNumber, ConvertMethod convertMethod) {
-        if(isValidSet(qualificationNumber, convertMethod)) {
-            schoolClass.setQualificationNumber(qualificationNumber);
-        }
-    }
-
-    private void populateName(Class schoolClass, String name, ConvertMethod convertMethod) {
-        if(isValidSet(name, convertMethod)) {
-            schoolClass.setName(name);
-        }
-    }
-
 }
