@@ -1,11 +1,11 @@
-package com.personal.school.service;
+package com.personal.school.facade;
 
 import com.personal.school.form.UserForm;
 import com.personal.school.model.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserFacade {
 
     List<User> getAll();
 
@@ -13,7 +13,7 @@ public interface UserService {
 
     User save(UserForm userForm);
 
-    void remove(User user);
+    void remove(Long id);
 
-    User update(User id, UserForm userForm);
+    User update(Long id, UserForm userForm);
 }

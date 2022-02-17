@@ -1,26 +1,29 @@
 package com.personal.school.service;
 
+import com.personal.school.form.ReajustSalaryForm;
 import com.personal.school.form.TeacherForm;
+import com.personal.school.model.Subject;
 import com.personal.school.model.Teacher;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TeacherService {
 
     List<Teacher> getAll();
 
-    List<Teacher> getAllByIdThrow(List<Long> teachers);
+    List<Teacher> getAllById(List<Long> teachers);
 
-    Teacher getByIdThrow(Long id);
-
-    Optional<Teacher> getById(Long id);
+    Teacher getById(Long id);
 
     Teacher save(TeacherForm teacherForm);
 
-    void remove(Long id);
+    void saveSubjects(Teacher teacher, List<Subject> subjects);
 
-    Teacher update(Long id, TeacherForm teacherForm);
+    void remove(Teacher teacher);
 
-    void reajustSalary(Long id, String percentage);
+    Teacher update(Teacher teacher, TeacherForm teacherForm);
+
+    void updateSalary(Teacher teacher, ReajustSalaryForm percentage);
+
+    void removeSubjects(Teacher teacher, List<Subject> subjects);
 }

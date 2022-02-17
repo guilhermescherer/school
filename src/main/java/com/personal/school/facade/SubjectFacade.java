@@ -1,21 +1,20 @@
-package com.personal.school.service;
+package com.personal.school.facade;
 
 import com.personal.school.form.SubjectForm;
 import com.personal.school.model.Subject;
 
 import java.util.List;
 
-public interface SubjectService {
+public interface SubjectFacade {
 
     List<Subject> getAll();
-
-    List<Subject> getAllById(List<Long> subjects);
 
     Subject getById(Long id);
 
     Subject save(SubjectForm subjectForm);
 
-    void remove(Subject subject);
+    void remove(Long id);
 
-    Subject update(Subject id, SubjectForm subjectForm);
+    Subject update(Long id, SubjectForm subjectForm);
+
 }

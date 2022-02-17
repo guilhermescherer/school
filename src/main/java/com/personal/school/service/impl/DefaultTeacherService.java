@@ -1,20 +1,20 @@
 package com.personal.school.service.impl;
 
 import com.personal.school.converter.TeacherConverter;
+import com.personal.school.enums.UpdateSalaryType;
+import com.personal.school.exception.NotFoundException;
+import com.personal.school.form.ReajustSalaryForm;
 import com.personal.school.form.TeacherForm;
+import com.personal.school.model.Subject;
 import com.personal.school.model.Teacher;
 import com.personal.school.repository.TeacherRepository;
 import com.personal.school.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
-
-import static java.lang.Math.toIntExact;
-import static java.util.Collections.EMPTY_LIST;
-import static java.util.Objects.isNull;
 
 @Service
 public class DefaultTeacherService implements TeacherService {
@@ -30,28 +30,21 @@ public class DefaultTeacherService implements TeacherService {
     }
 
     @Override
-    public List<Teacher> getAllByIdThrow(List<Long> ids) {
-        if(isNull(ids)) return EMPTY_LIST;
-
-        List<Teacher> teachers = teacherRepository.findAllById(ids);
-        if(ids.size() != teachers.size()) {
-            throw new EmptyResultDataAccessException("Not found teacher", ids.size());
-        }
-        return teachers;
-    }
-
-    @Override
-    public Teacher getByIdThrow(Long id) {
+    public Teacher getById(Long id) {
         Optional<Teacher> teacher = teacherRepository.findById(id);
         if(!teacher.isPresent()){
-            throw new EmptyResultDataAccessException("Not found teacher", toIntExact(id));
+            throw new NotFoundException("Not found teacher");
         }
         return teacher.get();
     }
 
     @Override
-    public Optional<Teacher> getById(Long id) {
-        return teacherRepository.findById(id);
+    public List<Teacher> getAllById(@NotNull List<Long> ids) {
+        List<Teacher> teachers = teacherRepository.findAllById(ids);
+        if(ids.size() != teachers.size()) {
+            throw new NotFoundException("Not found all teachers");
+        }
+        return teachers;
     }
 
     @Override
@@ -62,19 +55,30 @@ public class DefaultTeacherService implements TeacherService {
     }
 
     @Override
-    public void remove(Long id) {
-        teacherRepository.deleteById(id);
+    public void saveSubjects(Teacher teacher, List<Subject> subjects) {
+        List<Subject> currentSubjects = teacher.getSubjects();
+        currentSubjects.addAll(subjects);
     }
 
     @Override
-    public Teacher update(Long id, TeacherForm teacherForm) {
-        Teacher teacher = getByIdThrow(id);
+    public void remove(Teacher teacher) {
+        teacherRepository.delete(teacher);
+    }
+
+    @Override
+    public Teacher update(Teacher teacher, TeacherForm teacherForm) {
         return teacherConverter.toTeacher(teacher, teacherForm);
     }
 
     @Override
-    public void reajustSalary(Long id, String percentage) {
-        Teacher teacher = getByIdThrow(id);
-        teacher.reajustSalary(percentage);
+    public void updateSalary(Teacher teacher, ReajustSalaryForm reajustSalaryForm) {
+        UpdateSalaryType updateSalaryType = UpdateSalaryType.valueOf(reajustSalaryForm.getUpdateSalaryType());
+        teacher.updateSalary(reajustSalaryForm.getValue(), updateSalaryType);
+    }
+
+    @Override
+    public void removeSubjects(Teacher teacher, List<Subject> subjects) {
+        List<Subject> currentSubjects = teacher.getSubjects();
+        currentSubjects.removeAll(subjects);
     }
 }
