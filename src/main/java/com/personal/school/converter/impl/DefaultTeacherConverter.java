@@ -1,6 +1,6 @@
 package com.personal.school.converter.impl;
 
-import com.personal.school.converter.ConvertMethod;
+import com.personal.school.enums.ConvertMethod;
 import com.personal.school.converter.PeopleConverter;
 import com.personal.school.converter.TeacherConverter;
 import com.personal.school.form.TeacherForm;
@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
-import static com.personal.school.converter.ConvertMethod.ADD;
-import static com.personal.school.converter.ConvertMethod.UPDATE;
+import static com.personal.school.enums.ConvertMethod.ADD;
+import static com.personal.school.enums.ConvertMethod.UPDATE;
 import static com.personal.school.utils.ConverterUtils.isValidSet;
 
 @Component

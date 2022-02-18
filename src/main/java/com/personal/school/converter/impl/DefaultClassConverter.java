@@ -1,7 +1,7 @@
 package com.personal.school.converter.impl;
 
 import com.personal.school.converter.ClassConverter;
-import com.personal.school.converter.ConvertMethod;
+import com.personal.school.enums.ConvertMethod;
 import com.personal.school.form.ClassForm;
 import com.personal.school.model.Class;
 import com.personal.school.model.TeachingType;
@@ -13,9 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.personal.school.converter.ConvertMethod.ADD;
-import static com.personal.school.converter.ConvertMethod.UPDATE;
+import static com.personal.school.enums.ConvertMethod.ADD;
+import static com.personal.school.enums.ConvertMethod.UPDATE;
 import static com.personal.school.utils.ConverterUtils.isValidSet;
+import static com.personal.school.utils.PropertyUtils.getNullProperties;
 
 @Service
 public class DefaultClassConverter implements ClassConverter {
@@ -39,7 +40,7 @@ public class DefaultClassConverter implements ClassConverter {
 
     @Override
     public Class toClass(Class target, ClassForm source) {
-        BeanUtils.copyProperties(source, target);
+        BeanUtils.copyProperties(source, target, getNullProperties(source));
 
         populateTeaching(target, source.getTeachingType(), UPDATE);
         populateTeachers(target, source.getTeachers(), UPDATE);

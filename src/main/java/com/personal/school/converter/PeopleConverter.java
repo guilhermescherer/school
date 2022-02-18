@@ -1,5 +1,6 @@
 package com.personal.school.converter;
 
+import com.personal.school.enums.ConvertMethod;
 import com.personal.school.form.PeopleForm;
 import com.personal.school.model.People;
 

@@ -13,8 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+
+import static com.personal.school.utils.CalcUtils.getValueWithPercentage;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 @Service
 public class DefaultTeacherService implements TeacherService {
@@ -26,7 +30,11 @@ public class DefaultTeacherService implements TeacherService {
 
     @Override
     public List<Teacher> getAll() {
-        return teacherRepository.findAll();
+        final List<Teacher> teachers = teacherRepository.findAll();
+        if(isEmpty(teachers)) {
+            throw new NotFoundException("Not found any teacher");
+        }
+        return teachers;
     }
 
     @Override
@@ -71,9 +79,18 @@ public class DefaultTeacherService implements TeacherService {
     }
 
     @Override
-    public void updateSalary(Teacher teacher, ReajustSalaryForm reajustSalaryForm) {
-        UpdateSalaryType updateSalaryType = UpdateSalaryType.valueOf(reajustSalaryForm.getUpdateSalaryType());
-        teacher.updateSalary(reajustSalaryForm.getValue(), updateSalaryType);
+    public void updateSalary(Teacher teacher, ReajustSalaryForm form) {
+        UpdateSalaryType updateSalaryType = UpdateSalaryType.valueOf(form.getUpdateSalaryType());
+        BigDecimal amountReajust = new BigDecimal(form.getValue());
+
+        switch (updateSalaryType) {
+            case PERCENTAGE:
+                teacher.setSalary(getValueWithPercentage(teacher.getSalary(), amountReajust));
+                break;
+            case SUM:
+                teacher.setSalary(teacher.getSalary().add(amountReajust));
+                break;
+        }
     }
 
     @Override

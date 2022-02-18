@@ -26,5 +26,4 @@ public class DefaultAuthenticationService implements AuthenticationService {
 
         throw new UsernameNotFoundException("Invalid Fields");
     }
-
 }

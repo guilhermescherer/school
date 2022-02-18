@@ -1,19 +1,19 @@
 package com.personal.school.service.impl;
 
 import com.personal.school.converter.StudentConverter;
+import com.personal.school.exception.NotFoundException;
 import com.personal.school.form.StudentForm;
 import com.personal.school.model.Student;
 import com.personal.school.repository.StudentRepository;
 import com.personal.school.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
-import static java.lang.Math.toIntExact;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 @Service
 public class DefaultStudentService implements StudentService {
@@ -25,14 +25,18 @@ public class DefaultStudentService implements StudentService {
 
     @Override
     public List<Student> getAll() {
-        return studentRepository.findAll();
+        final List<Student> students = studentRepository.findAll();
+        if(isEmpty(students)) {
+            throw new NotFoundException("Not found any student");
+        }
+        return students;
     }
 
     @Override
     public List<Student> getAllById(@NotNull List<Long> ids) {
         List<Student> students = studentRepository.findAllById(ids);
         if(ids.size() != students.size()) {
-            throw new EmptyResultDataAccessException("Not found all students", ids.size());
+            throw new NotFoundException("Not found all students");
         }
         return students;
     }
@@ -41,7 +45,7 @@ public class DefaultStudentService implements StudentService {
     public Student getById(Long id) {
         Optional<Student> student = studentRepository.findById(id);
         if(!student.isPresent()) {
-            throw new EmptyResultDataAccessException("Not found student", toIntExact(id));
+            throw new NotFoundException("Not found student");
         }
         return student.get();
     }

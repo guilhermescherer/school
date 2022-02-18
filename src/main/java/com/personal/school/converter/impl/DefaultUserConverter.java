@@ -1,6 +1,6 @@
 package com.personal.school.converter.impl;
 
-import com.personal.school.converter.ConvertMethod;
+import com.personal.school.enums.ConvertMethod;
 import com.personal.school.converter.UserConverter;
 import com.personal.school.form.UserForm;
 import com.personal.school.model.User;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static com.personal.school.converter.ConvertMethod.ADD;
-import static com.personal.school.converter.ConvertMethod.UPDATE;
+import static com.personal.school.enums.ConvertMethod.ADD;
+import static com.personal.school.enums.ConvertMethod.UPDATE;
 import static com.personal.school.utils.ConverterUtils.isValidSet;
 import static com.personal.school.utils.PropertyUtils.getNullProperties;
 import static com.personal.school.utils.SecurityUtils.encodePassword;
