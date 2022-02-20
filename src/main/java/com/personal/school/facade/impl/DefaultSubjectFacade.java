@@ -1,15 +1,15 @@
 package com.personal.school.facade.impl;
 
+import com.personal.school.facade.Facade;
 import com.personal.school.facade.SubjectFacade;
 import com.personal.school.form.SubjectForm;
 import com.personal.school.model.Subject;
 import com.personal.school.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+@Facade
 public class DefaultSubjectFacade implements SubjectFacade {
 
     @Autowired

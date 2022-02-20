@@ -23,7 +23,7 @@ public interface TeacherService {
 
     Teacher update(Teacher teacher, TeacherForm teacherForm);
 
-    void updateSalary(Teacher teacher, ReajustSalaryForm percentage);
-
     void removeSubjects(Teacher teacher, List<Subject> subjects);
+
+    void updateSalary(Teacher teacher, ReajustSalaryForm reajustSalaryForm);
 }

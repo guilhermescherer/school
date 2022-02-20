@@ -1,6 +1,6 @@
 package com.personal.school.service.impl;
 
-import com.personal.school.converter.UserConverter;
+import com.personal.school.converter.Converter;
 import com.personal.school.exception.NotFoundException;
 import com.personal.school.form.UserForm;
 import com.personal.school.model.User;
@@ -20,7 +20,7 @@ public class DefaultUserService implements UserService {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    UserConverter userConverter;
+    Converter<UserForm, User> userConverter;
 
     @Override
     public List<User> getAll() {
@@ -42,7 +42,7 @@ public class DefaultUserService implements UserService {
 
     @Override
     public User save(UserForm userForm) {
-        User user = userConverter.toUser(userForm);
+        User user = userConverter.convert(userForm);
         userRepository.save(user);
         return user;
     }
@@ -54,6 +54,6 @@ public class DefaultUserService implements UserService {
 
     @Override
     public User update(User user, UserForm userForm) {
-        return userConverter.toUser(user, userForm);
+        return userConverter.convert(user, userForm);
     }
 }

@@ -1,5 +1,6 @@
 package com.personal.school.facade.impl;
 
+import com.personal.school.facade.Facade;
 import com.personal.school.facade.TeacherFacade;
 import com.personal.school.form.ReajustSalaryForm;
 import com.personal.school.form.TeacherForm;
@@ -8,11 +9,10 @@ import com.personal.school.model.Teacher;
 import com.personal.school.service.SubjectService;
 import com.personal.school.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+@Facade
 public class DefaultTeacherFacade implements TeacherFacade {
 
     @Autowired

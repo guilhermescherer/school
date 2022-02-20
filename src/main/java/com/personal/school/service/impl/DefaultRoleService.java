@@ -1,5 +1,6 @@
 package com.personal.school.service.impl;
 
+import com.personal.school.exception.NotFoundException;
 import com.personal.school.model.Role;
 import com.personal.school.repository.RoleRepository;
 import com.personal.school.service.RoleService;
@@ -24,7 +25,7 @@ public class DefaultRoleService implements RoleService {
     public List<Role> getAllById(List<Long> ids) {
         List<Role> roles = roleRepository.findAllById(ids);
         if(ids.size() != roles.size()) {
-            throw new EmptyResultDataAccessException("Not found all roles", ids.size());
+            throw new NotFoundException("Not found all roles");
         }
 
         return roles;

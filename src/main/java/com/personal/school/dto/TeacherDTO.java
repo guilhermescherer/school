@@ -18,6 +18,7 @@ public class TeacherDTO {
     private final String cpf;
     private final String birthDate;
     private final String schooling;
+    private final String salary;
 
     public TeacherDTO(Teacher teacher) {
         this.id = teacher.getId();
@@ -27,6 +28,7 @@ public class TeacherDTO {
         this.cpf = teacher.getCpf();
         this.birthDate = getDateDefaultFormatter(teacher.getBirthDate());
         this.schooling = teacher.getSchooling().name();
+        this.salary = teacher.getSalary().toString();
     }
 
     public static List<TeacherDTO> toDto(List<Teacher> teachers){
