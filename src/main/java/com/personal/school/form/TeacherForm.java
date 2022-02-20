@@ -2,10 +2,10 @@ package com.personal.school.form;
 
 import com.personal.school.form.groups.Add;
 import com.personal.school.form.groups.Update;
+import com.personal.school.validator.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;

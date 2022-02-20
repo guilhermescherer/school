@@ -1,6 +1,6 @@
 package com.personal.school.utils;
 
-import com.personal.school.converter.ConvertMethod;
+import com.personal.school.enums.ConvertMethod;
 
 public class ConverterUtils {
 

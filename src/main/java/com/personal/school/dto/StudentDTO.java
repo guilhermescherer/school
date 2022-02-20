@@ -28,7 +28,7 @@ public class StudentDTO {
         this.cpf = student.getCpf();
         this.birthDate = getDateDefaultFormatter(student.getBirthDate());
         this.isScholarshipHolder = student.getIsScholarshipHolder();
-        this.schoolClass = new ClassDTO(student.getSchoolClass());
+        this.schoolClass = student.getSchoolClass() != null ? new ClassDTO(student.getSchoolClass()) : null;
     }
 
     public static List<StudentDTO> toDto(List<Student> students) {

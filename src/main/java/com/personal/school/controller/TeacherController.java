@@ -3,6 +3,7 @@ package com.personal.school.controller;
 import com.personal.school.dto.TeacherDTO;
 import com.personal.school.dto.TeacherDetailsDTO;
 import com.personal.school.facade.TeacherFacade;
+import com.personal.school.form.IdForm;
 import com.personal.school.form.ReajustSalaryForm;
 import com.personal.school.form.TeacherForm;
 import com.personal.school.form.groups.Add;
@@ -57,10 +58,10 @@ public class TeacherController {
         return ResponseEntity.created(uri).body(new TeacherDTO(teacher));
     }
 
-    @PostMapping("{idTeacher}/subjects")
+    @PostMapping("{id}/subjects")
     @Transactional
-    public ResponseEntity<?> addSubjects(@PathVariable Long idTeacher, @RequestBody List<Long> idsSubjects) {
-        teacherFacade.saveSubjects(idTeacher, idsSubjects);
+    public ResponseEntity<?> addSubjects(@PathVariable Long id, @RequestBody IdForm form) {
+        teacherFacade.saveSubjects(id, form.getIds());
         return ResponseEntity.ok().build();
     }
 
@@ -87,8 +88,8 @@ public class TeacherController {
 
     @DeleteMapping("{id}/subjects")
     @Transactional
-    public ResponseEntity<?> removeSubjects(@PathVariable Long idTeacher, @RequestBody List<Long> idsSubjects) {
-        teacherFacade.removeSubjects(idTeacher, idsSubjects);
+    public ResponseEntity<?> removeSubjects(@PathVariable Long id, @RequestBody IdForm form) {
+        teacherFacade.removeSubjects(id, form.getIds());
         return ResponseEntity.ok().build();
     }
 }

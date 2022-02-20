@@ -1,4 +1,4 @@
-package com.personal.school.converter;
+package com.personal.school.enums;
 
 public enum ConvertMethod {
     ADD, UPDATE

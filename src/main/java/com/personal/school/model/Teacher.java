@@ -21,7 +21,6 @@ public class Teacher extends People {
 
     private static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
 
-    @Setter(AccessLevel.NONE)
     private BigDecimal salary;
 
     @Enumerated(EnumType.STRING)
@@ -43,26 +42,5 @@ public class Teacher extends People {
         super(name, email, telephone, cpf, birthDate);
         this.salary = salary;
         this.schooling = schooling;
-    }
-
-    public void setSalary(BigDecimal salary) {
-        if(isNull(this.salary)) {
-            this.salary = salary;
-        } else {
-            throw new RuntimeException("The salary already exists, it can only be readjusted");
-        }
-    }
-
-    public void updateSalary(String value, UpdateSalaryType updateSalaryType) {
-        if(nonNull(this.salary)) {
-            switch (updateSalaryType) {
-                case PERCENTAGE:
-                    this.salary = getValueWithPercentage(this.salary, new BigDecimal(value));
-                    break;
-                case SUM:
-                    this.salary = this.salary.add(new BigDecimal(value));
-                    break;
-            }
-        }
     }
 }

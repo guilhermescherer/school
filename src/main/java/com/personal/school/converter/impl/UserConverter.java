@@ -1,7 +1,7 @@
 package com.personal.school.converter.impl;
 
-import com.personal.school.converter.ConvertMethod;
-import com.personal.school.converter.UserConverter;
+import com.personal.school.converter.Converter;
+import com.personal.school.enums.ConvertMethod;
 import com.personal.school.form.UserForm;
 import com.personal.school.model.User;
 import com.personal.school.service.RoleService;
@@ -11,37 +11,37 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static com.personal.school.converter.ConvertMethod.ADD;
-import static com.personal.school.converter.ConvertMethod.UPDATE;
+import static com.personal.school.enums.ConvertMethod.ADD;
+import static com.personal.school.enums.ConvertMethod.UPDATE;
 import static com.personal.school.utils.ConverterUtils.isValidSet;
 import static com.personal.school.utils.PropertyUtils.getNullProperties;
 import static com.personal.school.utils.SecurityUtils.encodePassword;
 
 @Component
-public class DefaultUserConverter implements UserConverter {
+public class UserConverter implements Converter<UserForm, User> {
 
     @Autowired
     RoleService roleService;
 
     @Override
-    public User toUser(UserForm form) {
-        User user = new User();
-        BeanUtils.copyProperties(form, user);
+    public User convert(UserForm source) {
+        User target = new User();
+        BeanUtils.copyProperties(source, target);
 
-        populatePassword(user, form.getPassword(), ADD);
-        populateRoles(user, form.getRoles(), ADD);
+        populatePassword(target, source.getPassword(), ADD);
+        populateRoles(target, source.getRoles(), ADD);
 
-        return user;
+        return target;
     }
 
     @Override
-    public User toUser(User user, UserForm form) {
-        BeanUtils.copyProperties(form, user, getNullProperties(form));
+    public User convert(User target, UserForm source) {
+        BeanUtils.copyProperties(source, target, getNullProperties(source));
 
-        populatePassword(user, form.getPassword(), UPDATE);
-        populateRoles(user, form.getRoles(), UPDATE);
+        populatePassword(target, source.getPassword(), UPDATE);
+        populateRoles(target, source.getRoles(), UPDATE);
 
-        return user;
+        return target;
     }
 
     private void populateRoles(User user, List<Long> roles, ConvertMethod convertMethod) {

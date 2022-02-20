@@ -1,20 +1,22 @@
 package com.personal.school.service.impl;
 
-import com.personal.school.converter.ClassConverter;
+import com.personal.school.converter.Converter;
+import com.personal.school.exception.NotFoundException;
 import com.personal.school.form.ClassForm;
 import com.personal.school.model.Class;
+import com.personal.school.model.Student;
+import com.personal.school.model.Subject;
+import com.personal.school.model.Teacher;
 import com.personal.school.repository.ClassRepository;
 import com.personal.school.service.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
-import static java.lang.Math.toIntExact;
-import static java.util.Collections.EMPTY_LIST;
-import static java.util.Objects.isNull;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 @Service
 public class DefaultClassService implements ClassService {
@@ -22,21 +24,23 @@ public class DefaultClassService implements ClassService {
     @Autowired
     ClassRepository classRepository;
     @Autowired
-    ClassConverter classConverter;
+    Converter<ClassForm, Class> classConverter;
 
     @Override
     public List<Class> getAll() {
-        return classRepository.findAll();
+        final List<Class> classes = classRepository.findAll();
+        if(isEmpty(classes)) {
+            throw new NotFoundException("Not found any class");
+        }
+        return classes;
     }
 
     @Override
-    public List<Class> getAllById(List<Long> ids){
-        if(isNull(ids)) return EMPTY_LIST;
-
+    public List<Class> getAllById(@NotNull List<Long> ids){
         List<Class> classes = classRepository.findAllById(ids);
 
         if(ids.size() != classes.size()) {
-            throw new EmptyResultDataAccessException("Not found all classes", ids.size());
+            throw new NotFoundException("Not found all classes");
         }
 
         return classes;
@@ -49,13 +53,13 @@ public class DefaultClassService implements ClassService {
         if(schoolClass.isPresent()){
             return schoolClass.get();
         } else {
-            throw new EmptyResultDataAccessException("Not found class", toIntExact(id));
+            throw new NotFoundException("Not found class");
         }
     }
 
     @Override
     public Class save(ClassForm classForm) {
-        Class schoolClass = classConverter.toClass(classForm);
+        Class schoolClass = classConverter.convert(classForm);
         classRepository.save(schoolClass);
         return schoolClass;
     }
@@ -68,7 +72,31 @@ public class DefaultClassService implements ClassService {
     @Override
     public Class update(Long id, ClassForm classForm) {
         Class schoolClass = this.getById(id);
-        classConverter.toClass(schoolClass, classForm);
+        classConverter.convert(schoolClass, classForm);
         return schoolClass;
+    }
+
+    @Override
+    public void saveStudents(Class schoolClass, List<Student> students) {
+        List<Student> currentStudents = schoolClass.getStudents();
+        currentStudents.addAll(students);
+    }
+
+    @Override
+    public void saveTeachers(Class schoolClass, List<Teacher> teachers) {
+        List<Teacher> currentTeachers = schoolClass.getTeachers();
+        currentTeachers.addAll(teachers);
+    }
+
+    @Override
+    public void removeStudents(Class schoolClass, List<Student> students) {
+        List<Student> currentStudents = schoolClass.getStudents();
+        currentStudents.removeAll(students);
+    }
+
+    @Override
+    public void removeTeachers(Class schoolClass, List<Teacher> teachers) {
+        List<Teacher> currentTeachers = schoolClass.getTeachers();
+        currentTeachers.removeAll(teachers);
     }
 }

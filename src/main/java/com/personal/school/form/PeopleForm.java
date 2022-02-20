@@ -1,12 +1,12 @@
 package com.personal.school.form;
 
 import com.personal.school.form.groups.Add;
+import com.personal.school.validator.NotEmpty;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
