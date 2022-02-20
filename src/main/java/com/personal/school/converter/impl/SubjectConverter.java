@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import static com.personal.school.utils.PropertyUtils.getNullProperties;
 
 @Component
-public class DefaultSubjectConverter implements Converter<SubjectForm, Subject> {
+public class SubjectConverter implements Converter<SubjectForm, Subject> {
 
     @Override
     public Subject convert(SubjectForm source) {

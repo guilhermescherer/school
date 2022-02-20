@@ -15,7 +15,7 @@ import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
 import static com.personal.school.utils.PropertyUtils.getNullProperties;
 
 @Component
-public class DefaultPeopleConverter implements AbstractConverter<PeopleForm, People> {
+public class PeopleConverter implements AbstractConverter<PeopleForm, People> {
 
     @Override
     public People convert(People target, PeopleForm source, ConvertMethod convertMethod) {

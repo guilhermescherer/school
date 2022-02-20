@@ -5,6 +5,8 @@ import com.personal.school.exception.NotFoundException;
 import com.personal.school.form.ClassForm;
 import com.personal.school.model.Class;
 import com.personal.school.model.Student;
+import com.personal.school.model.Subject;
+import com.personal.school.model.Teacher;
 import com.personal.school.repository.ClassRepository;
 import com.personal.school.service.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,5 +80,23 @@ public class DefaultClassService implements ClassService {
     public void saveStudents(Class schoolClass, List<Student> students) {
         List<Student> currentStudents = schoolClass.getStudents();
         currentStudents.addAll(students);
+    }
+
+    @Override
+    public void saveTeachers(Class schoolClass, List<Teacher> teachers) {
+        List<Teacher> currentTeachers = schoolClass.getTeachers();
+        currentTeachers.addAll(teachers);
+    }
+
+    @Override
+    public void removeStudents(Class schoolClass, List<Student> students) {
+        List<Student> currentStudents = schoolClass.getStudents();
+        currentStudents.removeAll(students);
+    }
+
+    @Override
+    public void removeTeachers(Class schoolClass, List<Teacher> teachers) {
+        List<Teacher> currentTeachers = schoolClass.getTeachers();
+        currentTeachers.removeAll(teachers);
     }
 }

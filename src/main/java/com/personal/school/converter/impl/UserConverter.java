@@ -18,7 +18,7 @@ import static com.personal.school.utils.PropertyUtils.getNullProperties;
 import static com.personal.school.utils.SecurityUtils.encodePassword;
 
 @Component
-public class DefaultUserConverter implements Converter<UserForm, User> {
+public class UserConverter implements Converter<UserForm, User> {
 
     @Autowired
     RoleService roleService;

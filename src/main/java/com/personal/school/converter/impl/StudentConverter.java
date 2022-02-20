@@ -15,7 +15,7 @@ import static com.personal.school.enums.ConvertMethod.UPDATE;
 import static com.personal.school.utils.ConverterUtils.isValidSet;
 
 @Component
-public class DefaultStudentConverter implements Converter<StudentForm, Student> {
+public class StudentConverter implements Converter<StudentForm, Student> {
 
     @Autowired
     AbstractConverter<PeopleForm, People> peopleConverter;

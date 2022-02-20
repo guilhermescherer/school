@@ -4,11 +4,13 @@ import com.personal.school.converter.Converter;
 import com.personal.school.enums.ConvertMethod;
 import com.personal.school.form.ClassForm;
 import com.personal.school.model.Class;
+import com.personal.school.model.Student;
 import com.personal.school.model.TeachingType;
 import com.personal.school.service.StudentService;
 import com.personal.school.service.TeacherService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +20,8 @@ import static com.personal.school.enums.ConvertMethod.UPDATE;
 import static com.personal.school.utils.ConverterUtils.isValidSet;
 import static com.personal.school.utils.PropertyUtils.getNullProperties;
 
-@Service
-public class DefaultClassConverter implements Converter<ClassForm, Class> {
+@Component
+public class ClassConverter implements Converter<ClassForm, Class> {
 
     @Autowired
     TeacherService teacherService;
@@ -49,9 +51,10 @@ public class DefaultClassConverter implements Converter<ClassForm, Class> {
         return target;
     }
 
-    private void populateStudents(Class schoolClass, List<Long> students, ConvertMethod convertMethod) {
-        if(isValidSet(students, convertMethod)) {
-            schoolClass.setStudents(studentService.getAllById(students));
+    private void populateStudents(Class schoolClass, List<Long> ids, ConvertMethod convertMethod) {
+        if(isValidSet(ids, convertMethod)) {
+            List<Student> students = studentService.getAllById(ids);
+            students.forEach(s -> s.setSchoolClass(schoolClass));
         }
     }
 

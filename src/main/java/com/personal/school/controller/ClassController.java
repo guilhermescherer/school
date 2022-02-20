@@ -77,18 +77,21 @@ public class ClassController {
     @PutMapping("{id}/teachers")
     @Transactional
     public ResponseEntity<?> addTeachers(@PathVariable Long id, @RequestBody IdForm form){
+        classFacade.saveTeachers(id, form);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("{id/students")
+    @DeleteMapping("{id}/students")
     @Transactional
     public ResponseEntity<?> deleteStudents(@PathVariable Long id, @RequestBody IdForm form){
+        classFacade.removeStudents(id, form);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("{id/teachers")
+    @DeleteMapping("{id}/teachers")
     @Transactional
     public ResponseEntity<?> deleteTeachers(@PathVariable Long id, @RequestBody IdForm form){
+        classFacade.removeTeachers(id, form);
         return ResponseEntity.ok().build();
     }
 }

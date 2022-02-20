@@ -19,4 +19,10 @@ public interface ClassFacade {
     Class update(Long id, ClassForm classForm);
 
     void saveStudents(Long id, IdForm form);
+
+    void saveTeachers(Long id, IdForm form);
+
+    void removeStudents(Long id, IdForm form);
+
+    void removeTeachers(Long id, IdForm form);
 }
