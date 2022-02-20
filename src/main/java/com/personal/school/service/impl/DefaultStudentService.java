@@ -1,6 +1,6 @@
 package com.personal.school.service.impl;
 
-import com.personal.school.converter.StudentConverter;
+import com.personal.school.converter.Converter;
 import com.personal.school.exception.NotFoundException;
 import com.personal.school.form.StudentForm;
 import com.personal.school.model.Student;
@@ -21,7 +21,7 @@ public class DefaultStudentService implements StudentService {
     @Autowired
     StudentRepository studentRepository;
     @Autowired
-    StudentConverter studentConverter;
+    Converter<StudentForm, Student> studentConverter;
 
     @Override
     public List<Student> getAll() {
@@ -52,7 +52,7 @@ public class DefaultStudentService implements StudentService {
 
     @Override
     public Student save(StudentForm studentForm) {
-        Student student = studentConverter.toStudent(studentForm);
+        Student student = studentConverter.convert(studentForm);
         studentRepository.save(student);
         return student;
     }
@@ -64,6 +64,6 @@ public class DefaultStudentService implements StudentService {
 
     @Override
     public Student update(Student student, StudentForm studentUpdateForm){
-        return studentConverter.toStudent(student, studentUpdateForm);
+        return studentConverter.convert(student, studentUpdateForm);
     }
 }

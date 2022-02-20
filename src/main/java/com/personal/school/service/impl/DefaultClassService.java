@@ -1,9 +1,10 @@
 package com.personal.school.service.impl;
 
-import com.personal.school.converter.ClassConverter;
+import com.personal.school.converter.Converter;
 import com.personal.school.exception.NotFoundException;
 import com.personal.school.form.ClassForm;
 import com.personal.school.model.Class;
+import com.personal.school.model.Student;
 import com.personal.school.repository.ClassRepository;
 import com.personal.school.service.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class DefaultClassService implements ClassService {
     @Autowired
     ClassRepository classRepository;
     @Autowired
-    ClassConverter classConverter;
+    Converter<ClassForm, Class> classConverter;
 
     @Override
     public List<Class> getAll() {
@@ -56,7 +57,7 @@ public class DefaultClassService implements ClassService {
 
     @Override
     public Class save(ClassForm classForm) {
-        Class schoolClass = classConverter.toClass(classForm);
+        Class schoolClass = classConverter.convert(classForm);
         classRepository.save(schoolClass);
         return schoolClass;
     }
@@ -69,7 +70,13 @@ public class DefaultClassService implements ClassService {
     @Override
     public Class update(Long id, ClassForm classForm) {
         Class schoolClass = this.getById(id);
-        classConverter.toClass(schoolClass, classForm);
+        classConverter.convert(schoolClass, classForm);
         return schoolClass;
+    }
+
+    @Override
+    public void saveStudents(Class schoolClass, List<Student> students) {
+        List<Student> currentStudents = schoolClass.getStudents();
+        currentStudents.addAll(students);
     }
 }

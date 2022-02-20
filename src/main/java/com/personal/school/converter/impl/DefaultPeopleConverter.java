@@ -1,7 +1,7 @@
 package com.personal.school.converter.impl;
 
+import com.personal.school.converter.AbstractConverter;
 import com.personal.school.enums.ConvertMethod;
-import com.personal.school.converter.PeopleConverter;
 import com.personal.school.form.PeopleForm;
 import com.personal.school.model.People;
 import org.springframework.beans.BeanUtils;
@@ -15,10 +15,10 @@ import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
 import static com.personal.school.utils.PropertyUtils.getNullProperties;
 
 @Component
-public class DefaultPeopleConverter implements PeopleConverter {
+public class DefaultPeopleConverter implements AbstractConverter<PeopleForm, People> {
 
     @Override
-    public People toPeople(People target, PeopleForm source, ConvertMethod convertMethod) {
+    public People convert(People target, PeopleForm source, ConvertMethod convertMethod) {
         if(convertMethod.equals(ConvertMethod.ADD)) {
             BeanUtils.copyProperties(source, target);
         } else {

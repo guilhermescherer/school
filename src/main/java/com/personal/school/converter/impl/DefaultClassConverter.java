@@ -1,6 +1,6 @@
 package com.personal.school.converter.impl;
 
-import com.personal.school.converter.ClassConverter;
+import com.personal.school.converter.Converter;
 import com.personal.school.enums.ConvertMethod;
 import com.personal.school.form.ClassForm;
 import com.personal.school.model.Class;
@@ -19,7 +19,7 @@ import static com.personal.school.utils.ConverterUtils.isValidSet;
 import static com.personal.school.utils.PropertyUtils.getNullProperties;
 
 @Service
-public class DefaultClassConverter implements ClassConverter {
+public class DefaultClassConverter implements Converter<ClassForm, Class> {
 
     @Autowired
     TeacherService teacherService;
@@ -27,7 +27,7 @@ public class DefaultClassConverter implements ClassConverter {
     StudentService studentService;
 
     @Override
-    public Class toClass(ClassForm source) {
+    public Class convert(ClassForm source) {
         Class target = new Class();
         BeanUtils.copyProperties(source, target);
 
@@ -39,7 +39,7 @@ public class DefaultClassConverter implements ClassConverter {
     }
 
     @Override
-    public Class toClass(Class target, ClassForm source) {
+    public Class convert(Class target, ClassForm source) {
         BeanUtils.copyProperties(source, target, getNullProperties(source));
 
         populateTeaching(target, source.getTeachingType(), UPDATE);

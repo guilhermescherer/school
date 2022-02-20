@@ -1,7 +1,7 @@
 package com.personal.school.converter.impl;
 
+import com.personal.school.converter.Converter;
 import com.personal.school.enums.ConvertMethod;
-import com.personal.school.converter.UserConverter;
 import com.personal.school.form.UserForm;
 import com.personal.school.model.User;
 import com.personal.school.service.RoleService;
@@ -18,13 +18,13 @@ import static com.personal.school.utils.PropertyUtils.getNullProperties;
 import static com.personal.school.utils.SecurityUtils.encodePassword;
 
 @Component
-public class DefaultUserConverter implements UserConverter {
+public class DefaultUserConverter implements Converter<UserForm, User> {
 
     @Autowired
     RoleService roleService;
 
     @Override
-    public User toUser(UserForm source) {
+    public User convert(UserForm source) {
         User target = new User();
         BeanUtils.copyProperties(source, target);
 
@@ -35,7 +35,7 @@ public class DefaultUserConverter implements UserConverter {
     }
 
     @Override
-    public User toUser(User target, UserForm source) {
+    public User convert(User target, UserForm source) {
         BeanUtils.copyProperties(source, target, getNullProperties(source));
 
         populatePassword(target, source.getPassword(), UPDATE);

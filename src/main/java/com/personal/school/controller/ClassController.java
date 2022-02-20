@@ -4,6 +4,7 @@ import com.personal.school.dto.ClassDTO;
 import com.personal.school.dto.ClassDetailsDTO;
 import com.personal.school.facade.ClassFacade;
 import com.personal.school.form.ClassForm;
+import com.personal.school.form.IdForm;
 import com.personal.school.model.Class;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,25 +69,26 @@ public class ClassController {
 
     @PutMapping("{id}/students")
     @Transactional
-    public ResponseEntity<?> addStudents(@PathVariable Long id, @RequestBody List<Long> ids){
+    public ResponseEntity<?> addStudents(@PathVariable Long id, @RequestBody IdForm form){
+        classFacade.saveStudents(id, form);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("{id}/teachers")
     @Transactional
-    public ResponseEntity<?> addTeachers(@PathVariable Long id, @RequestBody List<Long> ids){
+    public ResponseEntity<?> addTeachers(@PathVariable Long id, @RequestBody IdForm form){
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("{id/students")
     @Transactional
-    public ResponseEntity<?> deleteStudents(@PathVariable Long id, @RequestBody List<Long> ids){
+    public ResponseEntity<?> deleteStudents(@PathVariable Long id, @RequestBody IdForm form){
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("{id/teachers")
     @Transactional
-    public ResponseEntity<?> deleteTeachers(@PathVariable Long id, @RequestBody List<Long> ids){
+    public ResponseEntity<?> deleteTeachers(@PathVariable Long id, @RequestBody IdForm form){
         return ResponseEntity.ok().build();
     }
 }

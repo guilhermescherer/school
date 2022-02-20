@@ -1,6 +1,6 @@
 package com.personal.school.service.impl;
 
-import com.personal.school.converter.TeacherConverter;
+import com.personal.school.converter.Converter;
 import com.personal.school.enums.UpdateSalaryType;
 import com.personal.school.exception.NotFoundException;
 import com.personal.school.form.ReajustSalaryForm;
@@ -8,6 +8,7 @@ import com.personal.school.form.TeacherForm;
 import com.personal.school.model.Subject;
 import com.personal.school.model.Teacher;
 import com.personal.school.repository.TeacherRepository;
+import com.personal.school.service.SalaryService;
 import com.personal.school.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,16 +18,15 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import static com.personal.school.utils.CalcUtils.getValueWithPercentage;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 @Service
 public class DefaultTeacherService implements TeacherService {
 
     @Autowired
-    TeacherRepository teacherRepository;
+    private TeacherRepository teacherRepository;
     @Autowired
-    TeacherConverter teacherConverter;
+    private Converter<TeacherForm, Teacher> teacherConverter;
 
     @Override
     public List<Teacher> getAll() {
@@ -57,7 +57,7 @@ public class DefaultTeacherService implements TeacherService {
 
     @Override
     public Teacher save(TeacherForm teacherForm) {
-        Teacher teacher = teacherConverter.toTeacher(teacherForm);
+        Teacher teacher = teacherConverter.convert(teacherForm);
         teacherRepository.save(teacher);
         return teacher;
     }
@@ -75,27 +75,24 @@ public class DefaultTeacherService implements TeacherService {
 
     @Override
     public Teacher update(Teacher teacher, TeacherForm teacherForm) {
-        return teacherConverter.toTeacher(teacher, teacherForm);
-    }
-
-    @Override
-    public void updateSalary(Teacher teacher, ReajustSalaryForm form) {
-        UpdateSalaryType updateSalaryType = UpdateSalaryType.valueOf(form.getUpdateSalaryType());
-        BigDecimal amountReajust = new BigDecimal(form.getValue());
-
-        switch (updateSalaryType) {
-            case PERCENTAGE:
-                teacher.setSalary(getValueWithPercentage(teacher.getSalary(), amountReajust));
-                break;
-            case SUM:
-                teacher.setSalary(teacher.getSalary().add(amountReajust));
-                break;
-        }
+        return teacherConverter.convert(teacher, teacherForm);
     }
 
     @Override
     public void removeSubjects(Teacher teacher, List<Subject> subjects) {
         List<Subject> currentSubjects = teacher.getSubjects();
         currentSubjects.removeAll(subjects);
+    }
+
+    @Override
+    public void updateSalary(Teacher teacher, ReajustSalaryForm reajustSalaryForm) {
+        final SalaryService salaryService = new DefaultSalaryService();
+
+        final UpdateSalaryType updateSalaryType = UpdateSalaryType.valueOf(reajustSalaryForm.getUpdateSalaryType());
+        final BigDecimal value = new BigDecimal(reajustSalaryForm.getValue());
+
+        final BigDecimal salary = salaryService.updateSalary(teacher.getSalary(), updateSalaryType, value);
+
+        teacher.setSalary(salary);
     }
 }
