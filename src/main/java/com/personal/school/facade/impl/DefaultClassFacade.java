@@ -1,5 +1,7 @@
 package com.personal.school.facade.impl;
 
+import com.personal.school.converter.Converter;
+import com.personal.school.converter.impl.ClassConverter;
 import com.personal.school.facade.ClassFacade;
 import com.personal.school.facade.Facade;
 import com.personal.school.form.ClassForm;
@@ -17,12 +19,18 @@ import java.util.List;
 @Facade
 public class DefaultClassFacade implements ClassFacade {
 
+    private final ClassService classService;
+    private final StudentService studentService;
+    private final TeacherService teacherService;
+    private final Converter<ClassForm, Class> classConverter;
+
     @Autowired
-    ClassService classService;
-    @Autowired
-    StudentService studentService;
-    @Autowired
-    TeacherService teacherService;
+    public DefaultClassFacade(ClassService classService, StudentService studentService, TeacherService teacherService) {
+        this.classService = classService;
+        this.studentService = studentService;
+        this.teacherService = teacherService;
+        this.classConverter = new ClassConverter(teacherService, studentService);
+    }
 
     @Override
     public List<Class> getAll() {
@@ -36,7 +44,8 @@ public class DefaultClassFacade implements ClassFacade {
 
     @Override
     public Class save(ClassForm classForm) {
-        return classService.save(classForm);
+        final Class schoolClass = classConverter.convert(classForm);
+        return classService.save(schoolClass);
     }
 
     @Override

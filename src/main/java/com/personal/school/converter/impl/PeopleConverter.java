@@ -5,7 +5,6 @@ import com.personal.school.enums.ConvertMethod;
 import com.personal.school.form.PeopleForm;
 import com.personal.school.model.People;
 import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
@@ -14,7 +13,6 @@ import static com.personal.school.utils.FormatterUtils.getCpfUnformat;
 import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
 import static com.personal.school.utils.PropertyUtils.getNullProperties;
 
-@Component
 public class PeopleConverter implements AbstractConverter<PeopleForm, People> {
 
     @Override

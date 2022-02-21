@@ -1,5 +1,7 @@
 package com.personal.school.facade.impl;
 
+import com.personal.school.converter.Converter;
+import com.personal.school.converter.impl.SubjectConverter;
 import com.personal.school.facade.Facade;
 import com.personal.school.facade.SubjectFacade;
 import com.personal.school.form.SubjectForm;
@@ -12,8 +14,14 @@ import java.util.List;
 @Facade
 public class DefaultSubjectFacade implements SubjectFacade {
 
+    private final SubjectService subjectService;
+    private final Converter<SubjectForm, Subject> subjectConverter;
+
     @Autowired
-    SubjectService subjectService;
+    public DefaultSubjectFacade(SubjectService subjectService) {
+        this.subjectService = subjectService;
+        this.subjectConverter = new SubjectConverter();
+    }
 
     @Override
     public List<Subject> getAll() {
@@ -27,7 +35,8 @@ public class DefaultSubjectFacade implements SubjectFacade {
 
     @Override
     public Subject save(SubjectForm subjectForm) {
-        return subjectService.save(subjectForm);
+        final Subject subject = subjectConverter.convert(subjectForm);
+        return subjectService.save(subject);
     }
 
     @Override
@@ -39,6 +48,6 @@ public class DefaultSubjectFacade implements SubjectFacade {
     @Override
     public Subject update(Long id, SubjectForm subjectForm) {
         Subject subject = subjectService.getById(id);
-        return subjectService.update(subject, subjectForm);
+        return subjectConverter.convert(subject, subjectForm);
     }
 }

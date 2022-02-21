@@ -1,6 +1,5 @@
 package com.personal.school.service;
 
-import com.personal.school.form.UserForm;
 import com.personal.school.model.User;
 
 import java.util.List;
@@ -11,9 +10,7 @@ public interface UserService {
 
     User getById(Long id);
 
-    User save(UserForm userForm);
+    User save(User user);
 
     void remove(User user);
-
-    User update(User id, UserForm userForm);
 }

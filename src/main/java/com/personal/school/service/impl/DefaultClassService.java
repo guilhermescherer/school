@@ -1,11 +1,8 @@
 package com.personal.school.service.impl;
 
-import com.personal.school.converter.Converter;
 import com.personal.school.exception.NotFoundException;
-import com.personal.school.form.ClassForm;
 import com.personal.school.model.Class;
 import com.personal.school.model.Student;
-import com.personal.school.model.Subject;
 import com.personal.school.model.Teacher;
 import com.personal.school.repository.ClassRepository;
 import com.personal.school.service.ClassService;
@@ -21,10 +18,12 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 @Service
 public class DefaultClassService implements ClassService {
 
+    private final ClassRepository classRepository;
+
     @Autowired
-    ClassRepository classRepository;
-    @Autowired
-    Converter<ClassForm, Class> classConverter;
+    public DefaultClassService(ClassRepository classRepository) {
+        this.classRepository = classRepository;
+    }
 
     @Override
     public List<Class> getAll() {
@@ -58,8 +57,7 @@ public class DefaultClassService implements ClassService {
     }
 
     @Override
-    public Class save(ClassForm classForm) {
-        Class schoolClass = classConverter.convert(classForm);
+    public Class save(Class schoolClass) {
         classRepository.save(schoolClass);
         return schoolClass;
     }
@@ -69,12 +67,6 @@ public class DefaultClassService implements ClassService {
         classRepository.delete(schoolClass);
     }
 
-    @Override
-    public Class update(Long id, ClassForm classForm) {
-        Class schoolClass = this.getById(id);
-        classConverter.convert(schoolClass, classForm);
-        return schoolClass;
-    }
 
     @Override
     public void saveStudents(Class schoolClass, List<Student> students) {

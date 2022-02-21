@@ -20,13 +20,15 @@ import static com.personal.school.enums.ConvertMethod.UPDATE;
 import static com.personal.school.utils.ConverterUtils.isValidSet;
 import static com.personal.school.utils.PropertyUtils.getNullProperties;
 
-@Component
 public class ClassConverter implements Converter<ClassForm, Class> {
 
-    @Autowired
-    TeacherService teacherService;
-    @Autowired
-    StudentService studentService;
+    private final TeacherService teacherService;
+    private final StudentService studentService;
+
+    public ClassConverter(TeacherService teacherService, StudentService studentService) {
+        this.teacherService = teacherService;
+        this.studentService = studentService;
+    }
 
     @Override
     public Class convert(ClassForm source) {
