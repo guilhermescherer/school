@@ -4,11 +4,9 @@ import com.personal.school.converter.Converter;
 import com.personal.school.form.SubjectForm;
 import com.personal.school.model.Subject;
 import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Component;
 
 import static com.personal.school.utils.PropertyUtils.getNullProperties;
 
-@Component
 public class SubjectConverter implements Converter<SubjectForm, Subject> {
 
     @Override

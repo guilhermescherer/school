@@ -7,5 +7,4 @@ import java.math.BigDecimal;
 public interface SalaryService {
 
     BigDecimal updateSalary(BigDecimal currentSalary, UpdateSalaryType type, BigDecimal value);
-
 }

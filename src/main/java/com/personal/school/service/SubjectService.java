@@ -13,9 +13,7 @@ public interface SubjectService {
 
     Subject getById(Long id);
 
-    Subject save(SubjectForm subjectForm);
+    Subject save(Subject Subject);
 
-    void remove(Subject subject);
-
-    Subject update(Subject id, SubjectForm subjectForm);
+    void remove(Subject Subject);
 }

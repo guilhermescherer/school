@@ -1,19 +1,25 @@
 package com.personal.school.facade.impl;
 
+import com.personal.school.converter.Converter;
+import com.personal.school.converter.impl.UserConverter;
 import com.personal.school.facade.Facade;
 import com.personal.school.facade.UserFacade;
 import com.personal.school.form.UserForm;
 import com.personal.school.model.User;
 import com.personal.school.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @Facade
 public class DefaultUserFacade implements UserFacade {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+    private final Converter<UserForm, User> userConverter;
+
+    public DefaultUserFacade(UserService userService) {
+        this.userService = userService;
+        this.userConverter = new UserConverter();
+    }
 
     @Override
     public List<User> getAll() {
@@ -27,7 +33,8 @@ public class DefaultUserFacade implements UserFacade {
 
     @Override
     public User save(UserForm userForm) {
-        return userService.save(userForm);
+        final User user = userConverter.convert(userForm);
+        return userService.save(user);
     }
 
     @Override
@@ -39,6 +46,6 @@ public class DefaultUserFacade implements UserFacade {
     @Override
     public User update(Long id, UserForm userForm) {
         User user = userService.getById(id);
-        return userService.update(user, userForm);
+        return userConverter.convert(user, userForm);
     }
 }
