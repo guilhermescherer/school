@@ -5,21 +5,20 @@ import com.personal.school.model.Role;
 import com.personal.school.repository.RoleRepository;
 import com.personal.school.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.Collections.EMPTY_LIST;
-import static java.util.Objects.isNull;
 
 @Service
 public class DefaultRoleService implements RoleService {
 
+    private final RoleRepository roleRepository;
+
     @Autowired
-    RoleRepository roleRepository;
+    public DefaultRoleService(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
     @Override
     public List<Role> getAllById(List<Long> ids) {

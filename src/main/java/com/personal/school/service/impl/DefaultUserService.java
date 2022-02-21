@@ -1,8 +1,6 @@
 package com.personal.school.service.impl;
 
-import com.personal.school.converter.Converter;
 import com.personal.school.exception.NotFoundException;
-import com.personal.school.form.UserForm;
 import com.personal.school.model.User;
 import com.personal.school.repository.UserRepository;
 import com.personal.school.service.UserService;
@@ -17,10 +15,12 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 @Service
 public class DefaultUserService implements UserService {
 
+    private final UserRepository userRepository;
+
     @Autowired
-    UserRepository userRepository;
-    @Autowired
-    Converter<UserForm, User> userConverter;
+    public DefaultUserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public List<User> getAll() {
@@ -41,8 +41,7 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public User save(UserForm userForm) {
-        User user = userConverter.convert(userForm);
+    public User save(User user) {
         userRepository.save(user);
         return user;
     }
@@ -50,10 +49,5 @@ public class DefaultUserService implements UserService {
     @Override
     public void remove(User user) {
         userRepository.delete(user);
-    }
-
-    @Override
-    public User update(User user, UserForm userForm) {
-        return userConverter.convert(user, userForm);
     }
 }

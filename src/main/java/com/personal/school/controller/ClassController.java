@@ -17,7 +17,6 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 import static com.personal.school.dto.ClassDTO.toDto;
 import static com.personal.school.utils.SecurityUtils.ROLE_ADMIN;
@@ -29,8 +28,12 @@ import static com.personal.school.utils.SecurityUtils.ROLE_USER;
 @Secured({ROLE_ADMIN, ROLE_USER})
 public class ClassController {
 
+    private final ClassFacade classFacade;
+
     @Autowired
-    ClassFacade classFacade;
+    public ClassController(ClassFacade classFacade) {
+        this.classFacade = classFacade;
+    }
 
     @GetMapping
     public List<ClassDTO> getAll(){

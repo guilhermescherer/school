@@ -26,8 +26,12 @@ import static com.personal.school.utils.SecurityUtils.ROLE_USER;
 @Secured({ROLE_ADMIN, ROLE_USER})
 public class StudentController {
 
+    private final StudentFacade studentFacade;
+
     @Autowired
-    StudentFacade studentFacade;
+    public StudentController(StudentFacade studentFacade) {
+        this.studentFacade = studentFacade;
+    }
 
     @GetMapping
     public List<StudentDTO> getAll(){

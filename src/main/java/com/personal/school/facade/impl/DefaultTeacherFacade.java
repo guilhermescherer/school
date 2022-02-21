@@ -1,5 +1,7 @@
 package com.personal.school.facade.impl;
 
+import com.personal.school.converter.Converter;
+import com.personal.school.converter.impl.TeacherConverter;
 import com.personal.school.facade.Facade;
 import com.personal.school.facade.TeacherFacade;
 import com.personal.school.form.ReajustSalaryForm;
@@ -8,17 +10,21 @@ import com.personal.school.model.Subject;
 import com.personal.school.model.Teacher;
 import com.personal.school.service.SubjectService;
 import com.personal.school.service.TeacherService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @Facade
 public class DefaultTeacherFacade implements TeacherFacade {
 
-    @Autowired
-    TeacherService teacherService;
-    @Autowired
-    SubjectService subjectService;
+    private final TeacherService teacherService;
+    private final SubjectService subjectService;
+    private final Converter<TeacherForm, Teacher> teacherConverter;
+
+    public DefaultTeacherFacade(TeacherService teacherService, SubjectService subjectService) {
+        this.teacherService = teacherService;
+        this.subjectService = subjectService;
+        this.teacherConverter = new TeacherConverter();
+    }
 
     @Override
     public List<Teacher> getAll() {
@@ -32,7 +38,8 @@ public class DefaultTeacherFacade implements TeacherFacade {
 
     @Override
     public Teacher save(TeacherForm teacherForm) {
-        return teacherService.save(teacherForm);
+        final Teacher teacher = teacherConverter.convert(teacherForm);
+        return teacherService.save(teacher);
     }
 
     @Override
@@ -60,7 +67,7 @@ public class DefaultTeacherFacade implements TeacherFacade {
     @Override
     public Teacher update(Long id, TeacherForm teacherForm) {
         Teacher teacher = teacherService.getById(id);
-        return teacherService.update(teacher, teacherForm);
+        return teacherConverter.convert(teacher, teacherForm);
     }
 
     @Override

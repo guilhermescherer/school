@@ -29,8 +29,12 @@ import static com.personal.school.utils.SecurityUtils.ROLE_ADMIN;
 @Secured(ROLE_ADMIN)
 public class UserController {
 
+    private final UserFacade userFacade;
+
     @Autowired
-    private UserFacade userFacade;
+    public UserController(UserFacade userFacade) {
+        this.userFacade = userFacade;
+    }
 
     @GetMapping
     public List<UserDTO> getAll(){

@@ -1,8 +1,6 @@
 package com.personal.school.service.impl;
 
-import com.personal.school.converter.Converter;
 import com.personal.school.exception.NotFoundException;
-import com.personal.school.form.SubjectForm;
 import com.personal.school.model.Subject;
 import com.personal.school.repository.SubjectRepository;
 import com.personal.school.service.SubjectService;
@@ -18,10 +16,12 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 @Service
 public class DefaultSubjectService implements SubjectService {
 
+    private final SubjectRepository subjectRepository;
+
     @Autowired
-    SubjectRepository subjectRepository;
-    @Autowired
-    Converter<SubjectForm, Subject> subjectConverter;
+    public DefaultSubjectService(SubjectRepository subjectRepository) {
+        this.subjectRepository = subjectRepository;
+    }
 
     @Override
     public List<Subject> getAll(){
@@ -51,8 +51,7 @@ public class DefaultSubjectService implements SubjectService {
     }
 
     @Override
-    public Subject save(SubjectForm subjectForm) {
-        Subject subject = subjectConverter.convert(subjectForm);
+    public Subject save(Subject subject) {
         subjectRepository.save(subject);
         return subject;
     }
@@ -60,10 +59,5 @@ public class DefaultSubjectService implements SubjectService {
     @Override
     public void remove(Subject subject) {
         subjectRepository.delete(subject);
-    }
-
-    @Override
-    public Subject update(Subject subject, SubjectForm subjectForm) {
-        return subjectConverter.convert(subject, subjectForm);
     }
 }

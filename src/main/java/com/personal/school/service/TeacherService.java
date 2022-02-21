@@ -1,7 +1,6 @@
 package com.personal.school.service;
 
 import com.personal.school.form.ReajustSalaryForm;
-import com.personal.school.form.TeacherForm;
 import com.personal.school.model.Subject;
 import com.personal.school.model.Teacher;
 
@@ -15,13 +14,11 @@ public interface TeacherService {
 
     Teacher getById(Long id);
 
-    Teacher save(TeacherForm teacherForm);
+    Teacher save(Teacher teacher);
 
     void saveSubjects(Teacher teacher, List<Subject> subjects);
 
     void remove(Teacher teacher);
-
-    Teacher update(Teacher teacher, TeacherForm teacherForm);
 
     void removeSubjects(Teacher teacher, List<Subject> subjects);
 

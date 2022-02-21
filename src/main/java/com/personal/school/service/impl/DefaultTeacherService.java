@@ -1,10 +1,8 @@
 package com.personal.school.service.impl;
 
-import com.personal.school.converter.Converter;
 import com.personal.school.enums.UpdateSalaryType;
 import com.personal.school.exception.NotFoundException;
 import com.personal.school.form.ReajustSalaryForm;
-import com.personal.school.form.TeacherForm;
 import com.personal.school.model.Subject;
 import com.personal.school.model.Teacher;
 import com.personal.school.repository.TeacherRepository;
@@ -23,10 +21,12 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 @Service
 public class DefaultTeacherService implements TeacherService {
 
+    private final TeacherRepository teacherRepository;
+
     @Autowired
-    private TeacherRepository teacherRepository;
-    @Autowired
-    private Converter<TeacherForm, Teacher> teacherConverter;
+    public DefaultTeacherService(TeacherRepository teacherRepository) {
+        this.teacherRepository = teacherRepository;
+    }
 
     @Override
     public List<Teacher> getAll() {
@@ -56,8 +56,7 @@ public class DefaultTeacherService implements TeacherService {
     }
 
     @Override
-    public Teacher save(TeacherForm teacherForm) {
-        Teacher teacher = teacherConverter.convert(teacherForm);
+    public Teacher save(Teacher teacher) {
         teacherRepository.save(teacher);
         return teacher;
     }
@@ -71,11 +70,6 @@ public class DefaultTeacherService implements TeacherService {
     @Override
     public void remove(Teacher teacher) {
         teacherRepository.delete(teacher);
-    }
-
-    @Override
-    public Teacher update(Teacher teacher, TeacherForm teacherForm) {
-        return teacherConverter.convert(teacher, teacherForm);
     }
 
     @Override

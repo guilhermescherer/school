@@ -9,6 +9,7 @@ import com.personal.school.form.TeacherForm;
 import com.personal.school.form.groups.Add;
 import com.personal.school.form.groups.Update;
 import com.personal.school.model.Teacher;
+import com.personal.school.service.impl.DefaultAddressService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,12 @@ import static com.personal.school.utils.SecurityUtils.ROLE_USER;
 @Secured({ROLE_ADMIN, ROLE_USER})
 public class TeacherController {
 
+    private final TeacherFacade teacherFacade;
+
     @Autowired
-    TeacherFacade teacherFacade;
+    public TeacherController(TeacherFacade teacherFacade) {
+        this.teacherFacade = teacherFacade;
+    }
 
     @GetMapping
     public List<TeacherDTO> getAll(){

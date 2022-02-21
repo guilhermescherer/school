@@ -18,10 +18,12 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 @Service
 public class DefaultStudentService implements StudentService {
 
+    private final StudentRepository studentRepository;
+
     @Autowired
-    StudentRepository studentRepository;
-    @Autowired
-    Converter<StudentForm, Student> studentConverter;
+    public DefaultStudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     @Override
     public List<Student> getAll() {
@@ -51,8 +53,7 @@ public class DefaultStudentService implements StudentService {
     }
 
     @Override
-    public Student save(StudentForm studentForm) {
-        Student student = studentConverter.convert(studentForm);
+    public Student save(Student student) {
         studentRepository.save(student);
         return student;
     }
@@ -60,10 +61,5 @@ public class DefaultStudentService implements StudentService {
     @Override
     public void remove(Student student) {
         studentRepository.delete(student);
-    }
-
-    @Override
-    public Student update(Student student, StudentForm studentUpdateForm){
-        return studentConverter.convert(student, studentUpdateForm);
     }
 }
