@@ -1,43 +1,40 @@
 package com.personal.school.converter.impl;
 
 import com.personal.school.converter.AbstractConverter;
-import com.personal.school.enums.ConvertMethod;
+import com.personal.school.converter.Converter;
 import com.personal.school.form.PeopleForm;
+import com.personal.school.model.Address;
 import com.personal.school.model.People;
+import com.personal.school.utils.FormatterUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDate;
+import java.util.function.Function;
 
-import static com.personal.school.utils.ConverterUtils.isValidSet;
-import static com.personal.school.utils.FormatterUtils.getCpfUnformat;
 import static com.personal.school.utils.FormatterUtils.getDefaultDateFormatter;
 import static com.personal.school.utils.PropertyUtils.getNullProperties;
+import static com.personal.school.utils.SetterUtils.setter;
 
 public class PeopleConverter implements AbstractConverter<PeopleForm, People> {
 
-    @Override
-    public People convert(People target, PeopleForm source, ConvertMethod convertMethod) {
-        if(convertMethod.equals(ConvertMethod.ADD)) {
-            BeanUtils.copyProperties(source, target);
-        } else {
-            BeanUtils.copyProperties(source, target, getNullProperties(source));
-        }
+    private final Converter<PeopleForm, Address> addressConverter;
 
-        populateCpf(target, source.getCpf(), convertMethod);
-        populateBirthDate(target, source.getBirthDate(), convertMethod);
+    public PeopleConverter() {
+        this.addressConverter = new AddressConverter();
+    }
+
+    @Override
+    public People convert(People target, PeopleForm source) {
+        BeanUtils.copyProperties(source, target, getNullProperties(source));
+
+        final Function<String, String> cpf = FormatterUtils::getCpfUnformat;
+        final Function<String, LocalDate> birthDate = b -> LocalDate.parse(b, getDefaultDateFormatter());
+        final Function<String, Address> address = a -> addressConverter.convert(source);
+
+        setter(target::setCpf, source.getCpf(), cpf);
+        setter(target::setBirthDate,  source.getBirthDate(), birthDate);
+        setter(target::setAddress, source.getAddress(), address);
 
         return target;
-    }
-
-    private void populateBirthDate(People people, String birthDate, ConvertMethod convertMethod) {
-        if(isValidSet(birthDate, convertMethod)) {
-            people.setBirthDate(LocalDate.parse(birthDate, getDefaultDateFormatter()));
-        }
-    }
-
-    private void populateCpf(People people, String cpf, ConvertMethod convertMethod) {
-        if(isValidSet(cpf, convertMethod)) {
-            people.setCpf(getCpfUnformat(cpf));
-        }
     }
 }

@@ -11,9 +11,7 @@ public class SubjectConverter implements Converter<SubjectForm, Subject> {
 
     @Override
     public Subject convert(SubjectForm source) {
-        Subject target = new Subject();
-        BeanUtils.copyProperties(source, target);
-        return target;
+        return convert(new Subject(), source);
     }
 
     @Override
