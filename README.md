@@ -12,3 +12,4 @@ Control Students, Teachers, Subjects, Classes...
 * Apache Commoms Lang 3
 * OAuth2
 * Facade Pattern
+* Generics Java
