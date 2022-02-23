@@ -10,6 +10,7 @@ import com.personal.school.model.Subject;
 import com.personal.school.model.Teacher;
 import com.personal.school.service.SubjectService;
 import com.personal.school.service.TeacherService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -18,8 +19,10 @@ public class DefaultTeacherFacade implements TeacherFacade {
 
     private final TeacherService teacherService;
     private final SubjectService subjectService;
+
     private final Converter<TeacherForm, Teacher> teacherConverter;
 
+    @Autowired
     public DefaultTeacherFacade(TeacherService teacherService, SubjectService subjectService) {
         this.teacherService = teacherService;
         this.subjectService = subjectService;

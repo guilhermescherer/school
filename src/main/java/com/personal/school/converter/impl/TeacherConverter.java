@@ -2,7 +2,6 @@ package com.personal.school.converter.impl;
 
 import com.personal.school.converter.AbstractConverter;
 import com.personal.school.converter.Converter;
-import com.personal.school.enums.ConvertMethod;
 import com.personal.school.form.PeopleForm;
 import com.personal.school.form.TeacherForm;
 import com.personal.school.model.Address;
@@ -11,10 +10,9 @@ import com.personal.school.model.Schooling;
 import com.personal.school.model.Teacher;
 
 import java.math.BigDecimal;
+import java.util.function.Function;
 
-import static com.personal.school.enums.ConvertMethod.ADD;
-import static com.personal.school.enums.ConvertMethod.UPDATE;
-import static com.personal.school.utils.ConverterUtils.isValidSet;
+import static com.personal.school.utils.SetterUtils.setter;
 
 public class TeacherConverter implements Converter<TeacherForm, Teacher> {
 
@@ -28,40 +26,21 @@ public class TeacherConverter implements Converter<TeacherForm, Teacher> {
 
     @Override
     public Teacher convert(TeacherForm source) {
-        Teacher target = (Teacher) peopleConverter.convert(new Teacher(), source, ADD);
-        Address address = addressConverter.convert(source);
-
-        populateSalary(target, source.getSalary());
-        populateSchooling(target, source.getSchooling(), ADD);
-        populateAddress(target, address, ADD);
-
-        return target;
+        return convert(new Teacher(), source);
     }
 
     @Override
     public Teacher convert(Teacher teacher, TeacherForm source) {
-        Teacher target = (Teacher) peopleConverter.convert(teacher, source, UPDATE);
-        Address address = addressConverter.convert(source);
+        Teacher target = (Teacher) peopleConverter.convert(teacher, source);
 
-        populateSchooling(target, source.getSchooling(), UPDATE);
-        populateAddress(target, address, UPDATE);
+        final Function<Double, BigDecimal> salary = BigDecimal::valueOf;
+        final Function<String, Schooling> schooling = Schooling::valueOf;
+        final Function<String, Address> address = a -> addressConverter.convert(source);
+
+        setter(target::setSalary, source.getSalary(), salary);
+        setter(target::setSchooling, source.getSchooling(), schooling);
+        setter(target::setAddress, source.getAddress(), address);
 
         return target;
-    }
-
-    private void populateSchooling(Teacher teacher, String schooling, ConvertMethod convertMethod) {
-        if(isValidSet(schooling, convertMethod)) {
-            teacher.setSchooling(Schooling.valueOf(schooling));
-        }
-    }
-
-    private void populateSalary(Teacher teacher, Double salary) {
-        teacher.setSalary(BigDecimal.valueOf(salary));
-    }
-
-    private void populateAddress(Teacher teacher, Address address, ConvertMethod convertMethod) {
-        if(isValidSet(address, convertMethod)) {
-            teacher.setAddress(address);
-        }
     }
 }

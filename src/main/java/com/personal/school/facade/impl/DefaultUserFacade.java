@@ -6,7 +6,9 @@ import com.personal.school.facade.Facade;
 import com.personal.school.facade.UserFacade;
 import com.personal.school.form.UserForm;
 import com.personal.school.model.User;
+import com.personal.school.service.RoleService;
 import com.personal.school.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -14,11 +16,14 @@ import java.util.List;
 public class DefaultUserFacade implements UserFacade {
 
     private final UserService userService;
+    private final RoleService roleService;
     private final Converter<UserForm, User> userConverter;
 
-    public DefaultUserFacade(UserService userService) {
+    @Autowired
+    public DefaultUserFacade(UserService userService, RoleService roleService) {
         this.userService = userService;
-        this.userConverter = new UserConverter();
+        this.roleService = roleService;
+        this.userConverter = new UserConverter(roleService);
     }
 
     @Override
