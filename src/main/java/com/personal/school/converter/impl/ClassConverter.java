@@ -1,24 +1,20 @@
 package com.personal.school.converter.impl;
 
 import com.personal.school.converter.Converter;
-import com.personal.school.enums.ConvertMethod;
 import com.personal.school.form.ClassForm;
 import com.personal.school.model.Class;
 import com.personal.school.model.Student;
+import com.personal.school.model.Teacher;
 import com.personal.school.model.TeachingType;
 import com.personal.school.service.StudentService;
 import com.personal.school.service.TeacherService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.Function;
 
-import static com.personal.school.enums.ConvertMethod.ADD;
-import static com.personal.school.enums.ConvertMethod.UPDATE;
-import static com.personal.school.utils.ConverterUtils.isValidSet;
 import static com.personal.school.utils.PropertyUtils.getNullProperties;
+import static com.personal.school.utils.SetterUtils.setter;
 
 public class ClassConverter implements Converter<ClassForm, Class> {
 
@@ -32,43 +28,23 @@ public class ClassConverter implements Converter<ClassForm, Class> {
 
     @Override
     public Class convert(ClassForm source) {
-        Class target = new Class();
-        BeanUtils.copyProperties(source, target);
-
-        populateTeaching(target, source.getTeachingType(), ADD);
-        populateTeachers(target, source.getTeachers(), ADD);
-        populateStudents(target, source.getStudents(), ADD);
-
-        return target;
+        return convert(new Class(), source);
     }
 
     @Override
     public Class convert(Class target, ClassForm source) {
         BeanUtils.copyProperties(source, target, getNullProperties(source));
 
-        populateTeaching(target, source.getTeachingType(), UPDATE);
-        populateTeachers(target, source.getTeachers(), UPDATE);
-        populateStudents(target, source.getStudents(), UPDATE);
+        final Function<String, TeachingType> teaching = TeachingType::valueOf;
+        final Function<List<Long>, List<Teacher>> teachers = teacherService::getAllById;
+        final Function<List<Long>, List<Student>> students = studentService::getAllById;
+
+        setter(target::setTeachingType, source.getTeachingType(), teaching);
+        setter(target::setTeachers, source.getTeachers(), teachers);
+        setter(target::setStudents, source.getStudents(), students);
+
+        target.getStudents().forEach(s -> s.setSchoolClass(target));
 
         return target;
-    }
-
-    private void populateStudents(Class schoolClass, List<Long> ids, ConvertMethod convertMethod) {
-        if(isValidSet(ids, convertMethod)) {
-            List<Student> students = studentService.getAllById(ids);
-            students.forEach(s -> s.setSchoolClass(schoolClass));
-        }
-    }
-
-    private void populateTeachers(Class schoolClass, List<Long> teachers, ConvertMethod convertMethod) {
-        if(isValidSet(teachers, convertMethod)) {
-            schoolClass.setTeachers(teacherService.getAllById(teachers));
-        }
-    }
-
-    private void populateTeaching(Class schoolClass, String teachingType, ConvertMethod convertMethod) {
-        if(isValidSet(teachingType, convertMethod)) {
-            schoolClass.setTeachingType(TeachingType.valueOf(teachingType));
-        }
     }
 }
