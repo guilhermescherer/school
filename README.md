@@ -10,5 +10,6 @@ Control Students, Teachers, Subjects, Classes...
 * Spring Actuator
 * Lombock
 * Apache Commoms Lang 3
-* JJWT
-
+* OAuth2
+* Facade Pattern
+* Generics Java
