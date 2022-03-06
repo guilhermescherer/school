@@ -7,12 +7,10 @@ import com.personal.school.service.AddressService;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import static com.personal.school.utils.ConverterUtils.getStringByBufferedReader;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public class DefaultAddressService implements AddressService {
 
@@ -20,15 +18,14 @@ public class DefaultAddressService implements AddressService {
 
     @Override
     public Address getAddressByZipCode(String zipCode) {
-        String callUrl = String.format(URL, zipCode);
+        String url = String.format(URL, zipCode);
         try {
-            URL url = new URL(callUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            final URI uri = new URI(url);
 
-            BufferedReader response = new BufferedReader(new InputStreamReader((connection.getInputStream())));
-            String json = getStringByBufferedReader(response);
-
-            final ViaCep viaCep = getViaCep(zipCode, json);
+            final HttpClient client = HttpClient.newHttpClient();
+            final HttpRequest request = HttpRequest.newBuilder(uri).GET().build();
+            final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            final ViaCep viaCep = getViaCep(zipCode, response.body());
 
             return getAddress(viaCep);
         } catch (Exception e) {
