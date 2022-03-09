@@ -1,3 +1,4 @@
+# Spring Actuator
 management:
   endpoints:
     web:
@@ -7,6 +8,7 @@ management:
     health:
       show-details: always
 
+# Spring Configuration
 spring:
   jpa:
     properties:
@@ -21,7 +23,14 @@ spring:
     password: root
     username: root
     url: jdbc:mysql://localhost:3306/school
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/keycloak
+          jwk-set-uri: http://localhost:8080/realms/keycloak/protocol/openid-connect/certs
 
+# Server information
 info:
   app:
     name: '@project.name@'
@@ -29,3 +38,4 @@ info:
 server:
   servlet:
     context-path: /api/
+  port: 8090
