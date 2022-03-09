@@ -4,7 +4,7 @@ Control Students, Teachers, Subjects, Classes...
 
 ### 1 - Used Frameworks
 * Spring Web
-* Spring Data JPA With MySQL
+* Spring Data JPA with MySQL
 * Spring Security
 * Spring DevTools
 * Spring Actuator
