@@ -1,6 +1,6 @@
-package com.personal.school.validator.impl;
+package com.personal.school.bean.impl;
 
-import com.personal.school.validator.NotEmpty;
+import com.personal.school.bean.NotEmpty;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

@@ -1,6 +1,6 @@
 package com.personal.school.form;
 
-import com.personal.school.validator.NotEmpty;
+import com.personal.school.bean.NotEmpty;
 import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
