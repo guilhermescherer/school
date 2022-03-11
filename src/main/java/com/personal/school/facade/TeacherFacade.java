@@ -1,6 +1,6 @@
 package com.personal.school.facade;
 
-import com.personal.school.form.ReajustSalaryForm;
+import com.personal.school.form.UpdateSalaryForm;
 import com.personal.school.form.TeacherForm;
 import com.personal.school.model.Teacher;
 
@@ -22,5 +22,5 @@ public interface TeacherFacade {
 
     Teacher update(Long id, TeacherForm teacherForm);
 
-    void updateSalary(Long id, ReajustSalaryForm reajustSalaryForm);
+    void updateSalary(Long id, UpdateSalaryForm updateSalaryForm);
 }

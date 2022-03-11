@@ -4,12 +4,13 @@ import com.personal.school.converter.Converter;
 import com.personal.school.converter.impl.TeacherConverter;
 import com.personal.school.facade.Facade;
 import com.personal.school.facade.TeacherFacade;
-import com.personal.school.form.ReajustSalaryForm;
+import com.personal.school.form.UpdateSalaryForm;
 import com.personal.school.form.TeacherForm;
 import com.personal.school.model.Subject;
 import com.personal.school.model.Teacher;
 import com.personal.school.service.SubjectService;
 import com.personal.school.service.TeacherService;
+import com.personal.school.validator.Validators;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -74,8 +75,11 @@ public class DefaultTeacherFacade implements TeacherFacade {
     }
 
     @Override
-    public void updateSalary(Long id, ReajustSalaryForm reajustSalaryForm) {
+    public void updateSalary(Long id, UpdateSalaryForm updateSalaryForm) {
         Teacher teacher = teacherService.getById(id);
-        teacherService.updateSalary(teacher, reajustSalaryForm);
+
+        Validators.getUpdateSalaryValidator().check(teacher, updateSalaryForm);
+
+        teacherService.updateSalary(teacher, updateSalaryForm);
     }
 }

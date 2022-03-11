@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 import static com.personal.school.utils.FormatterUtils.ENUM_REGEX_UPDATE_SALARY_TYPE;
 
 @Getter
-public class ReajustSalaryForm {
+public class UpdateSalaryForm {
 
     @NotNull @NotEmpty
     private String value;

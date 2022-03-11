@@ -1,6 +1,6 @@
-package com.personal.school.validator;
+package com.personal.school.bean;
 
-import com.personal.school.validator.impl.DefaultNotEmpty;
+import com.personal.school.bean.impl.DefaultNotEmpty;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
