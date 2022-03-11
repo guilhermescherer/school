@@ -1,6 +1,6 @@
 package com.personal.school.service;
 
-import com.personal.school.form.ReajustSalaryForm;
+import com.personal.school.form.UpdateSalaryForm;
 import com.personal.school.model.Subject;
 import com.personal.school.model.Teacher;
 
@@ -22,5 +22,5 @@ public interface TeacherService {
 
     void removeSubjects(Teacher teacher, List<Subject> subjects);
 
-    void updateSalary(Teacher teacher, ReajustSalaryForm reajustSalaryForm);
+    void updateSalary(Teacher teacher, UpdateSalaryForm updateSalaryForm);
 }

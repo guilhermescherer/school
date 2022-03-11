@@ -4,12 +4,11 @@ import com.personal.school.dto.TeacherDTO;
 import com.personal.school.dto.TeacherDetailsDTO;
 import com.personal.school.facade.TeacherFacade;
 import com.personal.school.form.IdForm;
-import com.personal.school.form.ReajustSalaryForm;
+import com.personal.school.form.UpdateSalaryForm;
 import com.personal.school.form.TeacherForm;
 import com.personal.school.form.groups.Add;
 import com.personal.school.form.groups.Update;
 import com.personal.school.model.Teacher;
-import com.personal.school.service.impl.DefaultAddressService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -80,8 +79,8 @@ public class TeacherController {
 
     @PutMapping("{id}/salary")
     @Transactional
-    public ResponseEntity<?> updateSalary(@PathVariable Long id, @RequestBody @Validated ReajustSalaryForm reajustSalaryForm) {
-        teacherFacade.updateSalary(id, reajustSalaryForm);
+    public ResponseEntity<?> updateSalary(@PathVariable Long id, @RequestBody @Validated UpdateSalaryForm updateSalaryForm) {
+        teacherFacade.updateSalary(id, updateSalaryForm);
         return ResponseEntity.ok().build();
     }
 

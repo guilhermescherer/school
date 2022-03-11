@@ -2,7 +2,7 @@ package com.personal.school.service.impl;
 
 import com.personal.school.enums.UpdateSalaryType;
 import com.personal.school.exception.NotFoundException;
-import com.personal.school.form.ReajustSalaryForm;
+import com.personal.school.form.UpdateSalaryForm;
 import com.personal.school.model.Subject;
 import com.personal.school.model.Teacher;
 import com.personal.school.repository.TeacherRepository;
@@ -40,7 +40,7 @@ public class DefaultTeacherService implements TeacherService {
     @Override
     public Teacher getById(Long id) {
         Optional<Teacher> teacher = teacherRepository.findById(id);
-        if(!teacher.isPresent()){
+        if(teacher.isEmpty()){
             throw new NotFoundException("Not found teacher");
         }
         return teacher.get();
@@ -79,11 +79,11 @@ public class DefaultTeacherService implements TeacherService {
     }
 
     @Override
-    public void updateSalary(Teacher teacher, ReajustSalaryForm reajustSalaryForm) {
+    public void updateSalary(Teacher teacher, UpdateSalaryForm updateSalaryForm) {
         final SalaryService salaryService = new DefaultSalaryService();
 
-        final UpdateSalaryType updateSalaryType = UpdateSalaryType.valueOf(reajustSalaryForm.getUpdateSalaryType());
-        final BigDecimal value = new BigDecimal(reajustSalaryForm.getValue());
+        final UpdateSalaryType updateSalaryType = UpdateSalaryType.valueOf(updateSalaryForm.getUpdateSalaryType());
+        final BigDecimal value = new BigDecimal(updateSalaryForm.getValue());
 
         final BigDecimal salary = salaryService.updateSalary(teacher.getSalary(), updateSalaryType, value);
 
