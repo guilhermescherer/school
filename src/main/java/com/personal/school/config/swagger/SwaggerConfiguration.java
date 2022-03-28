@@ -1,6 +1,5 @@
 package com.personal.school.config.swagger;
 
-import com.personal.school.model.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -17,8 +16,7 @@ public class SwaggerConfiguration {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.personal.school"))
                 .paths(PathSelectors.ant("/**"))
-                .build()
-                .ignoredParameterTypes(User.class);
+                .build();
     }
 
 }
