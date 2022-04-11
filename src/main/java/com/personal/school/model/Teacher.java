@@ -1,7 +1,5 @@
 package com.personal.school.model;
 
-import com.personal.school.enums.UpdateSalaryType;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,10 +7,6 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-
-import static com.personal.school.utils.CalcUtils.getValueWithPercentage;
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 @Entity
 @Getter
