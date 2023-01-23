@@ -2,14 +2,17 @@
 Control Students, Teachers, Subjects, Classes...
 
 
-### 1 - Used Frameworks
+### 1 - Frameworks
 * Spring Web
-* Spring Data JPA
-* Spring Security
+* Spring Data JPA with MySQL
+* Spring Security(Resource Server Oauth2)
 * Spring DevTools
 * Spring Actuator
 * Lombock
 * Apache Commoms Lang 3
-* OAuth2
-* Facade Pattern
+* Keycloak(Authorization Server OAuth2)
+
+### 2 - Patterns
 * Generics Java
+* Chain of Responsibility 
+* Facade 
