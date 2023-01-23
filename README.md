@@ -1,5 +1,5 @@
 # School
-Control Students, Teachers, Subjects, Classes...
+Control Students, Teachers, Subjects, Classes.
 
 
 ### 1 - Frameworks
